@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HR_Payroll.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33086e627b50eb6530ebb1c7efed7d27caa41ee3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e61d57b46685e19f1039826537a72be0146c4338")]
 [assembly: System.Reflection.AssemblyProductAttribute("HR_Payroll.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HR_Payroll.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

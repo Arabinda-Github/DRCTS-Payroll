@@ -1,0 +1,13 @@
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\bin\Debug\net8.0\HR_Payroll.Core.deps.json
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\bin\Debug\net8.0\HR_Payroll.Core.dll
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\bin\Debug\net8.0\HR_Payroll.Core.pdb
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.csproj.AssemblyReference.cache
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.AssemblyInfoInputs.cache
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.AssemblyInfo.cs
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.csproj.CoreCompileInputs.cache
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.sourcelink.json
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.dll
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\refint\HR_Payroll.Core.dll
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\HR_Payroll.Core.pdb
+C:\Project\DRCTS-Payroll\HR_Payroll.Core\obj\Debug\net8.0\ref\HR_Payroll.Core.dll

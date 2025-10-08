@@ -1,15 +1,21 @@
 [
   {
-    "ContainingType": "HR_Payroll.API.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "Post",
+    "RelativePath": "api/Auth",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "HR_Payroll.Core.Model.LoginModel",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[HR_Payroll.API.WeatherForecast, HR_Payroll.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "HR_Payroll.Core.Response.LoginResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -17,7 +23,78 @@
         ],
         "StatusCode": 200
       }
+    ]
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "Claim",
+    "RelativePath": "api/Auth/Claim",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "HR_Payroll.Core.Response.DataResponse\u00601[[System.Collections.Generic.List\u00601[[System.Security.Claims.Claim, System.Security.Claims, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "Decrypt",
+    "RelativePath": "api/Auth/Decrypt",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": [
+      {
+        "Type": "HR_Payroll.Core.Response.DataResponse\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "Encrypt",
+    "RelativePath": "api/Auth/Encrypt/{password}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HR_Payroll.Core.Response.DataResponse\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

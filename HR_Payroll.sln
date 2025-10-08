@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HR_Payroll.Web", "HR_Payroll.Web\HR_Payroll.Web.csproj", "{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HR_Payroll.API", "HR_Payroll.API\HR_Payroll.API.csproj", "{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HR_Payroll.Core", "HR_Payroll.Core\HR_Payroll.Core.csproj", "{6FFC2D2F-933A-462C-B686-D560913DA162}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HR_Payroll.Infrastructure", "HR_Payroll.Infrastructure\HR_Payroll.Infrastructure.csproj", "{FB13121E-E1B5-450D-8885-98E969F4C766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HR_Payroll.CommonCases", "HR_Payroll.CommonCases\HR_Payroll.CommonCases.csproj", "{8CE980B4-3614-43AE-9109-26FE975CA7FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FFC2D2F-933A-462C-B686-D560913DA162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FFC2D2F-933A-462C-B686-D560913DA162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FFC2D2F-933A-462C-B686-D560913DA162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FFC2D2F-933A-462C-B686-D560913DA162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB13121E-E1B5-450D-8885-98E969F4C766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB13121E-E1B5-450D-8885-98E969F4C766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB13121E-E1B5-450D-8885-98E969F4C766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB13121E-E1B5-450D-8885-98E969F4C766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CE980B4-3614-43AE-9109-26FE975CA7FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CE980B4-3614-43AE-9109-26FE975CA7FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CE980B4-3614-43AE-9109-26FE975CA7FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CE980B4-3614-43AE-9109-26FE975CA7FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49FE60F7-8005-4D9D-808D-1ACE98685614}
+	EndGlobalSection
+EndGlobal

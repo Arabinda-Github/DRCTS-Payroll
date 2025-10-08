@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "HR_Payroll.Web\\HR_Payroll.Web.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HR_Payroll.API\\HR_Payroll.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

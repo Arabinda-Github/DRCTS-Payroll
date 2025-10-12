@@ -20,6 +20,7 @@ namespace HR_Payroll.Core.Entity
         public string? EmployeeCode { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? ProfilePic { get; set; }
         public bool IsTwoFactorEnabled { get; set; } = false;
         public bool AccountLocked { get; set; } = false;
 

@@ -20,8 +20,8 @@ namespace HR_Payroll.API.JWTExtension
         }
         public string GenerateJwtToken(sp_UserLogin user)
         {
-            //if (user == null)
-            //    throw new ArgumentNullException(nameof(user));
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
             // Retrieve JWT configuration settings
             var secretKey = _configuration["JwtIdentitySetting:Secret"]
@@ -40,8 +40,12 @@ namespace HR_Payroll.API.JWTExtension
             // Build claims
             var claims = new[]
             {
-                new Claim(ClaimTypes.SerialNumber, Guid.NewGuid().ToString())
-                //new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),        
+                new Claim(ClaimTypes.SerialNumber, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.PrimarySid, user.UserID.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserTypeId.ToString()),
+                new Claim(ClaimTypes.Role, user.UserTypeName!.ToString()),
+                new Claim(ClaimTypes.Email, user.Email!.ToString()),
+                new Claim(ClaimTypes.Email, user.MobileNumber!.ToString()),
                 //new Claim("Username", user.EmailId ?? user.MobileNo ?? string.Empty),
             };
 

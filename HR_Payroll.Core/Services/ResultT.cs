@@ -9,45 +9,30 @@ namespace HR_Payroll.Core.Services
 {
     public class Result<T>
     {
-        private Result(ResultStatusType status, string message = null)
+        public bool IsSuccess { get; set; }=false;
+        public string? Message { get; set; }
+        public T? Entity { get; set; }
+
+        // Success factory method
+        public static Result<T> Success(T entity, string message = null)
         {
-            this.status = status;
-            this.message = message;
+            return new Result<T>
+            {
+                IsSuccess = true,
+                Entity = entity,
+                Message = message
+            };
         }
 
-        private Result(ResultStatusType status, T entity, string message = null)
+        // Failure factory method
+        public static Result<T> Failure(string message, T entity = default)
         {
-            this.status = status;
-            this.entity = entity;
-            this.message = message;
-        }
-
-        public T entity { get; }
-
-        public bool IsSuccess => this.status == ResultStatusType.Success;
-
-        public string message { get; }
-
-        public ResultStatusType status { get; }
-
-        public static Result<T> Failure(string message = null)
-        {
-            return new Result<T>(ResultStatusType.Failure, message);
-        }
-
-        public static Result<T> Failure(T entity)
-        {
-            return new Result<T>(ResultStatusType.Failure, entity);
-        }
-
-        public static Result<T> NotFound()
-        {
-            return new Result<T>(ResultStatusType.NotFound);
-        }
-
-        public static Result<T> Success(T entity)
-        {
-            return new Result<T>(ResultStatusType.Success, entity);
+            return new Result<T>
+            {
+                IsSuccess = false,
+                Entity = entity,
+                Message = message
+            };
         }
     }
 }

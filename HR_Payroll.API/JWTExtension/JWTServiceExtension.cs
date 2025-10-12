@@ -1,7 +1,9 @@
 ﻿using HR_Payroll.API.Config;
+using HR_Payroll.Core.Entity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace HR_Payroll.API.JWTExtension
@@ -16,8 +18,7 @@ namespace HR_Payroll.API.JWTExtension
             _serverSettings = serverSettings;
             _configuration = configuration;
         }
-        //public string GenerateJwtToken(sp_GetUserDetail user)
-        public string GenerateJwtToken()
+        public string GenerateJwtToken(sp_UserLogin user)
         {
             //if (user == null)
             //    throw new ArgumentNullException(nameof(user));
@@ -55,6 +56,38 @@ namespace HR_Payroll.API.JWTExtension
 
             // Return the token string
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+        }
+
+        public string GenerateRefreshToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
+        // =========================================
+        // Helper: This method is used only when your access token(JWT) has already expired,
+        //         and you need to extract user identity(claims like username, user ID, etc.)
+        //         from that expired token to issue a new token.
+        // =========================================
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtIdentitySetting:Secret"])),
+                ValidateLifetime = false // we are validating expired tokens here
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
         }
 
     }

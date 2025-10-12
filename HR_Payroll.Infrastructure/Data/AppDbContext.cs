@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HR_Payroll.Core.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace HR_Payroll.Infrastructure.Data
             //_dispatcher = dispatcher;
         }
 
-        //public DbSet<Contributor> Contributors => Set<Contributor>();
+        public DbSet<sp_UserLogin> sp_UserLogin => Set<sp_UserLogin>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

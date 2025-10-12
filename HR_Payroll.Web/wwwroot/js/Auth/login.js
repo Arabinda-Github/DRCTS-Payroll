@@ -1,72 +1,123 @@
-﻿
-$("#submitbtn").click(function (e) {
-    e.preventDefault();
-    var username = $("#username").val();
-    var password = $("#userpassword").val();
-    if (username == "" && password == "") {
-        message = "Username & Password Required";
-        Toast.fire({
-            icon: 'error',
-            title: message
-        });
-        return;
-    }
-    if (password == "") {
-        message = "Password Required";
-        Toast.fire({
-            icon: 'error',
-            title: message
-        });
-        return;
-    }
-    if (username == "") {
-        message = "Username Required";
-        Toast.fire({
-            icon: 'error',
-            title: message
-        });
-        return;
-    }
-    $("#submitbtn").prop("disabled", true).text("Loading...");
-    $.ajax({
-        type: "POST",
-        url: "/Account/AdminLogin",
-        contentType: "application/json",
-        dataType: "json",
-        data: JSON.stringify({
-            Username: username,
-            Password: password,
-            LoginType: "Admin"
-        }),
-        success: function (response) {
-            if (response.success) {
-                Toast.fire({
-                    icon: 'success',
-                    title: response.message
-                });
-                setTimeout(function () {
-                    window.location.href = response.redirectUrl;
-                }, 2000);
-            } else {
-                Toast.fire({
-                    icon: 'error',
-                    title: response.message || "Incorrect username or password. Please try again."
-                });
-                $('#userpassword').val('');
-                $('#username').val('');
+﻿function showToast(message = 'Message will appear here', type = 'info') {
 
-            }
-        },
-        error: function (xhr) {
-            console.error("AJAX Error:", xhr.responseText);
-            Toast.fire({
-                icon: 'error',
-                title: "An unexpected error occurred. Please try again."
-            });
-        },
-        complete: function () {
-            // Re-enable the button and reset text after request completes
-            $("#submitbtn").prop("disabled", false).text("Submit");
-        }
+    const toastEl = document.getElementById('myToast');
+    const toastBody = toastEl.querySelector('.toast-body');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastHeader = toastEl.querySelector('.toast-header');
+
+    // Reset all styles & icons
+    toastBody.className = 'toast-body d-flex align-items-center';
+    toastHeader.className = 'toast-header d-flex align-items-center';
+    toastIcon.className = 'me-2';
+
+    // Set style & icon based on type
+    switch (type) {
+        case 'success':
+            toastBody.classList.add('bg-success', 'text-white');
+            toastIcon.classList.add('fas', 'fa-check-circle');
+            break;
+        case 'error':
+            toastBody.classList.add('bg-danger', 'text-white');
+            toastIcon.classList.add('fas', 'fa-times-circle');
+            break;
+        case 'warning':
+            toastBody.classList.add('bg-warning', 'text-dark');
+            toastIcon.classList.add('fas', 'fa-exclamation-triangle');
+            break;
+        default:
+            toastBody.classList.add('bg-info', 'text-white');
+            toastIcon.classList.add('fas', 'fa-info-circle');
+            break;
+    }
+
+    // Set message
+    toastMessage.textContent = message;
+
+    // ✅ Dispose previous instance if exists
+    let previousToast = bootstrap.Toast.getInstance(toastEl);
+    if (previousToast) previousToast.dispose();
+
+    // ✅ Create new instance with autohide & delay
+    const toast = new bootstrap.Toast(toastEl, {
+        delay: 3000,
+        autohide: true
     });
+
+    toast.show();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toastEl = document.getElementById('myToast');
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+    toast.hide();
+});
+
+document.getElementById('togglePassword').addEventListener('click', function () {
+    const passwordInput = document.getElementById('userpassword');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    }
+});
+
+document.getElementById("submitbtn").addEventListener("click", async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("userpassword").value.trim();
+    const remember = document.getElementById("rememberMe").checked;
+
+    if (!username && !password) {
+        showToast('Username & Password Required!', 'error');
+        return;
+    }
+    if (!username) {
+        showToast('Username Required!', 'error');
+        return;
+    }
+    if (!password) {
+        showToast('Password Required!', 'error');
+        return;
+    }
+
+    const btn = document.getElementById("submitbtn");
+    btn.disabled = true;
+    btn.textContent = "Loading...";
+
+    try {
+        const response = await fetch("/Home/Login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                Username: username,
+                Password: password,
+                RememberMe: remember
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showToast(result.message || 'Login successful!', 'success');
+            setTimeout(() => window.location.href = result.redirectUrl || "/Dashboard/AdminDashboard", 2000);
+        } else {
+            showToast(result.message || "Incorrect username or password.", 'error');
+            document.getElementById("username").value = "";
+            document.getElementById("userpassword").value = "";
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+        showToast("An unexpected error occurred. Please try again.", 'error');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Submit";
+    }
 });

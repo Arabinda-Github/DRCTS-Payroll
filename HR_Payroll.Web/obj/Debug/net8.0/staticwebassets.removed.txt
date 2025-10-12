@@ -1,2 +1,0 @@
-C:\Project\DRCTS-Payroll\HR_Payroll.Web\wwwroot\css\site.css
-C:\Project\DRCTS-Payroll\HR_Payroll.Web\wwwroot\js\site.js

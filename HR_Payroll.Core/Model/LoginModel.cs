@@ -11,5 +11,7 @@ namespace HR_Payroll.Core.Model
         public string? Username { get; set; }
         public string? Password { get; set; }
         public bool RememberMe { get; set; } = false;
+        public string? LoginIP { get; set; }
+        public string LoginType { get; set; } = "System";
     }
 }

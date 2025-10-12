@@ -9,10 +9,11 @@ namespace HR_Payroll.API
     {
         public static void ConfigureDIServices(this IServiceCollection services)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddScoped<JWTServiceExtension>();           
-            services.AddScoped<IPasswordHasher, PasswordHasher>();          
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();       
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<JWTServiceExtension>();
+            services.AddScoped<IAuthService, AuthService>();
+
         }
     }
 }

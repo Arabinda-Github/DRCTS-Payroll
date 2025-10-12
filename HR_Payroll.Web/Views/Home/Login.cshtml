@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HR_Payroll.Core.Model.LoginModel
+@{
     Layout = null;
 }
 
@@ -44,21 +45,25 @@
                                     </div>
                                 </div><!--end card-body-->
                                 <div class="card-body pt-0">
-                                    <form class="my-4" action="https://mannatthemes.com/metrica/default/index.html">
+                                    <form class="my-4">
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="username">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="@Model.Username">
                                         </div><!--end form-group-->
 
-                                        <div class="form-group">
+                                        <div class="form-group position-relative">
                                             <label class="form-label" for="userpassword">Password</label>
-                                            <input type="password" class="form-control" name="password" id="userpassword" placeholder="Enter password">
+                                            <input type="password" class="form-control pe-5" name="password" id="userpassword" placeholder="Enter password" value="@Model.Password">
+                                            <button type="button" class="btn position-absolute end-0 translate-middle-y border-0 bg-transparent p-2" style="top: 45px; color: grey;"
+                                                    id="togglePassword"tabindex="-1">
+                                                <i class="fas fa-eye-slash" id="toggleIcon"></i>
+                                            </button>
                                         </div><!--end form-group-->
 
                                         <div class="form-group row mt-3">
                                             <div class="col-sm-6">
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input" type="checkbox" id="customSwitchSuccess">
+                                                    <input class="form-check-input" type="checkbox" id="rememberMe" value="true" @(Model.RememberMe ? "checked" : "")>
                                                     <label class="form-check-label" for="customSwitchSuccess">Remember me</label>
                                                 </div>
                                             </div><!--end col-->
@@ -70,7 +75,7 @@
                                         <div class="form-group mb-0 row">
                                             <div class="col-12">
                                                 <div class="d-grid mt-3">
-                                                    <button class="btn btn-primary" type="button">Log In <i class="fas fa-sign-in-alt ms-1"></i></button>
+                                                    <button class="btn btn-primary" id="submitbtn" type="button">Log In <i class="fas fa-sign-in-alt ms-1"></i></button>
                                                 </div>
                                             </div><!--end col-->
                                         </div> <!--end form-group-->
@@ -113,14 +118,32 @@
         </div><!--end row-->
     </div><!--end container-->
 
+    <!-- ✅ Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <div id="myToast" class="toast align-items-center border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header d-flex align-items-center">
+                <img src="~/assets/images/logos/drcts_logo.png" alt="logo" height="20" class="me-2">
+                <strong class="me-auto">DRCTS</strong>
+                <small class="text-muted">Just now</small>
+                <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body d-flex align-items-center">
+                <i id="toastIcon" class="me-2"></i>
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
+
     <!-- vendor js -->
     <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
     <script src="~/assets/libs/feather-icons/feather.min.js"></script>
     <!-- App js -->
     <script src="~/assets/js/app.js"></script>
+    <script src="~/assets/js/pages/toast.init.js"></script>
     <!-- Custom js -->
-    @* <script src="~/js/auth/login.js"></script> *@
+    <script src="~/js/jquery-3.6.4.min.js"></script>
+    <script src="~/js/auth/login.js"></script>
 
 </body>
 

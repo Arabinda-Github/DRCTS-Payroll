@@ -4,6 +4,7 @@ using HR_Payroll.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -17,9 +18,24 @@ namespace HR_Payroll.API
 
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            // Configure DbContext with SQL Server and advanced options
+            // Context 1: For EF Core operations(with tracking)
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            {
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.EnableRetryOnFailure(
+                            maxRetryCount: 3,
+                            maxRetryDelay: TimeSpan.FromSeconds(5),
+                            errorNumbersToAdd: null
+                        );
+                        sqlServerOptions.CommandTimeout(30);
+                    }
+                );
+                // ✅ Keep tracking enabled for EF Core operations
+            });
 
             // configure authentication to use IdentityServer
             var identityServerSettings = builder.Configuration.GetSection("JwtIdentitySetting").Get<JwtIdentitySetting>();
@@ -37,8 +53,9 @@ namespace HR_Payroll.API
 
             builder.Services.ConfigureDIServices();
 
-            //builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, builder => builder.WithOrigins(identityServerSettings.AllowedOrigins).AllowAnyHeader().AllowAnyMethod()));
-            builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+            builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, builder => builder.WithOrigins(identityServerSettings.AllowedOrigins).AllowAnyHeader().AllowAnyMethod()));
+            //builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+            
             // Add Authorization Policies
             // builder.Services.ConfigureAuthorizationPolicies();
 
@@ -54,17 +71,48 @@ namespace HR_Payroll.API
             {
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidIssuer = identityServerSettings.Issuer,
+                    ValidateAudience = true,
                     ValidAudience = identityServerSettings.Audience,
-                    ValidateAudience = true
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateLifetime = true, // Ensures token expiration is checked
+                    ClockSkew = TimeSpan.Zero // Remove default 5-minute tolerance
                 };
 
-                // Optional: Add events for better debugging
+                // Optional: add events for debugging / refresh handling
                 x.Events = new JwtBearerEvents
                 {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception is SecurityTokenExpiredException)
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.Response.ContentType = "application/json";
+
+                            var response = new
+                            {
+                                status = false,
+                                message = "Token expired. Please login again."
+                            };
+
+                            var json = System.Text.Json.JsonSerializer.Serialize(response);
+                            return context.Response.WriteAsync(json);
+                        }
+
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        var invalid = new
+                        {
+                            status = false,
+                            message = "Invalid token."
+                        };
+
+                        var invalidJson = System.Text.Json.JsonSerializer.Serialize(invalid);
+                        return context.Response.WriteAsync(invalidJson);
+                    },
                     OnChallenge = context =>
                     {
                         context.HandleResponse(); // Prevents the default 401 redirect
@@ -131,7 +179,7 @@ namespace HR_Payroll.API
             //InitializeUser(app.Services).Wait();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                _=endpoints.MapDefaultControllerRoute();
             });
 
             // Add diagnostic middleware
@@ -153,7 +201,7 @@ namespace HR_Payroll.API
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                _ = endpoints.MapControllers();
             });
 
             return app;

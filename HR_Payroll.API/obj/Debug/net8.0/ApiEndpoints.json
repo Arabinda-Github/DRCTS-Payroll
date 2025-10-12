@@ -15,7 +15,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "HR_Payroll.Core.Response.LoginResponse",
+        "Type": "HR_Payroll.Core.Response.LoginResponse\u00601[[HR_Payroll.Core.Response.TokenData, HR_Payroll.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -96,5 +96,37 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "GetUserDetails",
+    "RelativePath": "api/Auth/GetUserDetails",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "HR_Payroll.Core.Model.LoginModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Auth/RefreshToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Microsoft.AspNetCore.Identity.Data.RefreshRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

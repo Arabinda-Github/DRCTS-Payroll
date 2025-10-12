@@ -32,92 +32,171 @@ namespace HR_Payroll.Web.Controllers
         public async Task<IActionResult> Login()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View();
+            string username = string.Empty;
+            string password = string.Empty;
+            bool rememberMe = false;
+            // Read cookie from request
+            if (Request.Cookies.TryGetValue("RememberMe", out string encryptedData))
+            {
+                try
+                {
+                    // Decode base64 string back to username|password
+                    var decodedBytes = Convert.FromBase64String(encryptedData);
+                    var decodedText = Encoding.UTF8.GetString(decodedBytes);
+
+                    // Split the text into username and password
+                    var parts = decodedText.Split('|');
+                    if (parts.Length == 2)
+                    {
+                        username = parts[0];
+                        password = parts[1];
+                    }
+                    rememberMe = true;
+                }
+                catch (FormatException ex)
+                {
+                    // Log any invalid cookie format
+                    Console.WriteLine($"Invalid RememberMe cookie: {ex.Message}");
+                }
+            }
+
+            // Pass to the view model so Razor can prefill fields
+            var model = new LoginModel
+            {
+                Username = username,
+                Password = password,
+                RememberMe = rememberMe
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                return Json(new
-                {
-                    success = true,
-                    message = "Session expired. Please log in again.",
-                    redirectUrl = Url.Action("AdminLogin", "Account")
-                });
-            }
-
             if (!ModelState.IsValid)
-            {
                 return Json(new { success = false, message = "Invalid login request." });
-            }
 
             try
             {
-                model.RememberMe = true;
                 var httpClient = _httpClientFactory.CreateClient("AuthClient");
                 var tokenEndpoint = $"{ApiEndPoint}Auth";
-                var requestData = new { username = model.Username, password = model.Password };
-                var requestContent = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-                var tokenResponse = await httpClient.PostAsync(tokenEndpoint, requestContent);
-                var tokenContent = await tokenResponse.Content.ReadAsStringAsync();
-                var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(tokenContent);
-                if (tokenResponse.IsSuccessStatusCode && loginResponse.status)
+
+                // Use System.Text.Json for better performance
+                var requestContent = new StringContent(
+                    System.Text.Json.JsonSerializer.Serialize(model),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+                var response = await httpClient.PostAsync(tokenEndpoint, requestContent);
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    await SignInUserWithJwt(loginResponse.token ?? string.Empty, model.RememberMe);
-                    _logger.LogInformation("User {Email} logged in at {Time}.",
-                         "amit@gmail.com", DateTime.UtcNow);
-                    //return RedirectToAction("Dashboard", "Home");
+                    _logger.LogWarning("API returned {StatusCode} for user {User}", response.StatusCode, model.Username);
+                    return Json(new { success = false, message = "Authentication service unavailable." });
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                var loginResponse = System.Text.Json.JsonSerializer.Deserialize<LoginResponse<TokenData>>(
+                    content,
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                );
+
+                if (loginResponse?.status == true && loginResponse.data != null)
+                {
+                    var tokenData = loginResponse.data;
+
+                    // Sign in with JWT
+                    await SignInUserWithJwt(tokenData.accessToken, tokenData.refreshToken, model.RememberMe);
+
+                    // Handle RememberMe cookie
+                    if (model.RememberMe)
+                    {
+                        SetRememberMeCookie(model.Username, model.Password);
+                    }
+                    else
+                    {
+                        Response.Cookies.Delete("RememberMe");
+                    }
+
+                    _logger.LogInformation("User {User} logged in successfully", model.Username);
+
                     return Json(new
                     {
                         success = true,
-                        message = "Logging in please wait......",
-                        redirectUrl = Url.Action("Dashboard", "Admin")
+                        message = "Login successful",
+                        redirectUrl = Url.Action("AdminDashboard", "Dashboard")
                     });
                 }
-                else
-                {
-                    return Json(new { success = false, message = loginResponse.message });
-                }
+
+                return Json(new { success = false, message = loginResponse?.message ?? "Invalid credentials." });
+            }
+            catch (System.Text.Json.JsonException jex)
+            {
+                _logger.LogError(jex, "JSON deserialization error for user {User}", model.Username);
+                return Json(new { success = false, message = "Invalid response from server." });
+            }
+            catch (HttpRequestException hex)
+            {
+                _logger.LogError(hex, "HTTP request failed for user {User}", model.Username);
+                return Json(new { success = false, message = "Could not connect to authentication service." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Login error");
-                return Json(new { success = false, message = "An error occurred during login" });
+                _logger.LogError(ex, "Login error for user {User}", model.Username);
+                return Json(new { success = false, message = "An error occurred during login." });
             }
         }
 
-        private async Task SignInUserWithJwt(string token, bool rememberMe)
+        // =========================================
+        // Helper: Sign-in using JWT remember and refresh token
+        // =========================================
+        private void SetRememberMeCookie(string username, string password)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            JwtSecurityToken jwtToken;
-            try
+            var cookieOptions = new CookieOptions
             {
-                jwtToken = tokenHandler.ReadJwtToken(token);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Invalid JWT token format.");
-                throw new SecurityTokenException("Invalid token.");
-            }
+                Expires = DateTime.UtcNow.AddDays(30),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                IsEssential = true
+            };
 
-            // ✅ Use claims directly from token
+            // Better encryption - consider using Data Protection API
+            var encryptedData = Convert.ToBase64String(
+                Encoding.UTF8.GetBytes($"{username}|{password}")
+            );
+
+            Response.Cookies.Append("RememberMe", encryptedData, cookieOptions);
+        }
+
+        private async Task SignInUserWithJwt(string accessToken, string refreshToken, bool rememberMe)
+        {
+            // Parse JWT to get claims
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(accessToken);
+
             var claims = jwtToken.Claims.ToList();
-            claims.Add(new Claim("access_token", token));
+
+            // Add refresh token as claim for easy access
+            claims.Add(new Claim("RefreshToken", refreshToken));
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
             var principal = new ClaimsPrincipal(identity);
+
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = rememberMe,
-                ExpiresUtc = jwtToken.ValidTo // ✅ Sync cookie lifetime with JWT expiry
+                ExpiresUtc = jwtToken.ValidTo,
+                AllowRefresh = true
             };
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                authProperties
+            );
         }
 
         [HttpGet]

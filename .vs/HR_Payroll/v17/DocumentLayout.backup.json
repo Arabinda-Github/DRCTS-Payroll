@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Project\\DRCTS-Payroll\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\home\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\wwwroot\\js\\auth\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\wwwroot\\js\\auth\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\concrete\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\concrete\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,14 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\interface\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\interface\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\concrete\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\concrete\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\wwwroot\\js\\auth\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\wwwroot\\js\\auth\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,32 +34,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "HR_Payroll.Web\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "HR_Payroll.Web\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAAIYAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T15:50:11.453Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "login.js",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Auth\\login.js",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\wwwroot\\js\\Auth\\login.js",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Auth\\login.js",
               "RelativeToolTip": "HR_Payroll.Web\\wwwroot\\js\\Auth\\login.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEIAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-08T15:49:05.879Z",
+              "WhenOpened": "2025-10-12T14:10:55.592Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Home\\Login.cshtml",
+              "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Home\\Login.cshtml",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Home\\Login.cshtml",
+              "RelativeToolTip": "HR_Payroll.Web\\Views\\Home\\Login.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAADUAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-12T13:54:19.025Z",
               "EditorCaption": ""
             },
             {
@@ -66,35 +70,48 @@
               "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Concrete\\AuthService.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Concrete\\AuthService.cs",
               "RelativeToolTip": "HR_Payroll.Infrastructure\\Concrete\\AuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAawBkAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T14:42:32.099Z",
+              "WhenOpened": "2025-10-11T12:20:46.549Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Interface\\IAuthService.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Interface\\IAuthService.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Interface\\IAuthService.cs",
               "RelativeToolTip": "HR_Payroll.Infrastructure\\Interface\\IAuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T14:42:16.849Z",
+              "WhenOpened": "2025-10-11T12:10:55.279Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\AuthController.cs",
               "RelativeToolTip": "HR_Payroll.API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAwwC0AAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-08T14:39:01.986Z",
+              "WhenOpened": "2025-10-10T17:55:24.409Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "HR_Payroll.Web\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "HR_Payroll.Web\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAAwB0AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T12:20:22.83Z",
               "EditorCaption": ""
             }
           ]

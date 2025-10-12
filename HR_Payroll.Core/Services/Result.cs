@@ -11,27 +11,33 @@ namespace HR_Payroll.Core.Services
     {
         private Result(ResultStatusType status, string message = null)
         {
-            this.status = status;
-            this.message = message;
+            Status = status;
+            Message = message;
         }
 
-        public string message { get; set; }
+        public string Message { get; }
+        public ResultStatusType Status { get; }
 
-        public ResultStatusType status { get; }
-
+        // Failure factory
         public static Result Failure(string message = null)
         {
             return new Result(ResultStatusType.Failure, message);
         }
 
-        public static Result NotFound()
+        // NotFound factory
+        public static Result NotFound(string message = null)
         {
-            return new Result(ResultStatusType.NotFound);
+            return new Result(ResultStatusType.NotFound, message);
         }
 
-        public static Result Success()
+        // Success factory
+        public static Result Success(string message = null)
         {
-            return new Result(ResultStatusType.Success);
+            return new Result(ResultStatusType.Success, message);
         }
+
+        // Convenience property
+        public bool IsSuccess => Status == ResultStatusType.Success;
     }
+
 }

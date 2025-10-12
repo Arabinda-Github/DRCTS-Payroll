@@ -183,7 +183,8 @@ namespace HR_Payroll.CommonCases.Utility
 
         #endregion
 
-        #region------------ Encrypt/Decrypt -----------
+        #region------------Encrypt/ Decrypt Extention -------------
+        // Replace DESCryptoServiceProvider with DESCryptoService.Create() in Encrypt and Decrypt methods
 
         public static string? Encrypt(string str)
         {
@@ -194,14 +195,18 @@ namespace HR_Payroll.CommonCases.Utility
             string EncrptKey = "[@DRCTS_Pvt.Ltd.2024]";
             byte[] byKey = { };
             byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
-            byKey = System.Text.Encoding.UTF8.GetBytes(EncrptKey.Substring(0, 8));
-            var des = new DESCryptoServiceProvider();
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(str);
-            MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, IV), CryptoStreamMode.Write);
-            cs.Write(inputByteArray, 0, inputByteArray.Length);
-            cs.FlushFinalBlock();
-            return Convert.ToBase64String(ms.ToArray());
+            byKey = Encoding.UTF8.GetBytes(EncrptKey.Substring(0, 8));
+            using (var des = DES.Create())
+            {
+                byte[] inputByteArray = Encoding.UTF8.GetBytes(str);
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey, IV), CryptoStreamMode.Write))
+                {
+                    cs.Write(inputByteArray, 0, inputByteArray.Length);
+                    cs.FlushFinalBlock();
+                    return Convert.ToBase64String(ms.ToArray());
+                }
+            }
         }
 
         public static string? Decrypt(string str)
@@ -214,18 +219,20 @@ namespace HR_Payroll.CommonCases.Utility
             string DecryptKey = "[@DRCTS_Pvt.Ltd.2024]";
             byte[] byKey = { };
             byte[] IV = { 18, 52, 86, 120, 144, 171, 205, 239 };
-            byte[] inputByteArray = new byte[str.Length];
-
-            byKey = System.Text.Encoding.UTF8.GetBytes(DecryptKey.Substring(0, 8));
-            var des = new DESCryptoServiceProvider();
-            inputByteArray = Convert.FromBase64String(str.Replace(" ", "+"));
-            MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey, IV), CryptoStreamMode.Write);
-            cs.Write(inputByteArray, 0, inputByteArray.Length);
-            cs.FlushFinalBlock();
-            System.Text.Encoding encoding = System.Text.Encoding.UTF8;
-            return encoding.GetString(ms.ToArray());
-        }      
+            byKey = Encoding.UTF8.GetBytes(DecryptKey.Substring(0, 8));
+            using (var des = DES.Create())
+            {
+                byte[] inputByteArray = Convert.FromBase64String(str.Replace(" ", "+"));
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey, IV), CryptoStreamMode.Write))
+                {
+                    cs.Write(inputByteArray, 0, inputByteArray.Length);
+                    cs.FlushFinalBlock();
+                    Encoding encoding = Encoding.UTF8;
+                    return encoding.GetString(ms.ToArray());
+                }
+            }
+        }
 
         #endregion
     }

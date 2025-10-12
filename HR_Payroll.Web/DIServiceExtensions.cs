@@ -17,9 +17,19 @@ namespace HR_Payroll.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddHttpClient("AuthClient", client =>
             {
-                client.Timeout = TimeSpan.FromSeconds(10);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            });
+                client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+                client.Timeout = TimeSpan.FromSeconds(30);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
+                );
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
+                UseProxy = false, // Disable if not needed
+                MaxConnectionsPerServer = 10
+            }).SetHandlerLifetime(TimeSpan.FromMinutes(5)); // Connection pooling
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                         .AddCookie(options =>
                         {

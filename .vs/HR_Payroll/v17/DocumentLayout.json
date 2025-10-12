@@ -34,8 +34,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -44,7 +48,7 @@
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Home\\Login.cshtml",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Home\\Login.cshtml",
               "RelativeToolTip": "HR_Payroll.Web\\Views\\Home\\Login.cshtml",
-              "ViewState": "AgIAADAAAAAAAAAAAAAAADwAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAACkAAAAAAAAAAAAowDgAAAC0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-12T13:54:19.025Z",
               "EditorCaption": ""

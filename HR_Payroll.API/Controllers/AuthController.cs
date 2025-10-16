@@ -25,14 +25,14 @@ namespace HR_Payroll.API.Controllers
         private readonly JWTServiceExtension _jwtService;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IAuthService _authService;
-        private readonly ILogger<AuthService> _logger;
+        private readonly ILogger<AuthController> _logger;
         public AuthController(
              JwtIdentitySetting serverSettings,
              JWTServiceExtension jwtService,             
              IPasswordHasher passwordHasher,
              IConfiguration configuration,
              IAuthService authService,
-             ILogger<AuthService> logger)
+             ILogger<AuthController> logger)
         {
             _serverSettings = serverSettings;
             _configuration = configuration;

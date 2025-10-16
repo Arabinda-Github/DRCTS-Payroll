@@ -1,5 +1,25 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
+@{
     Layout = null;
+    var userTypeId = 0;
+    var empId = 0;
+    var name = string.Empty;
+    var profilpic = string.Empty;
+    var shortName = string.Empty;
+    var claims = HttpContextAccessor?.HttpContext?.User.Claims.ToList();
+    if (claims?.Count > 0)
+    {
+        userTypeId = Convert.ToInt32(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+        name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        empId = Convert.ToInt32(claims.FirstOrDefault(c => c.Type == "EmployeeId")?.Value);
+        profilpic = claims.FirstOrDefault(c => c.Type == "ProfilePic")?.Value;
+        shortName = string.Join("", name
+           .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+           .Select(w => w[0]))
+           .ToUpper();
+    }
 }
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -22,7 +42,7 @@
     <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
-
+    <link href="~/assets/css/punch-in-notification.css" rel="stylesheet" asp-append-version="true" />
 </head>
 
 <body id="body">
@@ -79,7 +99,7 @@
         <div class="main-menu-inner">
             <!-- LOGO -->
             <div class="topbar-left">
-                <a href="index.html" class="logo">
+                <a href="https://drctstech.com/" class="logo">
                     <span>
                         <img src="~/assets/images/logos/drcts-dark-logo.png" alt="logo-large" class="logo-lg logo-dark">
                         <img src="~/assets/images/logos/drcts-white-logo.png" alt="logo-large" class="logo-lg logo-light">
@@ -113,102 +133,86 @@
             <ul class="list-unstyled topbar-nav float-end mb-0">
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="false" aria-expanded="false">
+                       id="notificationBell" aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-bell"></i>
                         <span class="alert-badge"></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
+                    <div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0" id="notificationDropdown">
                         <h6 class="dropdown-item-text font-15 m-0 py-3 border-bottom d-flex justify-content-between align-items-center">
-                            Notifications <span class="badge bg-soft-primary badge-pill">2</span>
+                            Notifications <span class="badge bg-soft-primary badge-pill">1</span>
                         </h6>
                         <div class="notification-menu" data-simplebar>
                             <!-- item-->
-                            <a href="#" class="dropdown-item py-3">
-                                <small class="float-end text-muted ps-2">2 min ago</small>
-                                <div class="media">
-                                    <div class="avatar-md bg-soft-primary">
-                                        <i class="ti ti-chart-arcs"></i>
+                            <!-- Punch In/Out Button -->
+                            <div class="attendance-card">
+                                <div class="attendance-stats">
+                                    <div class="stat-box">
+                                        <div class="stat-icon">🕐</div>
+                                        <div class="stat-label">Clock-in</div>
+                                        <div class="stat-value" id="clockInTime">--:--</div>
                                     </div>
-                                    <div class="media-body align-self-center ms-2 text-truncate">
-                                        <h6 class="my-0 fw-normal text-dark">Your order is placed</h6>
-                                        <small class="text-muted mb-0">Dummy text of the printing and industry.</small>
-                                    </div><!--end media-body-->
-                                </div><!--end media-->
-                            </a><!--end-item-->
-                            <!-- item-->
-                            <a href="#" class="dropdown-item py-3">
-                                <small class="float-end text-muted ps-2">10 min ago</small>
-                                <div class="media">
-                                    <div class="avatar-md bg-soft-primary">
-                                        <i class="ti ti-device-computer-camera"></i>
+                                    <div class="stat-box">
+                                        <div class="stat-icon">🕐</div>
+                                        <div class="stat-label">Clock-out</div>
+                                        <div class="stat-value" id="clockOutTime">--:--</div>
                                     </div>
-                                    <div class="media-body align-self-center ms-2 text-truncate">
-                                        <h6 class="my-0 fw-normal text-dark">Meeting with designers</h6>
-                                        <small class="text-muted mb-0">It is a long established fact that a reader.</small>
-                                    </div><!--end media-body-->
-                                </div><!--end media-->
-                            </a><!--end-item-->
-                            <!-- item-->
-                            <a href="#" class="dropdown-item py-3">
-                                <small class="float-end text-muted ps-2">40 min ago</small>
-                                <div class="media">
-                                    <div class="avatar-md bg-soft-primary">
-                                        <i class="ti ti-diamond"></i>
+                                    <div class="stat-box">
+                                        <div class="stat-icon">⏱️</div>
+                                        <div class="stat-label">Total hours</div>
+                                        <div class="stat-value" id="totalHours">--:--</div>
                                     </div>
-                                    <div class="media-body align-self-center ms-2 text-truncate">
-                                        <h6 class="my-0 fw-normal text-dark">UX 3 Task complete.</h6>
-                                        <small class="text-muted mb-0">Dummy text of the printing.</small>
-                                    </div><!--end media-body-->
-                                </div><!--end media-->
-                            </a><!--end-item-->
-                            <!-- item-->
-                            <a href="#" class="dropdown-item py-3">
-                                <small class="float-end text-muted ps-2">1 hr ago</small>
-                                <div class="media">
-                                    <div class="avatar-md bg-soft-primary">
-                                        <i class="ti ti-drone"></i>
+                                </div>
+
+                                <div class="attendance-action">
+                                    <p>Mark Your Attendance</p>
+                                    <div class="action-buttons">
+                                        <button class="status-btn offline-btn" id="statusBtn">
+                                            <span class="status-indicator status-red"></span>
+                                            OFFLINE
+                                        </button>
+                                        <button class="tap-btn" id="tapBtn">
+                                            <span class="tap-icon">👆</span>
+                                            <span id="tapBtnText">Punch In</span>
+                                        </button>
+                                        <button class="status-btn timer-btn" id="timerBtn">00:00</button>
                                     </div>
-                                    <div class="media-body align-self-center ms-2 text-truncate">
-                                        <h6 class="my-0 fw-normal text-dark">Your order is placed</h6>
-                                        <small class="text-muted mb-0">It is a long established fact that a reader.</small>
-                                    </div><!--end media-body-->
-                                </div><!--end media-->
-                            </a><!--end-item-->
-                            <!-- item-->
-                            <a href="#" class="dropdown-item py-3">
-                                <small class="float-end text-muted ps-2">2 hrs ago</small>
-                                <div class="media">
-                                    <div class="avatar-md bg-soft-primary">
-                                        <i class="ti ti-users"></i>
-                                    </div>
-                                    <div class="media-body align-self-center ms-2 text-truncate">
-                                        <h6 class="my-0 fw-normal text-dark">Payment Successfull</h6>
-                                        <small class="text-muted mb-0">Dummy text of the printing.</small>
-                                    </div><!--end media-body-->
-                                </div><!--end media-->
-                            </a><!--end-item-->
+                                </div>
+                            </div>
+                            <!--end-item-->
+                           
                         </div>
                         <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
+                       @*  <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
                             View all <i class="fi-arrow-right"></i>
-                        </a>
+                        </a> *@
                     </div>
                 </li>
                 <li class="dropdown">
                     <a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
                         <div class="d-flex align-items-center">
-                            <img src="~/assets/images/users/user-4.jpg" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+                            @if (!string.IsNullOrEmpty(profilpic))
+                            {
+                                <img src="@profilpic" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle me-2 short-name" title="user image">
+                                    @shortName
+                                </div>
+                            }
                             <div>
-                                <small class="d-none d-md-block font-11">Admin</small>
-                                <span class="d-none d-md-block fw-semibold font-12">
-                                    Maria Gibson <i class="mdi mdi-chevron-down"></i>
+                                <small class="d-none d-md-block font-11" id="urole"></small>
+                                <span class="d-none d-md-block fw-semibold font-12" id="uname">
+                                     <i class="mdi mdi-chevron-down"></i>
                                 </span>
                             </div>
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="#"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
+                        <input type="hidden" id="cookiem" />
+                        <input type="hidden" id="cookieuid" />
+                        <a class="dropdown-item" asp-action="Profile" asp-controller="Home"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
                         @* <a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a> *@
                         <div class="dropdown-divider mb-0"></div>
                         <a class="dropdown-item" asp-action="Logout" asp-controller="Home"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
@@ -232,6 +236,7 @@
     </div>
     <!-- Top Bar End -->
     <!-- Top Bar End -->
+
 
     <div class="page-wrapper">
 
@@ -299,8 +304,25 @@
         </div>
         <!-- end page content -->
     </div>
+    <!-- ✅ Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <div id="myToast" class="toast align-items-center border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header d-flex align-items-center">
+                <img src="~/assets/images/logos/drcts_logo.png" alt="logo" height="20" class="me-2">
+                <strong class="me-auto">DRCTS</strong>
+                <small class="text-muted">Just now</small>
+                <button type="button" class="btn-close ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body d-flex align-items-center">
+                <i id="toastIcon" class="me-2"></i>
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
     <!-- end page-wrapper -->
+
     <!-- Javascript  -->
+    <script src="~/js/jquery-3.6.4.min.js"></script>
     <!-- vendor js -->
     <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
@@ -317,6 +339,11 @@
     <!-- App js -->
     <script src="~/assets/js/app.js"></script>
     <script src="~/assets/js/pages/toast.init.js"></script>
+    <!-- Costom js -->
+    <script src="~/js/auth/cookie.js"></script>
+    <script src="~/js/common/default_toaster.js"></script>
+    <script src="~/js/attendance/markattendance.js"></script>
+    
 </body>
 <!--end body-->
 </html>

@@ -3,6 +3,7 @@ wwwroot\assets\css\bootstrap.min.css
 wwwroot\assets\css\fonts\tabler-icons.html
 wwwroot\assets\css\fonts\tabler-iconsd41d.html
 wwwroot\assets\css\icons.min.css
+wwwroot\assets\css\punch-in-notification.css
 wwwroot\assets\fonts\fa-brands-400.eot
 wwwroot\assets\fonts\fa-brands-400.svg
 wwwroot\assets\fonts\fa-brands-400.ttf
@@ -236,7 +237,10 @@ wwwroot\assets\libs\vanillajs-datepicker\css\datepicker.min.css
 wwwroot\assets\libs\vanillajs-datepicker\js\datepicker-full.min.js
 wwwroot\assets\libs\wnumb\wNumb.min.js
 wwwroot\favicon.ico
+wwwroot\js\Attendance\markattendance.js
+wwwroot\js\Auth\cookie.js
 wwwroot\js\Auth\login.js
+wwwroot\js\Common\default_toaster.js
 wwwroot\js\jquery-3.6.4.min.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

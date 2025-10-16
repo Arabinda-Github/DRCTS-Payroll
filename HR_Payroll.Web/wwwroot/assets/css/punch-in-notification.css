@@ -1,0 +1,164 @@
+﻿.attendance-card {
+    background: linear-gradient(135deg, #2c3e87 0%, #1a237e 100%);
+    padding: 17px;
+    color: #fff;
+}
+
+.attendance-stats {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.stat-box {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+.stat-icon {
+    width: 30px;
+    height: 30px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+    margin: 0px auto 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.stat-value {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.attendance-action {
+    text-align: center;
+}
+
+    .attendance-action p {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.offline-btn {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+}
+
+    .offline-btn:hover {
+        background: rgba(255,255,255,0.3);
+    }
+
+    .offline-btn::before {
+        width: 8px;
+        height: 8px;
+        background: #ff4444;
+        border-radius: 50%;
+    }
+
+.online-btn {
+    background: rgba(76, 175, 80, 0.3);
+    color: #fff;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-red {
+    background: #ff4444;
+}
+
+.status-green {
+    background: #4caf50;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.tap-btn {
+    background: #4caf50;
+    color: #fff;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+    .tap-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .tap-btn:active {
+        transform: scale(0.95);
+    }
+
+    .tap-btn::before {
+        font-size: 24px;
+        margin-bottom: 4px;
+    }
+
+    .tap-btn.punch-out {
+        background: #f44336;
+    }
+
+        .tap-btn.punch-out:hover {
+            box-shadow: 0 5px 20px rgba(244, 67, 54, 0.4);
+        }
+
+.tap-icon {
+    font-size: 22px;
+    margin-bottom: 0px;
+}
+
+.timer-btn {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+}

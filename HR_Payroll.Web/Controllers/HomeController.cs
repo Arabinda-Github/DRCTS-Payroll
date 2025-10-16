@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
@@ -151,7 +153,6 @@ namespace HR_Payroll.Web.Controllers
 
         // =========================================
         // Helper: Sign-in using JWT remember and refresh token
-        // =========================================
         private void SetRememberMeCookie(string username, string password)
         {
             var cookieOptions = new CookieOptions
@@ -198,6 +199,7 @@ namespace HR_Payroll.Web.Controllers
                 authProperties
             );
         }
+        // =========================================
 
         [HttpGet]
         public async Task<IActionResult> Logout()
@@ -206,14 +208,67 @@ namespace HR_Payroll.Web.Controllers
             return RedirectToAction("Login", "Home");
         }
 
-        public IActionResult ResetPassword()
+        public IActionResult Profile()
         {
             return View();
         }
 
-        public IActionResult AccessDenied()
+        public async Task<IActionResult> ResetPassword()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
+        }
+
+        public async Task<IActionResult> AccessDenied()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetCookieValue()
+        {
+            var user = HttpContext?.User;
+            if (user?.Identity?.IsAuthenticated == true)
+            {
+                var userid = user.FindFirst(ClaimTypes.PrimarySid)?.Value;
+                var usertypeid = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var role = user.FindFirst(ClaimTypes.Role)?.Value;
+                var name = user.FindFirst(ClaimTypes.Name)?.Value;
+                var email = user.FindFirst(ClaimTypes.Email)?.Value;
+                var mobile = user.FindFirst(ClaimTypes.MobilePhone)?.Value;
+                var profilpic = user.FindFirst("ProfilePic")?.Value;
+                var empid = Convert.ToInt32(user.FindFirst("EmployeeId")?.Value);
+                var empcode= user.FindFirst("EmpCode")?.Value;
+                var dept = user.FindFirst("Department")?.Value;
+                var design = user.FindFirst("Designation")?.Value;
+                var userdetails = new
+                {
+                    userid = userid,
+                    usertypeid= usertypeid,
+                    role=role,
+                    name = name,
+                    email = email,
+                    Mob = mobile,
+                    pfile = profilpic,
+                    empid= empid, 
+                    empcode=empcode,
+                    dept=dept,
+                    design=design
+                };
+
+                return Json(new
+                {
+                    success = true,
+                    data = userdetails
+                });
+            }
+
+            return Json(new
+            {
+                success = false,
+                data = ""
+            });
         }
 
         public IActionResult Privacy()

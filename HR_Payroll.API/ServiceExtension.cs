@@ -13,6 +13,7 @@ namespace HR_Payroll.API
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<JWTServiceExtension>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAttendanceService, AttendanceService>();
 
         }
     }

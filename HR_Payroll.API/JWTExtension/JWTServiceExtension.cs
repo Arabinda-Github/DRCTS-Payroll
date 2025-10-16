@@ -36,7 +36,7 @@ namespace HR_Payroll.API.JWTExtension
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
                 SecurityAlgorithms.HmacSha256
             );
-
+            var name = user.FirstName + ' ' + user.LastName;
             // Build claims
             var claims = new[]
             {
@@ -44,9 +44,14 @@ namespace HR_Payroll.API.JWTExtension
                 new Claim(ClaimTypes.PrimarySid, user.UserID.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.UserTypeId.ToString()),
                 new Claim(ClaimTypes.Role, user.UserTypeName!.ToString()),
+                new Claim(ClaimTypes.Name, name),
                 new Claim(ClaimTypes.Email, user.Email!.ToString()),
-                new Claim(ClaimTypes.Email, user.MobileNumber!.ToString()),
-                //new Claim("Username", user.EmailId ?? user.MobileNo ?? string.Empty),
+                new Claim(ClaimTypes.MobilePhone, user.MobileNumber!.ToString()),
+                new Claim("Department", user.Department ?? string.Empty),
+                new Claim("Designation", user.Designation ?? string.Empty),
+                new Claim("EmployeeId", user.EmployeeID.ToString() ?? string.Empty),
+                new Claim("EmpCode", user.EmployeeCode ?? string.Empty),
+                new Claim("ProfilePic", user.ProfilePic ?? string.Empty)
             };
 
             // Create the JWT token

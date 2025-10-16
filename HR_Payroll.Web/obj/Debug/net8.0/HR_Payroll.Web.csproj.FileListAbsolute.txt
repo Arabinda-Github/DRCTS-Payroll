@@ -257,6 +257,8 @@ C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.CodeAnalysis.
 C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.DiaSymReader.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.DotNet.Scaffolding.Shared.dll
+C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.Web\bin\Debug\net8.0\Microsoft.Extensions.Options.dll

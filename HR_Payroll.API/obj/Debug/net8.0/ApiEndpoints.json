@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "HR_Payroll.API.Controllers.AttendanceController",
+    "Method": "CheckIn",
+    "RelativePath": "api/Attendance/CheckIn",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HR_Payroll.Core.Model.CheckInRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AttendanceController",
+    "Method": "CheckOut",
+    "RelativePath": "api/Attendance/CheckOut",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HR_Payroll.Core.Model.CheckOutRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HR_Payroll.API.Controllers.AuthController",
     "Method": "Post",
     "RelativePath": "api/Auth",

@@ -35,14 +35,17 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="~/assets/images/favicon.ico">
     <!-- Datatables -->
-    <link href="~/assets/libs/simple-datatables/style.css" rel="stylesheet" type="text/css" />
+   <link href="~/assets/css/datatables.min.css" rel="stylesheet" asp-append-version="true" /> 
+   <link href="~/assets/css/buttons.datatables.min.css" rel="stylesheet" asp-append-version="true" />
+   <link href="~/assets/libs/tabulator-tables/css/tabulator_bootstrap5.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <!-- Calendar -->
-    <link href="~/assets/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <!-- App css -->
     <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
     <link href="~/assets/css/punch-in-notification.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/assets/css/loader.css" rel="stylesheet" asp-append-version="true" />
 </head>
 
 <body id="body">
@@ -58,24 +61,26 @@
                 <div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
                     <ul class="nav nav-tabs" role="tablist" id="tab-menu">
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard" data-bs-trigger="hover">
-                            <a href="#MetricaDashboard" id="dashboard-tab" class="nav-link">
+                            <a href="#DrctsDashboard" id="dashboard-tab" class="nav-link">
                                 <i class="ti ti-smart-home menu-icon"></i>
                             </a><!--end nav-link-->
                         </li><!--end nav-item-->
-                        <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Master" data-bs-trigger="hover">
-                            <a href="#MetricaApps" id="apps-tab" class="nav-link">
-                                <i class="ti ti-apps menu-icon"></i>
-                            </a><!--end nav-link-->
-                        </li><!--end nav-item-->
-
+                        @if (userTypeId==1)
+                        {
+                            <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Master" data-bs-trigger="hover">
+                                <a href="#DrctsMaster" id="apps-tab" class="nav-link">
+                                    <i class="ti ti-apps menu-icon"></i>
+                                </a><!--end nav-link-->
+                            </li> <!--end nav-item-->
+                        }             
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Attendance" data-bs-trigger="hover">
-                            <a href="#MetricaUikit" id="uikit-tab" class="nav-link">
+                            <a href="#DrctsAttendance" id="uikit-tab" class="nav-link">
                                 <i class="ti ti-files menu-icon"></i>
                             </a><!--end nav-link-->
                         </li><!--end nav-item-->
 
                         <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Payroll" data-bs-trigger="hover">
-                            <a href="#MetricaPages" id="pages-tab" class="nav-link">
+                            <a href="#DrctsPayroll" id="pages-tab" class="nav-link">
                                 <i class="ti ti-shield-lock menu-icon"></i>
                             </a><!--end nav-link-->
                         </li><!--end nav-item-->
@@ -108,7 +113,7 @@
             </div><!--end topbar-left-->
             <!--end logo-->
             <div class="menu-body navbar-vertical tab-content" data-simplebar>
-                <div id="MetricaDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                <div id="DrctsDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
                      aria-labelledby="dasboard-tab">
                     <div class="title-box">
                         <h6 class="menu-title">Dashboard</h6>
@@ -120,6 +125,62 @@
                         </li><!--end nav-item-->
                     </ul><!--end nav-->
                 </div><!-- end Dashboards -->
+                @if (userTypeId == 1)
+                {
+                    <div id="DrctsMaster" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                        <div class="title-box">
+                            <h6 class="menu-title">Master</h6>
+                        </div>
+
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="#" asp-controller="Master">Office Location</a>
+                            </li><!--end nav-item-->
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="#" asp-controller="Master">Shift Master</a>
+                            </li><!--end nav-item-->
+                        </ul><!--end nav-->
+                    </div><!-- end Master -->
+                }
+                <div id="DrctsAttendance" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                     <div class="title-box">
+                         <h6 class="menu-title">Attendance</h6>
+                     </div>
+
+                     <ul class="nav flex-column">
+                         <li class="nav-item">
+                             <a class="nav-link" asp-action="AttendanceCalender" asp-controller="MarkAttendance">Calender</a>
+                         </li><!--end nav-item-->
+                         <li class="nav-item">
+                             <a class="nav-link" asp-action="AttendanceData" asp-controller="MarkAttendance">Attendance Data</a>
+                         </li><!--end nav-item-->
+                     </ul><!--end nav-->
+                 </div><!-- end Attendance -->
+                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                     <div class="title-box">
+                         <h6 class="menu-title">Payroll</h6>
+                     </div>
+
+                     <ul class="nav flex-column">
+                         <li class="nav-item">
+                             <a class="nav-link" asp-action="#" asp-controller="Payroll">Leave</a>
+                         </li><!--end nav-item-->
+                         <li class="nav-item">
+                             <a class="nav-link" asp-action="#" asp-controller="Payroll">Pay Slip</a>
+                         </li><!--end nav-item-->
+                     </ul><!--end nav-->
+                 </div><!-- end Payroll -->
+                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                     <div class="title-box">
+                         <h6 class="menu-title">Report</h6>
+                     </div>
+
+                     <ul class="nav flex-column">
+                         <li class="nav-item">
+                             <a class="nav-link" asp-action="#" asp-controller="Report">Report Data</a>
+                         </li><!--end nav-item-->
+                     </ul><!--end nav-->
+                 </div><!-- end Report -->
             </div>
             <!--end menu-body-->
         </div><!-- end main-menu-inner-->
@@ -182,9 +243,9 @@
                            
                         </div>
                         <!-- All-->
-                       @*  <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
-                            View all <i class="fi-arrow-right"></i>
-                        </a> *@
+                        <a asp-action="AttendanceData" asp-controller="MarkAttendance" class="dropdown-item text-center text-primary">
+                            View all <i class="ti-arrow-right"></i>
+                        </a>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -319,31 +380,54 @@
             </div>
         </div>
     </div>
+     <!-- end Toast-wrapper -->
+    <!-- ✅ Loader Container -->
+    <div class="loader hide">
+        <div class="loader-wrapper">
+            <span>
+              <span></span><span></span><span></span><span></span>
+            </span>
+            <div class="base"><span></span></div>
+            <div class="face"></div>
+            <div class="loadinglogo">Loading...</div>
+        </div>
+        <div class="longfazers">
+          <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
     <!-- end page-wrapper -->
 
-    <!-- Javascript  -->
-    <script src="~/js/jquery-3.6.4.min.js"></script>
-    <!-- vendor js -->
-    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="~/assets/libs/feather-icons/feather.min.js"></script>
-    <!-- chart js -->
-    <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
-    <script src="~/assets/js/pages/analytics-index.init.js"></script>
-    <!-- Datatables js -->
-    <script src="~/assets/libs/simple-datatables/umd/simple-datatables.js"></script>
-    <script src="~/assets/js/pages/datatable.init.js"></script>
-    <!-- Calendar js -->
-    <script src="~/assets/libs/fullcalendar/main.min.js"></script>
-    <script src="~/assets/js/pages/calendar.init.js"></script>
-    <!-- App js -->
-    <script src="~/assets/js/app.js"></script>
-    <script src="~/assets/js/pages/toast.init.js"></script>
-    <!-- Costom js -->
-    <script src="~/js/auth/cookie.js"></script>
-    <script src="~/js/common/default_toaster.js"></script>
-    <script src="~/js/attendance/markattendance.js"></script>
-    
+  <!-- CORE LIBRARIES (Load First) -->
+<script src="~/js/jquery-3.6.4.min.js"></script>
+
+<!-- Bootstrap requires jQuery -->
+<script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- UI Enhancement Libraries -->
+<script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="~/assets/libs/feather-icons/feather.min.js"></script>
+
+<!-- DATA TABLE LIBRARIES -->
+<script src="~/assets/js/jquery.datatables.min.js"></script>
+<script src="~/assets/libs/tabulator-tables/js/tabulator.min.js"></script>
+
+<!-- CALENDAR LIBRARY -->
+<script src="~/assets/libs/fullcalendar/main.min.js"></script>
+
+<!-- THEME/APP INITIALIZATION (Before page-specific scripts) -->
+<script src="~/assets/js/app.js"></script>
+
+<!-- Cookie utilities -->
+<script src="~/js/auth/cookie.js"></script>
+
+<!-- Common utilities -->
+<script src="~/assets/js/pages/toast.init.js"></script>
+<script src="~/js/common/default_toaster.js"></script>
+
+<!-- Page-specific functionality -->
+<script src="~/js/attendance/markattendance.js"></script>
+
 </body>
 <!--end body-->
 </html>

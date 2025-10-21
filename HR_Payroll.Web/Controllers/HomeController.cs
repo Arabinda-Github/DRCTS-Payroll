@@ -174,14 +174,13 @@ namespace HR_Payroll.Web.Controllers
 
         private async Task SignInUserWithJwt(string accessToken, string refreshToken, bool rememberMe)
         {
-            // Parse JWT to get claims
             var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(accessToken);
-
             var claims = jwtToken.Claims.ToList();
 
-            // Add refresh token as claim for easy access
-            claims.Add(new Claim("RefreshToken", refreshToken));
+            // Add tokens as claims for reuse
+            claims.Add(new Claim("access_token", accessToken));
+            claims.Add(new Claim("refresh_token", refreshToken));
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
@@ -189,7 +188,7 @@ namespace HR_Payroll.Web.Controllers
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = rememberMe,
-                ExpiresUtc = jwtToken.ValidTo,
+                ExpiresUtc = jwtToken.ValidTo, // expire when JWT expires
                 AllowRefresh = true
             };
 
@@ -199,6 +198,7 @@ namespace HR_Payroll.Web.Controllers
                 authProperties
             );
         }
+
         // =========================================
 
         [HttpGet]

@@ -1,9 +1,13 @@
 ﻿using HR_Payroll.Core.Model;
 using HR_Payroll.Core.Response;
+using HR_Payroll.Core.Services;
 using HR_Payroll.Infrastructure.Concrete;
 using HR_Payroll.Infrastructure.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HR_Payroll.API.Controllers
 {
@@ -15,19 +19,28 @@ namespace HR_Payroll.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IAttendanceService _attendanceRepository;
 
-        public AttendanceController(IConfiguration configuration, 
+        public AttendanceController(IConfiguration configuration,
             ILogger<AttendanceController> logger,
             IAttendanceService attendanceRepository)
         {
             _logger = logger;
             _configuration = configuration;
             _attendanceRepository = attendanceRepository;
+
+        }
+
+        private int GetEmployeeIdFromClaims()
+        {
+            var empIdClaim = HttpContext?.User.FindFirst("EmployeeId")?.Value;
+            return int.TryParse(empIdClaim, out int empId) ? empId : 0;
         }
 
         [HttpPost]
         [Route("CheckIn")]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> CheckIn([FromBody] CheckInRequestModel model)
         {
+            model.EmployeeID = GetEmployeeIdFromClaims();
             if (model == null || model.EmployeeID <= 0)
             {
                 return Ok(new DataResponse<object>
@@ -71,11 +84,12 @@ namespace HR_Payroll.API.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("CheckOut")]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> CheckOut([FromBody] CheckOutRequestModel model)
         {
+            model.EmployeeID = GetEmployeeIdFromClaims();
             if (model == null || model.EmployeeID <= 0)
             {
                 return Ok(new DataResponse<object>
@@ -119,5 +133,156 @@ namespace HR_Payroll.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAttendanceStatus")]
+        [Authorize(Roles = "Employee")]
+        public async Task<ActionResult> GetAttendanceStatus()
+        {
+            try
+            {
+                var employeeId = GetEmployeeIdFromClaims();
+                if (employeeId <= 0)
+                {
+                    return BadRequest(new DataResponse<object>
+                    {
+                        status = false,
+                        message = "Invalid employee ID",
+                        data = new List<object>()
+                    });
+                }
+
+                var result = await _attendanceRepository.GetCurrentStatusAsync(employeeId);
+
+                if (!result.IsSuccess)
+                {
+                    return Ok(new DataResponse<object>
+                    {
+                        status = false,
+                        message = result.Message ?? "Failed to retrieve attendance status",
+                        data = new List<object>()
+                    });
+                }
+
+                return Ok(new DataResponse<object>
+                {
+                    status = true,
+                    message = result.Message ?? "Status retrieved successfully",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving attendance status for employee {EmployeeId}",
+                    GetEmployeeIdFromClaims());
+                return StatusCode(500, new DataResponse<object>
+                {
+                    status = false,
+                    message = "An error occurred while processing your request.",
+                    data = new List<object>()
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAttendanceReport")]
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> GetAttendanceReport([FromQuery] AttendanceRequestModel model)
+        {
+            model.EmployeeId = GetEmployeeIdFromClaims();
+            if (model.EmployeeId <= 0)
+            {
+                return BadRequest(new PagedDataResponse<object>
+                {
+                    status = false,
+                    message = "Invalid employee ID"
+                });
+            }
+
+            try
+            {
+                var result = await _attendanceRepository.GetAttendanceReportAsync(model);
+
+                if (!result.IsSuccess || result.Entity == null)
+                {
+                    return Ok(new PagedDataResponse<object>
+                    {
+                        status = false,
+                        message = result.Message ?? "Failed to retrieve attendance",
+                        data = new ReturnData<object>()
+                    });
+                }
+                var pagedResponse = new ReturnData<object>
+                {
+                    totalCount = result.TotalCount,   // ✅ ensure repo returns total count
+                    pageNumber = model.Start,
+                    pageSize = model.Length,
+                    records = result.Entity.Cast<object>().ToList()  // safely convert to List<object>
+                };
+                return Ok(new PagedDataResponse<object>
+                {
+                    status = true,
+                    message = result.Message ?? "Attendance retrieved successfully",
+                    data = pagedResponse
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving attendance for employee {EmployeeId}", model.EmployeeId);
+
+                return StatusCode(500, new PagedDataResponse<object>
+                {
+                    status = false,
+                    message = "An error occurred while processing your request.",
+                    data = new ReturnData<object>()
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAttendanceCalendar")]
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> GetAttendanceCalendar([FromQuery] CalenderRequestModel model)
+        {
+            try
+            {
+                model.EmployeeId = GetEmployeeIdFromClaims();
+                if (model.EmployeeId <= 0)
+                {
+                    return BadRequest(new DataResponse<object>
+                    {
+                        status = false,
+                        message = "Invalid employee ID",
+                        data = new List<object>()
+                    });
+                }
+                var result = await _attendanceRepository.GetAttendanceCalendarAsync(model);
+
+                if (!result.IsSuccess || result.Entity == null)
+                    return Ok(new DataResponse<object>
+                    {
+                        status = false,
+                        message = "Failed to retrieve calendar data",
+                        data = new List<object>()
+                    });
+
+                return Ok(new DataResponse<object>
+                {
+                    status = true,
+                    message = "Data retrieved successfully",
+                    data = result.Entity
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving attendance status for employee {EmployeeId}",
+                    GetEmployeeIdFromClaims());
+                return StatusCode(500, new DataResponse<object>
+                {
+                    status = false,
+                    message = "An error occurred while processing your request.",
+                    data = new List<object>()
+                });
+            }
+        }
     }
 }

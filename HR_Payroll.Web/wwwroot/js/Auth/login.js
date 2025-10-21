@@ -52,17 +52,34 @@ document.getElementById("submitbtn").addEventListener("click", async function (e
         const result = await response.json();
 
         if (result.success) {
+            // Keep button disabled and show success state
+            btn.textContent = "Redirecting...";
+            btn.classList.add("btn-success"); // Optional: Change button color
+
             showToast(result.message || 'Login successful!', 'success');
-            setTimeout(() => window.location.href = result.redirectUrl || "/Dashboard/AdminDashboard", 2000);
+
+            // Redirect after toast
+            setTimeout(() => {
+                window.location.href = result.redirectUrl || "/Dashboard/AdminDashboard";
+            }, 1000);
+
         } else {
+            // Only reset on failure
             showToast(result.message || "Incorrect username or password.", 'error');
             document.getElementById("username").value = "";
             document.getElementById("userpassword").value = "";
+
+            // Reset button state on error
+            btn.disabled = false;
+            btn.textContent = "Submit";
+            btn.classList.remove("btn-success");
         }
+
     } catch (err) {
         console.error("Fetch error:", err);
         showToast("An unexpected error occurred. Please try again.", 'error');
-    } finally {
+
+        // Reset button state on error
         btn.disabled = false;
         btn.textContent = "Submit";
     }

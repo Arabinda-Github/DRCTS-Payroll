@@ -30,21 +30,26 @@ namespace HR_Payroll.Web
                 MaxConnectionsPerServer = 10
             }).SetHandlerLifetime(TimeSpan.FromMinutes(5)); // Connection pooling
 
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                        .AddCookie(options =>
-                        {
-                            options.LoginPath = "/Home/Login";
-                            options.LogoutPath = "/Home/Logout";
-                            options.AccessDeniedPath = "/Home/AccessDenied";
-                            options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                            options.SlidingExpiration = true;
-                        });
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Home/Login";
+                options.LogoutPath = "/Home/Logout";
+                options.AccessDeniedPath = "/Home/AccessDenied";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration = true;
+            });                     
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/Home/AccessDenied";
             });
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddScoped<AuthCookieService>();
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy =>

@@ -1,9 +1,11 @@
 ﻿using Dapper;
+using HR_Payroll.Core.DTO;
 using HR_Payroll.Core.Entity;
 using HR_Payroll.Core.Model;
 using HR_Payroll.Core.Services;
 using HR_Payroll.Infrastructure.Data;
 using HR_Payroll.Infrastructure.Interface;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -62,7 +64,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                     Message = parameters.Get<string>("@Message"),
                     Entity = new AttendanceResponseModel
                     {
-                        CheckInTime = parameters.Get<TimeSpan>("@CheckInTime")
+                        CheckInTime = parameters.Get<TimeSpan?>("@CheckInTime")
                     }
                 };
             }
@@ -88,7 +90,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 _logger.LogError(ex, "Error in Check-in process");
                 return Result<AttendanceResponseModel>.Failure("Error in getting Check-in process");
             }
-            
+
         }
 
         public async Task<Result<AttendanceResponseModel>> CheckOutAsync(CheckOutRequestModel model)
@@ -124,7 +126,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                     Message = parameters.Get<string>("@Message"),
                     Entity = new AttendanceResponseModel
                     {
-                        CheckOutTime = parameters.Get<TimeSpan>("@CheckOutTime"),
+                        CheckOutTime = parameters.Get<TimeSpan?>("@CheckOutTime"),
                         WorkingHours = parameters.Get<decimal?>("@WorkingHours")
                     }
                 };
@@ -150,7 +152,172 @@ namespace HR_Payroll.Infrastructure.Concrete
                 Log.Information($"Error in getting Check-out process: {ex.Message}");
                 _logger.LogError(ex, "Error in Check-out process");
                 return Result<AttendanceResponseModel>.Failure("Error in getting Check-out process");
-            }            
+            }
+        }
+
+        public async Task<Result<AttendanceStatusResponseModel>> GetCurrentStatusAsync(int employeeId)
+        {
+            try
+            {
+                var connection = _context.Database.GetDbConnection();
+
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                var result = await connection.QueryFirstOrDefaultAsync<AttendanceStatusResponseModel>(
+                    "[drconnect123].[sp_GetCurrentAttendanceStatus]",
+                    new { EmployeeID = employeeId },
+                    commandType: CommandType.StoredProcedure,
+                    commandTimeout: 30
+                );
+
+                if (result == null)
+                {
+                    return new Result<AttendanceStatusResponseModel>
+                    {
+                        IsSuccess = false,
+                        Message = "Employee not found or inactive.",
+                        Entity = null
+                    };
+                }
+
+                return new Result<AttendanceStatusResponseModel>
+                {
+                    IsSuccess = true,
+                    Message = "Attendance status retrieved successfully.",
+                    Entity = result
+                };
+
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "Database error while fetching attendance status for employee {EmployeeId}", employeeId);
+                return new Result<AttendanceStatusResponseModel>
+                {
+                    IsSuccess = false,
+                    Message = "Database error occurred. Please try again later.",
+                    Entity = null
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while fetching attendance status for employee {EmployeeId}", employeeId);
+                return new Result<AttendanceStatusResponseModel>
+                {
+                    IsSuccess = false,
+                    Message = "An unexpected error occurred. Please contact support.",
+                    Entity = null
+                };
+            }
+        }
+
+        public async Task<PagedResult<AttendanceDto>> GetAttendanceReportAsync(AttendanceRequestModel model)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@EmployeeID", model.EmployeeId);
+                parameters.Add("@FromDate", model.FromDate);
+                parameters.Add("@ToDate", model.ToDate);
+                parameters.Add("@PageNumber", model.Start);
+                parameters.Add("@PageSize", model.Length);
+
+                var connection = _context.Database.GetDbConnection();
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                using (var multi = await connection.QueryMultipleAsync(
+                    "[drconnect123].[sp_GetEmployeeAttendanceReport]",
+                    parameters,
+                    commandType: CommandType.StoredProcedure))
+                {
+                    var data = (await multi.ReadAsync<AttendanceDto>()).ToList();
+
+                    int totalCount = data.Count;
+
+                    if (data == null)
+                    {
+                        return new PagedResult<AttendanceDto>
+                        {
+                            IsSuccess = false,
+                            Message = "Attendance not found.",
+                            Entity = null
+                        };
+                    }
+
+                    return new PagedResult<AttendanceDto>
+                    {
+                        IsSuccess = true,
+                        Message = "Attendance retrieved successfully.",
+                        Entity = data,
+                        TotalCount = totalCount,
+                        PageNumber = model.Start,
+                        PageSize = model.Length
+                    };
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "Database error while fetching attendance for employee {EmployeeId}", model.EmployeeId);
+                return new PagedResult<AttendanceDto>
+                {
+                    IsSuccess = false,
+                    Message = "Database error occurred. Please try again later.",
+                    Entity = null
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while fetching attendance for employee {EmployeeId}", model.EmployeeId);
+                return new PagedResult<AttendanceDto>
+                {
+                    IsSuccess = false,
+                    Message = "An unexpected error occurred. Please contact support.",
+                    Entity = null
+                };
+            }
+        }
+
+        public async Task<Result<List<CalenderResponseModel>>> GetAttendanceCalendarAsync(CalenderRequestModel model)
+        {
+            try
+            {
+                var connection = _context.Database.GetDbConnection();
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+                var result = await connection.QueryAsync<CalenderResponseModel>(
+                    "[drconnect123].[sp_GetEmployeeAttendanceCalendar]",
+                    new { EmployeeID = model.EmployeeId, FromDate = model.FromDate, ToDate = model.ToDate },
+                    commandType: CommandType.StoredProcedure,
+                    commandTimeout: 30
+                );
+                return new Result<List<CalenderResponseModel>>
+                {
+                    IsSuccess = true,
+                    Message = "Attendance calendar retrieved successfully.",
+                    Entity = result.ToList()
+                };
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "Database error while fetching attendance calendar for employee {EmployeeId}", model.EmployeeId);
+                return new Result<List<CalenderResponseModel>>
+                {
+                    IsSuccess = false,
+                    Message = "Database error occurred. Please try again later.",
+                    Entity = null
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error while fetching attendance calendar for employee {EmployeeId}", model.EmployeeId);
+                return new Result<List<CalenderResponseModel>>
+                {
+                    IsSuccess = false,
+                    Message = "An unexpected error occurred. Please contact support.",
+                    Entity = null
+                };
+            }
         }
     }
 }

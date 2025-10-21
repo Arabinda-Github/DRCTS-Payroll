@@ -1,8 +1,11 @@
 wwwroot\assets\css\app.min.css
 wwwroot\assets\css\bootstrap.min.css
+wwwroot\assets\css\buttons.dataTables.min.css
+wwwroot\assets\css\dataTables.min.css
 wwwroot\assets\css\fonts\tabler-icons.html
 wwwroot\assets\css\fonts\tabler-iconsd41d.html
 wwwroot\assets\css\icons.min.css
+wwwroot\assets\css\loader.css
 wwwroot\assets\css\punch-in-notification.css
 wwwroot\assets\fonts\fa-brands-400.eot
 wwwroot\assets\fonts\fa-brands-400.svg
@@ -137,6 +140,7 @@ wwwroot\assets\images\users\user-8.jpg
 wwwroot\assets\images\users\user-9.jpg
 wwwroot\assets\images\users\user-vector.png
 wwwroot\assets\js\app.js
+wwwroot\assets\js\jquery.dataTables.min.js
 wwwroot\assets\js\moment.js
 wwwroot\assets\js\pages\analytics-customers.init.js
 wwwroot\assets\js\pages\analytics-index.init.js
@@ -237,6 +241,8 @@ wwwroot\assets\libs\vanillajs-datepicker\css\datepicker.min.css
 wwwroot\assets\libs\vanillajs-datepicker\js\datepicker-full.min.js
 wwwroot\assets\libs\wnumb\wNumb.min.js
 wwwroot\favicon.ico
+wwwroot\js\Attendance\attendance_calender.js
+wwwroot\js\Attendance\attendance_report.js
 wwwroot\js\Attendance\markattendance.js
 wwwroot\js\Auth\cookie.js
 wwwroot\js\Auth\login.js

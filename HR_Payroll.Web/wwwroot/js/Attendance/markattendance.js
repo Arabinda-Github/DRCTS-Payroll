@@ -144,6 +144,7 @@ function handleAttendanceStatusResponse(response) {
     if (!response || !response.status || !response.data.entity) {
         //showToast('No valid attendance data received','error');
         resetAttendanceUI();
+        showDropdown();
         return;
     }
 

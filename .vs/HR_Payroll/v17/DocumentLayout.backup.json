@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Project\\DRCTS-Payroll\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\wwwroot\\js\\attendance\\markattendance.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\wwwroot\\js\\attendance\\markattendance.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -29,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\interface\\iattendanceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\interface\\iattendanceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,11 +46,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 9,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
+              "Title": "markattendance.js",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Attendance\\markattendance.js",
+              "RelativeDocumentMoniker": "HR_Payroll.Web\\wwwroot\\js\\Attendance\\markattendance.js",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Attendance\\markattendance.js",
+              "RelativeToolTip": "HR_Payroll.Web\\wwwroot\\js\\Attendance\\markattendance.js",
+              "ViewState": "AgIAACQBAAAAAAAAAAAEwC8BAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-22T16:16:13.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "attendance_calender.js",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Attendance\\attendance_calender.js",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\wwwroot\\js\\Attendance\\attendance_calender.js",
@@ -54,12 +75,11 @@
               "RelativeToolTip": "HR_Payroll.Web\\wwwroot\\js\\Attendance\\attendance_calender.js",
               "ViewState": "AgIAAAgAAAAAAAAAAAAUwBkAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-21T14:06:47.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-21T14:06:47.185Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "AttendanceController.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\AttendanceController.cs",
               "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\AttendanceController.cs",
@@ -67,12 +87,11 @@
               "RelativeToolTip": "HR_Payroll.API\\Controllers\\AttendanceController.cs",
               "ViewState": "AgIAAIkAAAAAAAAAAAAowLwAAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T07:38:15.524Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T07:38:15.524Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "AttendanceCalender.cshtml",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\MarkAttendance\\AttendanceCalender.cshtml",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\MarkAttendance\\AttendanceCalender.cshtml",
@@ -80,12 +99,11 @@
               "RelativeToolTip": "HR_Payroll.Web\\Views\\MarkAttendance\\AttendanceCalender.cshtml",
               "ViewState": "AgIAAFcAAAAAAAAAAAAUwF8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-19T05:49:27.426Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-19T05:49:27.426Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "MarkAttendanceController.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\MarkAttendanceController.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Controllers\\MarkAttendanceController.cs",
@@ -93,12 +111,11 @@
               "RelativeToolTip": "HR_Payroll.Web\\Controllers\\MarkAttendanceController.cs",
               "ViewState": "AgIAAAkBAAAA+P////8awFsBAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-16T13:47:23.629Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-16T13:47:23.629Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "AttendanceService.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Concrete\\AttendanceService.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Concrete\\AttendanceService.cs",
@@ -106,12 +123,11 @@
               "RelativeToolTip": "HR_Payroll.Infrastructure\\Concrete\\AttendanceService.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAYwCkBAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-15T16:49:29.317Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-15T16:49:29.317Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "IAttendanceService.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Interface\\IAttendanceService.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Interface\\IAttendanceService.cs",
@@ -119,25 +135,23 @@
               "RelativeToolTip": "HR_Payroll.Infrastructure\\Interface\\IAttendanceService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-15T16:48:57.062Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-15T16:48:57.062Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAO4AAAAAAAAAAABwPfAAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAOUAAAAAAAAAAABwPfAAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T15:48:22.577Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T15:48:22.577Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\appsettings.json",
               "RelativeDocumentMoniker": "HR_Payroll.API\\appsettings.json",

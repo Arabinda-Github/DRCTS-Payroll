@@ -1,8 +1,9 @@
-﻿using HR_Payroll.Core.Model;
+﻿using HR_Payroll.Core.Model.Auth;
 using HR_Payroll.Core.Response;
 using HR_Payroll.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -11,6 +12,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -213,10 +215,128 @@ namespace HR_Payroll.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ResetPassword()
+        public async Task<IActionResult> ForgotPassword()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string? Email)
+        {
+            if (string.IsNullOrWhiteSpace(Email))
+                return Json(new { success = false, message = "Please enter your registered email address." });
+
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient("AuthClient");
+
+                // API endpoint for forgot password
+                var apiUrl = $"{ApiEndPoint}Auth/ForgotPassword";
+
+                var model = new ForgotPasswordRequest
+                {
+                    Email = Email.Trim()
+                };
+
+                var jsonContent = new StringContent(
+                    System.Text.Json.JsonSerializer.Serialize(model),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+                var response = await httpClient.PostAsync(apiUrl, jsonContent);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("ForgotPassword API failed ({StatusCode}) for email {Email}", response.StatusCode, Email);
+                    return Json(new { success = false, message = "Password reset request failed. Please try again later." });
+                }
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return Content(responseContent, "application/json");
+            }
+            catch (System.Text.Json.JsonException jex)
+            {
+                _logger.LogError(jex, "JSON error during ForgotPassword for {Email}", Email);
+                return Json(new { success = false, message = "Invalid response received from server." });
+            }
+            catch (HttpRequestException hex)
+            {
+                _logger.LogError(hex, "HTTP error during ForgotPassword for {Email}", Email);
+                return Json(new { success = false, message = "Unable to connect to authentication service." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during ForgotPassword for {Email}", Email);
+                return Json(new { success = false, message = "An unexpected error occurred. Please try again later." });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ValidateToken(string? token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+                return Json(new { success = false, message = "Invalid token." });
+
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient("AuthClient");
+                var response = await httpClient.GetAsync($"{ApiEndPoint}Auth/ValidateToken?Token={Uri.EscapeDataString(token)}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("ValidateToken API returned {StatusCode} for token: {Token}", response.StatusCode, token);
+                    return Json(new { success = false, message = "Token invalid, expired, or already used." });
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return Content(responseContent, "application/json");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during ValidateToken for token: {Token}", token);
+                return Json(new { success = false, message = "An unexpected error occurred. Please try again later." });
+            }
+        }
+
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient("AuthClient");
+                var apiUrl = $"{ApiEndPoint}Auth/ResetPassword";
+
+                var jsonContent = new StringContent(
+                    System.Text.Json.JsonSerializer.Serialize(model),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+                var response = await httpClient.PostAsync(apiUrl, jsonContent);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("ResetPassword API returned {StatusCode} for user", response.StatusCode);
+                    return Json(new { success = false, message = "Password reset failed. Please try again later." });
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return Content(responseContent, "application/json");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during ResetPassword for user");
+                return Json(new { success = false, message = "An unexpected error occurred. Please try again later." });
+            }
         }
 
         public async Task<IActionResult> AccessDenied()

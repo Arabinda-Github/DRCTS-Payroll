@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using HR_Payroll.Core.Entity;
-using HR_Payroll.Core.Model;
+using HR_Payroll.Core.Model.Auth;
 using HR_Payroll.Core.Services;
 using HR_Payroll.Infrastructure.Data;
 using HR_Payroll.Infrastructure.Interface;
@@ -277,6 +277,336 @@ namespace HR_Payroll.Infrastructure.Concrete
             {
                 _logger.LogError(ex, "Error in UpdateRefreshTokenAsync");
                 return Result.Failure($"Error: {ex.Message}");
+            }
+        }
+
+        // Reset Password Related Methods
+
+        public async Task<Result<UserModel>> GetUserByEmailAsync(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return Result<UserModel>.Failure("Email is required");
+
+            try
+            {
+                using var connection = _context.Database.GetDbConnection();
+
+                // Ensure connection is open
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                // Execute the query with proper SQL (removed CommandType.StoredProcedure for inline SQL)
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(
+                     @"SELECT TOP 1 
+                         UserID, UserTypeId, UserName, Email, MobileNumber, PasswordHash,
+                         IsEmailVerified, IsMobileVerified, IsTwoFactorEnabled,
+                         Status, Del_Flg, CreatedDate, CreatedBy,
+                         ModifiedDate, ModifiedBy, LastLoginDate, LoggedIn,
+                         AccountLocked, LoginFailureAttempt, AccountStatusID,
+                         AccountLockedDate
+                     FROM [dbo].[Users] WITH (NOLOCK)
+                     WHERE Email = @Email 
+                         AND Del_Flg = 'N' 
+                         AND Status = 'Active'", 
+                     new { Email = email }
+                );
+
+                // Check if user exists
+                if (user == null)
+                {
+                    _logger.LogInformation("User not found for email: {Email}", email);
+                    return Result<UserModel>.Failure("Email not registered");
+                }
+
+                _logger.LogInformation("User retrieved successfully for email: {Email}", email);
+                return Result<UserModel>.Success(user, "Email registered.");
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in GetUserByEmailAsync - Number: {ErrorNumber}, Message: {Message}",
+                    sqlEx.Number, sqlEx.Message);
+
+                // Handle specific SQL error codes
+                return sqlEx.Number switch
+                {
+                    -1 => Result<UserModel>.Failure("Database connection timeout"),
+                    -2 => Result<UserModel>.Failure("Database connection failed"),
+                    _ => Result<UserModel>.Failure("Database error occurred")
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error in GetUserByEmailAsync for email: {Email}", email);
+                return Result<UserModel>.Failure("An unexpected error occurred");
+            }
+        }
+
+        public async Task<Result<bool>> CreatePasswordResetTokenAsync(int userId, string? resetToken,DateTime? expiresAt,string? createdBy = null)
+        {
+            if (userId <= 0)
+                return Result<bool>.Failure("Invalid user ID");
+
+            if (string.IsNullOrWhiteSpace(resetToken))
+                return Result<bool>.Failure("Reset token is required");
+
+            if (expiresAt <= DateTime.UtcNow)
+                return Result<bool>.Failure("Expiration date must be in the future");
+
+            try
+            {
+                using var connection = _context.Database.GetDbConnection();
+
+                if (connection.State != ConnectionState.Open)
+                    await _context.Database.OpenConnectionAsync();
+
+                var affectedRows = await connection.ExecuteAsync(
+                    "sp_CreatePasswordResetToken",
+                    new
+                    {
+                        UserId = userId,
+                        ResetToken = resetToken,
+                        ExpiresAt = expiresAt,
+                        CreatedBy = createdBy ?? "System"
+                    },
+                    commandType: CommandType.StoredProcedure,
+                    commandTimeout: 30
+                );
+                
+                if (affectedRows > 0)
+                {
+                    _logger.LogInformation("Password reset token created for user: {UserId}", userId);
+                    return Result<bool>.Success(true, "Token created successfully");
+                }
+
+                _logger.LogWarning("Failed to create password reset token for user: {UserId}", userId);
+                return Result<bool>.Failure("Failed to create reset token");
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in CreatePasswordResetTokenAsync - UserId: {UserId}, Error: {ErrorNumber}",
+                    userId, sqlEx.Number);
+                return Result<bool>.Failure("Database error occurred");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CreatePasswordResetTokenAsync for user: {UserId}", userId);
+                return Result<bool>.Failure("An unexpected error occurred");
+            }
+        }
+
+        public async Task<Result<PasswordResetToken?>> GetValidResetTokenAsync(string? resetToken)
+        {
+            if (string.IsNullOrWhiteSpace(resetToken))
+                return Result<PasswordResetToken>.Failure("Reset token is required");
+
+            try
+            {
+                using var connection = _context.Database.GetDbConnection();
+
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                // FIXED: Removed CommandType.StoredProcedure for inline SQL query
+                var token = await connection.QueryFirstOrDefaultAsync<PasswordResetToken>(
+                    @"SELECT TOP 1 
+                        TokenID, UserId, ResetToken, ExpiresAt, IsUsed, CreatedAt, CreatedBy
+                    FROM [dbo].[PasswordResetTokens] WITH (NOLOCK)
+                    WHERE ResetToken = @ResetToken 
+                        AND IsUsed = 0 
+                        AND ExpiresAt > SYSUTCDATETIME()",
+                    new { ResetToken = resetToken },
+                    commandTimeout: 30
+                );
+
+                if (token == null)
+                {
+                    _logger.LogWarning("Invalid or expired reset token attempted");
+                    return Result<PasswordResetToken>.Failure("Invalid or expired reset token");
+                }
+
+                _logger.LogInformation("Valid reset token found for user: {UserId}", token.UserId);
+                return Result<PasswordResetToken>.Success(token, "Valid token found");
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in GetValidResetTokenAsync - Error: {ErrorNumber}", sqlEx.Number);
+                return Result<PasswordResetToken>.Failure("Database error occurred");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetValidResetTokenAsync");
+                return Result<PasswordResetToken>.Failure("An unexpected error occurred");
+            }
+        }
+
+        public async Task<Result<bool>> MarkResetTokenUsedAsync(string? resetToken)
+        {
+            if (string.IsNullOrWhiteSpace(resetToken))
+                return Result<bool>.Failure("Reset token is required");
+
+            try
+            {
+                using var connection = _context.Database.GetDbConnection();
+
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                // FIXED: Removed CommandType.StoredProcedure for inline SQL update
+                var affectedRows = await connection.ExecuteAsync(
+                    @"UPDATE [dbo].[PasswordResetTokens] 
+                    SET IsUsed = 1, 
+                        UsedDate = SYSUTCDATETIME() 
+                    WHERE ResetToken = @ResetToken 
+                        AND IsUsed = 0",
+                    new { ResetToken = resetToken },
+                    commandTimeout: 30
+                );
+
+                if (affectedRows > 0)
+                {
+                    _logger.LogInformation("Reset token marked as used");
+                    return Result<bool>.Success(true, "Token marked as used");
+                }
+
+                _logger.LogWarning("No token found to mark as used");
+                return Result<bool>.Failure("Token not found or already used");
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in MarkResetTokenUsedAsync - Error: {ErrorNumber}", sqlEx.Number);
+                return Result<bool>.Failure("Database error occurred");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in MarkResetTokenUsedAsync");
+                return Result<bool>.Failure("An unexpected error occurred");
+            }
+        }
+      
+        public async Task<Result<bool>> ResetUserPasswordAsync(int userId, string? newPasswordHash)
+        {
+            if (userId <= 0)
+                return Result<bool>.Failure("Invalid user ID");
+
+            if (string.IsNullOrWhiteSpace(newPasswordHash))
+                return Result<bool>.Failure("Password hash is required");
+
+            try
+            {
+                using var connection = _context.Database.GetDbConnection();
+
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                // FIXED: Removed CommandType.StoredProcedure for inline SQL update
+                // Also added transaction for data consistency
+                using var transaction = connection.BeginTransaction();
+
+                try
+                {
+                    var affectedRows = await connection.ExecuteAsync(
+                        @"UPDATE [dbo].[Users] 
+                        SET PasswordHash = @NewPasswordHash, 
+                            ModifiedDate = SYSUTCDATETIME(),
+                            ModifiedBy = 'PasswordReset',
+                            LoginFailureAttempt = 0,
+                            AccountLocked = 0,
+                            AccountLockedDate = NULL
+                        WHERE UserID = @UserId 
+                            AND Del_Flg = 0",
+                        new { UserId = userId, NewPasswordHash = newPasswordHash },
+                        transaction: transaction,
+                        commandTimeout: 30
+                    );
+
+                    if (affectedRows > 0)
+                    {
+                        transaction.Commit();
+                        _logger.LogInformation("Password reset successfully for user: {UserId}", userId);
+                        return Result<bool>.Success(true, "Password reset successfully");
+                    }
+
+                    transaction.Rollback();
+                    _logger.LogWarning("User not found or inactive for password reset: {UserId}", userId);
+                    return Result<bool>.Failure("User not found or inactive");
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in ResetUserPasswordAsync - UserId: {UserId}, Error: {ErrorNumber}",
+                    userId, sqlEx.Number);
+                return Result<bool>.Failure("Database error occurred");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in ResetUserPasswordAsync for user: {UserId}", userId);
+                return Result<bool>.Failure("An unexpected error occurred");
+            }
+        }
+
+        public async Task<Result<bool>> CompletePasswordResetAsync(string resetToken, string newPasswordHash)
+        {
+            if (string.IsNullOrWhiteSpace(resetToken))
+                return Result<bool>.Failure("Reset token is required");
+
+            if (string.IsNullOrWhiteSpace(newPasswordHash))
+                return Result<bool>.Failure("Password hash is required");
+
+            try
+            {
+                using var connection = _context.Database.GetDbConnection();
+
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                using var transaction = connection.BeginTransaction();
+
+                try
+                {
+                    // 1. Validate token
+                    var tokenResult = await GetValidResetTokenAsync(resetToken);
+                    if (!tokenResult.IsSuccess || tokenResult.Entity == null)
+                    {
+                        return Result<bool>.Failure(tokenResult.Message);
+                    }
+
+                    var token = tokenResult;
+
+                    // 2. Update password
+                    var passwordResult = await ResetUserPasswordAsync(token.Entity.UserId, newPasswordHash);
+                    if (!passwordResult.IsSuccess)
+                    {
+                        transaction.Rollback();
+                        return passwordResult;
+                    }
+
+                    // 3. Mark token as used
+                    var markResult = await MarkResetTokenUsedAsync(resetToken);
+                    if (!markResult.IsSuccess)
+                    {
+                        transaction.Rollback();
+                        return markResult;
+                    }
+
+                    transaction.Commit();
+                    _logger.LogInformation("Password reset completed successfully for user: {UserId}", token.Entity.UserId);
+                    return Result<bool>.Success(true, "Password reset completed successfully");
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in CompletePasswordResetAsync");
+                return Result<bool>.Failure("An unexpected error occurred during password reset");
             }
         }
     }

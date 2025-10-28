@@ -12,6 +12,7 @@ namespace HR_Payroll.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();       
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<JWTServiceExtension>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
 

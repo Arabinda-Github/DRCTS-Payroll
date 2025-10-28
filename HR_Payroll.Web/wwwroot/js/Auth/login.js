@@ -36,7 +36,9 @@ document.getElementById("submitbtn").addEventListener("click", async function (e
 
     const btn = document.getElementById("submitbtn");
     btn.disabled = true;
-    btn.textContent = "Loading...";
+    //btn.textContent = "Loading...";
+    // Show loading spinner icon
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`;
 
     try {
         const response = await fetch("/Home/Login", {
@@ -71,7 +73,7 @@ document.getElementById("submitbtn").addEventListener("click", async function (e
 
             // Reset button state on error
             btn.disabled = false;
-            btn.textContent = "Submit";
+            btn.innerHTML = `Log In <i class="fas fa-sign-in-alt ms-1"></i>`;
             btn.classList.remove("btn-success");
         }
 
@@ -81,6 +83,6 @@ document.getElementById("submitbtn").addEventListener("click", async function (e
 
         // Reset button state on error
         btn.disabled = false;
-        btn.textContent = "Submit";
+        btn.innerHTML = `Log In <i class="fas fa-sign-in-alt ms-1"></i>`;
     }
 });

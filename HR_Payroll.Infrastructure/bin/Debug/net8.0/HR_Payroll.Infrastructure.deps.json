@@ -1431,6 +1431,7 @@
       },
       "HR_Payroll.CommonCases/1.0.0": {
         "dependencies": {
+          "HR_Payroll.Core": "1.0.0",
           "Microsoft.AspNetCore.Http.Features": "5.0.17",
           "Microsoft.EntityFrameworkCore": "8.0.0",
           "Microsoft.Extensions.FileProviders.Physical": "8.0.0",

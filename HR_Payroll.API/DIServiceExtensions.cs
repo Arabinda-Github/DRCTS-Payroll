@@ -214,7 +214,7 @@ namespace HR_Payroll.API
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "DORMS.Api",
+                    Title = "DRCTS_Payroll.API",
                     Description = "An ASP.NET Core Web API for managing DORMS.Api items"
                 });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

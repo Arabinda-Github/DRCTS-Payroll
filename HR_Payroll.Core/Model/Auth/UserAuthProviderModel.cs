@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR_Payroll.Core.Model
+namespace HR_Payroll.Core.Model.Auth
 {
     public class UserAuthProviderModel
     {

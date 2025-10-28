@@ -1,9 +1,11 @@
 ﻿using Azure.Core;
 using HR_Payroll.API.Config;
 using HR_Payroll.API.JWTExtension;
+using HR_Payroll.CommonCases.Email;
 using HR_Payroll.CommonCases.Utility;
 using HR_Payroll.Core.Enum;
-using HR_Payroll.Core.Model;
+using HR_Payroll.Core.Model.Auth;
+using HR_Payroll.Core.Model.Email;
 using HR_Payroll.Core.Response;
 using HR_Payroll.Infrastructure.Concrete;
 using HR_Payroll.Infrastructure.Interface;
@@ -12,7 +14,10 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Net;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HR_Payroll.API.Controllers
 {
@@ -24,6 +29,8 @@ namespace HR_Payroll.API.Controllers
         private readonly JwtIdentitySetting _serverSettings;
         private readonly JWTServiceExtension _jwtService;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly EmailConfiguration _emailConfig;
+        private readonly IEmailService _emailService;
         private readonly IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
         public AuthController(
@@ -31,13 +38,16 @@ namespace HR_Payroll.API.Controllers
              JWTServiceExtension jwtService,             
              IPasswordHasher passwordHasher,
              IConfiguration configuration,
+             IEmailService emailService,
              IAuthService authService,
              ILogger<AuthController> logger)
         {
             _serverSettings = serverSettings;
+            _emailConfig = configuration.GetSection("EmailSettings").Get<EmailConfiguration>();
             _configuration = configuration;
             _jwtService = jwtService;
             _passwordHasher = passwordHasher;
+            _emailService = emailService;
             _authService = authService;
             _logger = logger;
         }
@@ -196,6 +206,150 @@ namespace HR_Payroll.API.Controllers
                     data = new List<object>()
                 });
             }
+        }
+
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email))
+                return BadRequest(new DataResponse<object> 
+                {
+                    status = false, 
+                    message = "Email is required",
+                    data = new List<object>()
+                });
+
+            var email = model.Email.Trim();
+            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                return BadRequest(new DataResponse<object> 
+                { 
+                    status = false, 
+                    message = "Invalid email format",
+                    data = new List<object>()
+                });
+
+            var user = await _authService.GetUserByEmailAsync(email);
+            if (user == null)
+                return NotFound(new DataResponse<object> 
+                { 
+                    status = false, 
+                    message = "Email not registered",
+                    data = new List<object>()
+                });
+
+            // Create token & expiry
+            var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                        .Replace("+", "")
+                        .Replace("/", "")
+                        .Replace("=", ""); // shorter safe token
+            var expiresAt = DateTime.UtcNow.AddHours(1);
+
+            await _authService.CreatePasswordResetTokenAsync(user.Entity.UserID, token, expiresAt, "System");
+
+            // Generate reset link (point to front-end reset page)
+            var resetLink = $"{Request.Scheme}://{Request.Host}/Home/ResetPassword?token={WebUtility.UrlEncode(token)}";
+
+            // Send email
+            try
+            {
+                await _emailService.SendPasswordResetEmailAsync(user.Entity.Email, email, resetLink, _emailConfig);
+                return Ok(new DataResponse<object> 
+                { 
+                    status = true, 
+                    message = "Password reset link sent to your email.",
+                    data = new List<object>()
+                });
+            }
+            catch (Exception ex)
+            {
+                // log ex
+                return StatusCode(500, new DataResponse<object> 
+                { 
+                    status = false,
+                    message = "Failed to send reset email.",
+                    data = new List<object>()
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("ValidateToken")]
+        public async Task<IActionResult> ValidateToken([FromQuery] string Token)
+        {
+            if (string.IsNullOrWhiteSpace(Token))
+                return BadRequest(new DataResponse<object>
+                {
+                    status = false,
+                    message = "Token required",
+                    data = new List<object>()
+                });
+
+            var tokenRow = await _authService.GetValidResetTokenAsync(Token);
+            if (tokenRow == null)
+                return NotFound(new DataResponse<object>
+                {
+                    status = false, 
+                    message = "Token invalid or expired/used",
+                    data = new List<object>()
+                });
+
+            return Ok(new DataResponse<object>
+            {
+                status = true, 
+                message = "Token valid",
+                data = new { tokenRow.Entity.UserId }
+            });
+        }
+
+        // POST: api/Account/ResetPassword
+        [HttpPost]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestModel req)
+        {
+            if (string.IsNullOrWhiteSpace(req.Token) || string.IsNullOrWhiteSpace(req.NewPassword))
+                return BadRequest(new DataResponse<object> 
+                {
+                    status = false, 
+                    message = "Token and new password required", 
+                    data = new List<object>()
+                });
+
+            // Validate token
+            var tokenRow = await _authService.GetValidResetTokenAsync(req.Token);
+            if (tokenRow == null)
+                return NotFound(new DataResponse<object> 
+                { 
+                    status = false, 
+                    message = "Token invalid or expired/used",
+                    data = new List<object>() 
+                });
+
+            // Optional: Check whether the user's password was changed after token creation
+            var fullUser = await _authService.GetUserByIdAsync(tokenRow.Entity.UserId);
+            if (fullUser == null)
+                return NotFound(new DataResponse<object> 
+                { 
+                    status = false, 
+                    message = "User not found", 
+                    data = new List<object>()
+                });
+
+            // Hash new password
+            var newHash = ExternalHelper.Encrypt(req.NewPassword);
+
+            // Update password
+            await _authService.ResetUserPasswordAsync(fullUser.Entity.UserID, newHash);
+
+            // Mark token used
+            await _authService.MarkResetTokenUsedAsync(req.Token);
+
+            return Ok(new DataResponse<object> 
+            { 
+                status = true, 
+                message = "Password changed successfully",
+                data = new List<object>() 
+            });
         }
 
         [HttpGet]

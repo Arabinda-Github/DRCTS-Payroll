@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
+using HR_Payroll.Core.Model.Email;
+using Microsoft.Extensions.Logging;
 
 namespace HR_Payroll.CommonCases.Email
 {
-    public class EmailSms_Sender 
+    public class EmailSms_Sender
     {
         private WebProxy? objProxy1 = null;
         private readonly ILogger<EmailSms_Sender> _logger;
+        private static readonly object _lock = new object();
+        private static SmtpClient _smtpClient;
+        private static DateTime _lastClientCreation = DateTime.MinValue;
+        private static readonly TimeSpan ClientLifetime = TimeSpan.FromMinutes(10);
 
         public EmailSms_Sender(ILogger<EmailSms_Sender> logger)
         {
@@ -22,48 +21,88 @@ namespace HR_Payroll.CommonCases.Email
         }
 
         #region--------------------------Mail Section------------------------- 
-        public static bool SendMail(string to, string subject, string body)
-        {
-            System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
-            mail.To.Add(to);
-            mail.From = new MailAddress("cnbtcuttack@gmail.com");
-            mail.Subject = subject;
-            string Body = body;
-            mail.Body = Body;
-            mail.Headers.Add("Importance", "High");
-            mail.Headers.Add("X-Priority", "1");          // 1 = High, 3 = Normal, 5 = Low
-            mail.Headers.Add("X-MSMail-Priority", "High");
-            mail.IsBodyHtml = true;
-            SmtpClient smtp = new SmtpClient();
-            smtp.Host = "smtp.gmail.com";
-            smtp.Port = 587;
-            smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("cnbtcuttack@gmail.com", "odfsbztutvtizxbs"); // Enter seders User name and password       
-            smtp.EnableSsl = true;
-            smtp.Send(mail);
+        //public static bool SendMail(string to, string subject, string body)
+        //{
+        //    System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
+        //    mail.To.Add(to);
+        //    mail.From = new MailAddress("cnbtcuttack@gmail.com");
+        //    mail.Subject = subject;
+        //    string Body = body;
+        //    mail.Body = Body;
+        //    mail.Headers.Add("Importance", "High");
+        //    mail.Headers.Add("X-Priority", "1");          // 1 = High, 3 = Normal, 5 = Low
+        //    mail.Headers.Add("X-MSMail-Priority", "High");
+        //    mail.IsBodyHtml = true;
+        //    SmtpClient smtp = new SmtpClient();
+        //    smtp.Host = "smtp.gmail.com";
+        //    smtp.Port = 587;
+        //    smtp.UseDefaultCredentials = false;
+        //    smtp.Credentials = new System.Net.NetworkCredential("cnbtcuttack@gmail.com", "odfsbztutvtizxbs"); // Enter seders User name and password       
+        //    smtp.EnableSsl = true;
+        //    smtp.Send(mail);
 
-            return true;
-        }
+        //    return true;
+        //}
 
         //public static bool SendMail(string to, string subject, string body)
         //{
-        //  System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
-        //  mail.To.Add(to);
-        //  mail.From = new MailAddress("transactiondomain@gmail.com");
-        //  mail.Subject = subject;
-        //  string Body = body;
-        //  mail.Body = Body;
-        //  mail.IsBodyHtml = true;
-        //  SmtpClient smtp = new SmtpClient();
-        //  smtp.Host = "smtp.gmail.com";
-        //  smtp.Port = 587;
-        //  smtp.UseDefaultCredentials = false;
-        //  smtp.Credentials = new System.Net.NetworkCredential("transactiondomain@gmail.com", "zaienkklwnmholof"); // Enter seders User name and password       
-        //  smtp.EnableSsl = true;
-        //  smtp.Send(mail);
+        //    System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
+        //    mail.To.Add(to);
+        //    mail.From = new MailAddress("transactiondomain@gmail.com");
+        //    mail.Subject = subject;
+        //    string Body = body;
+        //    mail.Body = Body;
+        //    mail.IsBodyHtml = true;
+        //    SmtpClient smtp = new SmtpClient();
+        //    smtp.Host = "smtp.gmail.com";
+        //    smtp.Port = 587;
+        //    smtp.UseDefaultCredentials = false;
+        //    smtp.Credentials = new System.Net.NetworkCredential("transactiondomain@gmail.com", "zaienkklwnmholof"); // Enter seders User name and password       
+        //    smtp.EnableSsl = true;
+        //    smtp.Send(mail);
 
-        //  return true;
+        //    return true;
         //}
+
+        public static SmtpClient GetSmtpClient(EmailConfiguration config)
+        {
+            if (config == null)
+                throw new ArgumentNullException(nameof(config));
+
+            lock (_lock)
+            {
+                if (_smtpClient == null || DateTime.UtcNow - _lastClientCreation > ClientLifetime)
+                {
+                    _smtpClient?.Dispose();
+
+                    _smtpClient = new SmtpClient
+                    {
+                        Host = config.SmtpHost,
+                        Port = config.SmtpPort,
+                        EnableSsl = config.EnableSsl,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(config.Username, config.Password),
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        Timeout = config.Timeout * 1000 // Convert seconds → ms
+                    };
+
+                    _lastClientCreation = DateTime.UtcNow;
+                }
+
+                return _smtpClient;
+            }
+        }
+
+        public static void ResetSmtpClient()
+        {
+            lock (_lock)
+            {
+                _smtpClient?.Dispose();
+                _smtpClient = null;
+                _lastClientCreation = DateTime.MinValue;
+            }
+        }
+
         #endregion
 
         #region------------------SMS Section------------------------
@@ -174,21 +213,5 @@ namespace HR_Payroll.CommonCases.Email
 
         #endregion
 
-        public async Task SendEmailAsync(string to, string from, string subject, string body)
-        {
-            var emailClient = new SmtpClient("localhost");
-            var message = new MailMessage
-            {
-
-                From = new MailAddress(from),
-                Subject = subject,
-                Body = body
-
-
-            };
-            message.To.Add(new MailAddress(to));
-            await emailClient.SendMailAsync(message);
-            _logger.LogWarning("Sending email to {to} from {from} with subject {subject}.", to, from, subject);
-        }
     }
 }

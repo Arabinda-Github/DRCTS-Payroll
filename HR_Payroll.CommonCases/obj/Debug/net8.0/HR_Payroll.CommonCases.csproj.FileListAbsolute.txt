@@ -1,12 +1,15 @@
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\bin\Debug\net8.0\HR_Payroll.CommonCases.deps.json
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\bin\Debug\net8.0\HR_Payroll.CommonCases.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\bin\Debug\net8.0\HR_Payroll.CommonCases.pdb
+C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\bin\Debug\net8.0\HR_Payroll.Core.dll
+C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\bin\Debug\net8.0\HR_Payroll.Core.pdb
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.csproj.AssemblyReference.cache
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.GeneratedMSBuildEditorConfig.editorconfig
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.AssemblyInfoInputs.cache
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.AssemblyInfo.cs
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.csproj.CoreCompileInputs.cache
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.sourcelink.json
+C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payro.A3487A96.Up2Date
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\refint\HR_Payroll.CommonCases.dll
 C:\Project\DRCTS-Payroll\HR_Payroll.CommonCases\obj\Debug\net8.0\HR_Payroll.CommonCases.pdb

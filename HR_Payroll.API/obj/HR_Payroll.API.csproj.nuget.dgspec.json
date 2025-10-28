@@ -159,7 +159,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj": {
+                "projectPath": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

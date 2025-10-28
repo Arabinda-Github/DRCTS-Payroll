@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "Assign Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">DRCTS</a></li>
+                    <li class="breadcrumb-item"><a href="#">Master</a></li>
+                    <li class="breadcrumb-item active">Department</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Assign Department</h4>
+        </div>
+        <!--end page-title-box-->
+    </div>
+    <!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Assign Department List</h5>
+                <div>
+                    <button type="button" id="exportCsv" class="btn btn-sm btn-outline-success csv">Export CSV</button>
+                    <button type="button" id="exportPdf" class="btn btn-sm btn-outline-danger pdf">Export PDF</button>
+                </div>
+            </div><!--end card-header-->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="attn_datatable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Attendance Date</th>
+                                <th>Day</th>
+                                <th>Weekend</th>
+                                <th>Shift</th>
+                                <th>Check-In</th>
+                                <th>Check-Out</th>
+                                <th>Hours Worked</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+<!-- Javascript  -->
+<script src="~/js/jquery-3.6.4.min.js"></script>

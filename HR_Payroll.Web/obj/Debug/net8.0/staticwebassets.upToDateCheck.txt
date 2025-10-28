@@ -245,7 +245,9 @@ wwwroot\js\Attendance\attendance_calender.js
 wwwroot\js\Attendance\attendance_report.js
 wwwroot\js\Attendance\markattendance.js
 wwwroot\js\Auth\cookie.js
+wwwroot\js\Auth\forgotpass.js
 wwwroot\js\Auth\login.js
+wwwroot\js\Auth\resetpassword.js
 wwwroot\js\Common\default_toaster.js
 wwwroot\js\jquery-3.6.4.min.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css

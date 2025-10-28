@@ -1,4 +1,4 @@
-﻿@model HR_Payroll.Core.Model.LoginModel
+﻿@model HR_Payroll.Core.Model.Auth.LoginModel
 @{
     Layout = null;
 }
@@ -68,7 +68,7 @@
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-sm-6 text-end">
-                                                <a asp-action="ResetPassword" asp-controller="Home" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>
+                                                <a asp-action="ForgotPassword" asp-controller="Home" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>
                                             </div><!--end col-->
                                         </div><!--end form-group-->
 

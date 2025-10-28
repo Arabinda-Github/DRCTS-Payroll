@@ -113,7 +113,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "HR_Payroll.Core.Model.LoginModel",
+        "Type": "HR_Payroll.Core.Model.Auth.LoginModel",
         "IsRequired": true
       }
     ],
@@ -203,6 +203,22 @@
   },
   {
     "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/Auth/ForgotPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Microsoft.AspNetCore.Identity.Data.ForgotPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
     "Method": "GetUserDetails",
     "RelativePath": "api/Auth/GetUserDetails",
     "HttpMethod": "POST",
@@ -211,7 +227,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "HR_Payroll.Core.Model.LoginModel",
+        "Type": "HR_Payroll.Core.Model.Auth.LoginModel",
         "IsRequired": true
       }
     ],
@@ -229,6 +245,38 @@
         "Name": "request",
         "Type": "Microsoft.AspNetCore.Identity.Data.RefreshRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/Auth/ResetPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "HR_Payroll.Core.Model.Auth.ResetPasswordRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.AuthController",
+    "Method": "ValidateToken",
+    "RelativePath": "api/Auth/ValidateToken",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Token",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

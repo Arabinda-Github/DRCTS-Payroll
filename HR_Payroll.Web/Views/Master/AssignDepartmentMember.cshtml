@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Assign Department";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -23,10 +22,37 @@
 </div>
 <!-- end page title end breadcrumb -->
 <div class="row">
+    <div class="card">
+        <h5 class="card-title mb-0">Assign Department</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="block text-sm text-gray-600">Branch</label>
+                <select id="branchSelect" class="w-full mt-2 border rounded px-3 py-2">
+                    <option value="">-- Select Branch --</option>
+                    <option value="dotnet">.NET</option>
+                    <option value="php">PHP</option>
+                    <option value="qa">QA</option>
+                </select>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="block text-sm text-gray-600">Manager</label>
+                <select id="managerSelect" class="w-full mt-2 border rounded px-3 py-2">
+                    <option value="">-- Select Manager --</option>
+                </select>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Assign Department List</h5>
+                <h5 class="card-title mb-0">Assign Employee List</h5>
                 <div>
                     <button type="button" id="exportCsv" class="btn btn-sm btn-outline-success csv">Export CSV</button>
                     <button type="button" id="exportPdf" class="btn btn-sm btn-outline-danger pdf">Export PDF</button>

@@ -8,5 +8,17 @@ namespace HR_Payroll.Web.Controllers
         {
             return View();
         }
+        public IActionResult AssignManager()
+        {
+            return View();
+        }
+        public IActionResult AssignTeamLeader()
+        {
+            return View();
+        }
+        public IActionResult AssignEmployee()
+        {
+            return View();
+        }
     }
 }

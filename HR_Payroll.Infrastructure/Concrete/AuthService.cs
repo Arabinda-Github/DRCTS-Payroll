@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HR_Payroll.Infrastructure.Concrete
 {
@@ -282,66 +283,7 @@ namespace HR_Payroll.Infrastructure.Concrete
 
         // Reset Password Related Methods
 
-        public async Task<Result<UserModel>> GetUserByEmailAsync(string? email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-                return Result<UserModel>.Failure("Email is required");
-
-            try
-            {
-                using var connection = _context.Database.GetDbConnection();
-
-                // Ensure connection is open
-                if (connection.State != ConnectionState.Open)
-                    await connection.OpenAsync();
-
-                // Execute the query with proper SQL (removed CommandType.StoredProcedure for inline SQL)
-                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(
-                     @"SELECT TOP 1 
-                         UserID, UserTypeId, UserName, Email, MobileNumber, PasswordHash,
-                         IsEmailVerified, IsMobileVerified, IsTwoFactorEnabled,
-                         Status, Del_Flg, CreatedDate, CreatedBy,
-                         ModifiedDate, ModifiedBy, LastLoginDate, LoggedIn,
-                         AccountLocked, LoginFailureAttempt, AccountStatusID,
-                         AccountLockedDate
-                     FROM [dbo].[Users] WITH (NOLOCK)
-                     WHERE Email = @Email 
-                         AND Del_Flg = 'N' 
-                         AND Status = 'Active'", 
-                     new { Email = email }
-                );
-
-                // Check if user exists
-                if (user == null)
-                {
-                    _logger.LogInformation("User not found for email: {Email}", email);
-                    return Result<UserModel>.Failure("Email not registered");
-                }
-
-                _logger.LogInformation("User retrieved successfully for email: {Email}", email);
-                return Result<UserModel>.Success(user, "Email registered.");
-            }
-            catch (SqlException sqlEx)
-            {
-                _logger.LogError(sqlEx, "SQL Error in GetUserByEmailAsync - Number: {ErrorNumber}, Message: {Message}",
-                    sqlEx.Number, sqlEx.Message);
-
-                // Handle specific SQL error codes
-                return sqlEx.Number switch
-                {
-                    -1 => Result<UserModel>.Failure("Database connection timeout"),
-                    -2 => Result<UserModel>.Failure("Database connection failed"),
-                    _ => Result<UserModel>.Failure("Database error occurred")
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unexpected error in GetUserByEmailAsync for email: {Email}", email);
-                return Result<UserModel>.Failure("An unexpected error occurred");
-            }
-        }
-
-        public async Task<Result<bool>> CreatePasswordResetTokenAsync(int userId, string? resetToken,DateTime? expiresAt,string? createdBy = null)
+        public async Task<Result<bool>> CreatePasswordResetTokenAsync(int userId, string? resetToken, DateTime? expiresAt, string? createdBy = null)
         {
             if (userId <= 0)
                 return Result<bool>.Failure("Invalid user ID");
@@ -352,12 +294,13 @@ namespace HR_Payroll.Infrastructure.Concrete
             if (expiresAt <= DateTime.UtcNow)
                 return Result<bool>.Failure("Expiration date must be in the future");
 
+            using var connection = _context.Database.GetDbConnection();
+
             try
             {
-                using var connection = _context.Database.GetDbConnection();
-
+               
                 if (connection.State != ConnectionState.Open)
-                    await _context.Database.OpenConnectionAsync();
+                    await connection.OpenAsync();
 
                 var affectedRows = await connection.ExecuteAsync(
                     "sp_CreatePasswordResetToken",
@@ -371,7 +314,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                     commandType: CommandType.StoredProcedure,
                     commandTimeout: 30
                 );
-                
+
                 if (affectedRows > 0)
                 {
                     _logger.LogInformation("Password reset token created for user: {UserId}", userId);
@@ -392,6 +335,68 @@ namespace HR_Payroll.Infrastructure.Concrete
                 _logger.LogError(ex, "Error in CreatePasswordResetTokenAsync for user: {UserId}", userId);
                 return Result<bool>.Failure("An unexpected error occurred");
             }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+        public async Task<Result<UserModel>> GetUserByEmailAsync(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return Result<UserModel>.Failure("Email is required");
+            using var connection = _context.Database.GetDbConnection();
+            try
+            {
+
+                if (connection.State != ConnectionState.Open)
+                    await connection.OpenAsync();
+
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(
+                     @"SELECT TOP 1 
+                 UserID, UserTypeId, UserName, Email, MobileNumber, PasswordHash,
+                 IsEmailVerified, IsMobileVerified, IsTwoFactorEnabled,
+                 Status, Del_Flg, CreatedDate, CreatedBy,
+                 ModifiedDate, ModifiedBy, LastLoginDate, LoggedIn,
+                 AccountLocked, LoginFailureAttempt, AccountStatusID,
+                 AccountLockedDate
+             FROM [dbo].[Users] WITH (NOLOCK)
+             WHERE Email = @Email 
+                 AND Del_Flg = 'N' 
+                 AND Status = 'Active'",
+                     new { Email = email }
+                );
+
+                if (user == null)
+                {
+                    _logger.LogInformation("User not found for email: {Email}", email);
+                    return Result<UserModel>.Failure("Email not registered");
+                }
+
+                _logger.LogInformation("User retrieved successfully for email: {Email}", email);
+                return Result<UserModel>.Success(user, "Email registered.");
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in GetUserByEmailAsync - Number: {ErrorNumber}, Message: {Message}",
+                    sqlEx.Number, sqlEx.Message);
+
+                return sqlEx.Number switch
+                {
+                    -1 => Result<UserModel>.Failure("Database connection timeout"),
+                    -2 => Result<UserModel>.Failure("Database connection failed"),
+                    _ => Result<UserModel>.Failure("Database error occurred")
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error in GetUserByEmailAsync for email: {Email}", email);
+                return Result<UserModel>.Failure("An unexpected error occurred");
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
         }
 
         public async Task<Result<PasswordResetToken?>> GetValidResetTokenAsync(string? resetToken)
@@ -406,14 +411,13 @@ namespace HR_Payroll.Infrastructure.Concrete
                 if (connection.State != ConnectionState.Open)
                     await connection.OpenAsync();
 
-                // FIXED: Removed CommandType.StoredProcedure for inline SQL query
                 var token = await connection.QueryFirstOrDefaultAsync<PasswordResetToken>(
                     @"SELECT TOP 1 
-                        TokenID, UserId, ResetToken, ExpiresAt, IsUsed, CreatedAt, CreatedBy
-                    FROM [dbo].[PasswordResetTokens] WITH (NOLOCK)
-                    WHERE ResetToken = @ResetToken 
-                        AND IsUsed = 0 
-                        AND ExpiresAt > SYSUTCDATETIME()",
+                TokenID, UserId, ResetToken, ExpiresAt, IsUsed, CreatedAt, CreatedBy
+            FROM [dbo].[PasswordResetTokens] WITH (NOLOCK)
+            WHERE ResetToken = @ResetToken 
+                AND IsUsed = 0 
+                AND ExpiresAt > SYSUTCDATETIME()",
                     new { ResetToken = resetToken },
                     commandTimeout: 30
                 );
@@ -451,13 +455,12 @@ namespace HR_Payroll.Infrastructure.Concrete
                 if (connection.State != ConnectionState.Open)
                     await connection.OpenAsync();
 
-                // FIXED: Removed CommandType.StoredProcedure for inline SQL update
                 var affectedRows = await connection.ExecuteAsync(
                     @"UPDATE [dbo].[PasswordResetTokens] 
-                    SET IsUsed = 1, 
-                        UsedDate = SYSUTCDATETIME() 
-                    WHERE ResetToken = @ResetToken 
-                        AND IsUsed = 0",
+            SET IsUsed = 1, 
+                UsedDate = SYSUTCDATETIME() 
+            WHERE ResetToken = @ResetToken 
+                AND IsUsed = 0",
                     new { ResetToken = resetToken },
                     commandTimeout: 30
                 );
@@ -482,7 +485,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 return Result<bool>.Failure("An unexpected error occurred");
             }
         }
-      
+
         public async Task<Result<bool>> ResetUserPasswordAsync(int userId, string? newPasswordHash)
         {
             if (userId <= 0)
@@ -498,43 +501,28 @@ namespace HR_Payroll.Infrastructure.Concrete
                 if (connection.State != ConnectionState.Open)
                     await connection.OpenAsync();
 
-                // FIXED: Removed CommandType.StoredProcedure for inline SQL update
-                // Also added transaction for data consistency
-                using var transaction = connection.BeginTransaction();
+                var affectedRows = await connection.ExecuteAsync(
+                    @"UPDATE [dbo].[Users] 
+            SET PasswordHash = @NewPasswordHash, 
+                ModifiedDate = SYSUTCDATETIME(),
+                ModifiedBy = 'PasswordReset',
+                LoginFailureAttempt = 0,
+                AccountLocked = 0,
+                AccountLockedDate = NULL
+            WHERE UserID = @UserId 
+                AND Del_Flg = 'N'",
+                    new { UserId = userId, NewPasswordHash = newPasswordHash },
+                    commandTimeout: 30
+                );
 
-                try
+                if (affectedRows > 0)
                 {
-                    var affectedRows = await connection.ExecuteAsync(
-                        @"UPDATE [dbo].[Users] 
-                        SET PasswordHash = @NewPasswordHash, 
-                            ModifiedDate = SYSUTCDATETIME(),
-                            ModifiedBy = 'PasswordReset',
-                            LoginFailureAttempt = 0,
-                            AccountLocked = 0,
-                            AccountLockedDate = NULL
-                        WHERE UserID = @UserId 
-                            AND Del_Flg = 0",
-                        new { UserId = userId, NewPasswordHash = newPasswordHash },
-                        transaction: transaction,
-                        commandTimeout: 30
-                    );
-
-                    if (affectedRows > 0)
-                    {
-                        transaction.Commit();
-                        _logger.LogInformation("Password reset successfully for user: {UserId}", userId);
-                        return Result<bool>.Success(true, "Password reset successfully");
-                    }
-
-                    transaction.Rollback();
-                    _logger.LogWarning("User not found or inactive for password reset: {UserId}", userId);
-                    return Result<bool>.Failure("User not found or inactive");
+                    _logger.LogInformation("Password reset successfully for user: {UserId}", userId);
+                    return Result<bool>.Success(true, "Password reset successfully");
                 }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+
+                _logger.LogWarning("User not found or inactive for password reset: {UserId}", userId);
+                return Result<bool>.Failure("User not found or inactive");
             }
             catch (SqlException sqlEx)
             {
@@ -568,33 +556,69 @@ namespace HR_Payroll.Infrastructure.Concrete
 
                 try
                 {
-                    // 1. Validate token
-                    var tokenResult = await GetValidResetTokenAsync(resetToken);
-                    if (!tokenResult.IsSuccess || tokenResult.Entity == null)
-                    {
-                        return Result<bool>.Failure(tokenResult.Message);
-                    }
+                    // 1. Validate and get token
+                    var token = await connection.QueryFirstOrDefaultAsync<PasswordResetToken>(
+                        @"SELECT TOP 1 
+                    TokenID, UserId, ResetToken, ExpiresAt, IsUsed, CreatedAt, CreatedBy
+                FROM [dbo].[PasswordResetTokens] WITH (NOLOCK)
+                WHERE ResetToken = @ResetToken 
+                    AND IsUsed = 0 
+                    AND ExpiresAt > SYSUTCDATETIME()",
+                        new { ResetToken = resetToken },
+                        transaction: transaction,
+                        commandTimeout: 30
+                    );
 
-                    var token = tokenResult;
-
-                    // 2. Update password
-                    var passwordResult = await ResetUserPasswordAsync(token.Entity.UserId, newPasswordHash);
-                    if (!passwordResult.IsSuccess)
+                    if (token == null)
                     {
                         transaction.Rollback();
-                        return passwordResult;
+                        _logger.LogWarning("Invalid or expired reset token attempted");
+                        return Result<bool>.Failure("Invalid or expired reset token");
+                    }
+
+                    // 2. Update password
+                    var affectedRows = await connection.ExecuteAsync(
+                        @"UPDATE [dbo].[Users] 
+                SET PasswordHash = @NewPasswordHash, 
+                    ModifiedDate = SYSUTCDATETIME(),
+                    ModifiedBy = 'PasswordReset',
+                    LoginFailureAttempt = 0,
+                    AccountLocked = 0,
+                    AccountLockedDate = NULL
+                WHERE UserID = @UserId 
+                    AND Del_Flg = 'N'",
+                        new { UserId = token.UserId, NewPasswordHash = newPasswordHash },
+                        transaction: transaction,
+                        commandTimeout: 30
+                    );
+
+                    if (affectedRows == 0)
+                    {
+                        transaction.Rollback();
+                        _logger.LogWarning("User not found or inactive for password reset: {UserId}", token.UserId);
+                        return Result<bool>.Failure("User not found or inactive");
                     }
 
                     // 3. Mark token as used
-                    var markResult = await MarkResetTokenUsedAsync(resetToken);
-                    if (!markResult.IsSuccess)
+                    var tokenUpdated = await connection.ExecuteAsync(
+                        @"UPDATE [dbo].[PasswordResetTokens] 
+                SET IsUsed = 1, 
+                    UsedDate = SYSUTCDATETIME() 
+                WHERE ResetToken = @ResetToken",
+                        new { ResetToken = resetToken },
+                        transaction: transaction,
+                        commandTimeout: 30
+                    );
+
+                    if (tokenUpdated == 0)
                     {
                         transaction.Rollback();
-                        return markResult;
+                        _logger.LogWarning("Failed to mark token as used");
+                        return Result<bool>.Failure("Failed to mark token as used");
                     }
 
                     transaction.Commit();
-                    _logger.LogInformation("Password reset completed successfully for user: {UserId}", token.Entity.UserId);
+                    _logger.LogInformation("Password reset completed successfully for user: {UserId}", token.UserId);
                     return Result<bool>.Success(true, "Password reset completed successfully");
                 }
                 catch
@@ -602,6 +626,11 @@ namespace HR_Payroll.Infrastructure.Concrete
                     transaction.Rollback();
                     throw;
                 }
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL Error in CompletePasswordResetAsync - Error: {ErrorNumber}", sqlEx.Number);
+                return Result<bool>.Failure("Database error occurred");
             }
             catch (Exception ex)
             {

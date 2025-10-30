@@ -66,14 +66,18 @@
     <div class="card">
         <div class="card-body">
             <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label text-dark">Department</label>
+                    <select id="dept" class="form-select">
+                        <option value="">-- Select Department --</option>                        
+                    </select>
+                </div>
+
                 <!-- Branch -->
                 <div class="col-md-3">
-                    <label class="form-label text-dark">Branch</label>
-                    <select id="branchSelect" class="form-select">
-                        <option value="">-- Select Branch --</option>
-                        <option value="dotnet">.NET</option>
-                        <option value="php">PHP</option>
-                        <option value="qa">QA</option>
+                    <label class="form-label text-dark">Sub Department</label>
+                    <select id="subDept" class="form-select">
+                        <option value="">-- Select Sub Department --</option>                      
                     </select>
                 </div>
 
@@ -101,10 +105,7 @@
                             <span id="empSelected">-- Select Employee --</span>
                         </button>
                         <div class="dropdown-list" id="empList">
-                            <label class="dropdown-item"><input type="checkbox" value="1"> John Doe</label>
-                            <label class="dropdown-item"><input type="checkbox" value="2"> Jane Smith</label>
-                            <label class="dropdown-item"><input type="checkbox" value="3"> Alex Johnson</label>
-                            <label class="dropdown-item"><input type="checkbox" value="4"> Priya Patel</label>
+                           
                         </div>
                     </div>
                 </div>
@@ -153,34 +154,4 @@
 </div> <!-- end row -->
 <!-- Javascript  -->
 <script src="~/js/jquery-3.6.4.min.js"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const dropdown = document.getElementById("employeeDropdown");
-        const button = document.getElementById("empDropdownBtn");
-        const list = document.getElementById("empList");
-        const text = document.getElementById("empSelected");
-
-        button.addEventListener("click", () => {
-            dropdown.classList.toggle("open");
-        });
-
-        // Update selected employees
-        list.querySelectorAll("input[type='checkbox']").forEach(cb => {
-            cb.addEventListener("change", () => {
-                const selected = Array.from(list.querySelectorAll("input:checked"))
-                    .map(i => i.parentNode.textContent.trim());
-                text.textContent = selected.length > 0
-                    ? selected.join(", ")
-                    : "-- Select Employee --";
-            });
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener("click", e => {
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove("open");
-            }
-        });
-    });
-</script>
+<script src="~/js/assign/assignemployee.js"></script>

@@ -241,6 +241,7 @@ wwwroot\assets\libs\vanillajs-datepicker\css\datepicker.min.css
 wwwroot\assets\libs\vanillajs-datepicker\js\datepicker-full.min.js
 wwwroot\assets\libs\wnumb\wNumb.min.js
 wwwroot\favicon.ico
+wwwroot\js\Assign\assignemployee.js
 wwwroot\js\Attendance\attendance_calender.js
 wwwroot\js\Attendance\attendance_report.js
 wwwroot\js\Attendance\markattendance.js

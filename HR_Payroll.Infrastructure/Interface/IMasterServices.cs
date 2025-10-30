@@ -1,4 +1,5 @@
-﻿using HR_Payroll.Core.Model.Master;
+﻿using HR_Payroll.Core.DTO.Dept;
+using HR_Payroll.Core.Model.Master;
 using HR_Payroll.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace HR_Payroll.Infrastructure.Interface
 {
     public interface IMasterServices
     {
-        Task<Result<IEnumerable<BranchWiseUserModel>>> GetBranchWiseUsersAsync(int branchId);
+       
+        
+       
     }
 }

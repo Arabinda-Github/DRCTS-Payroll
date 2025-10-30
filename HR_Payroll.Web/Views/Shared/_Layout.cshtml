@@ -129,22 +129,52 @@
                 </div><!-- end Dashboards -->
                 @if (userTypeId == 1)
                 {
-                    <div id="DrctsMaster" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                    <div id="DrctsMaster" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="apps-tab">
                         <div class="title-box">
                             <h6 class="menu-title">Master</h6>
                         </div>
-
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="#" asp-controller="Master">Office Location</a>
-                            </li><!--end nav-item-->
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="#" asp-controller="Master">Shift Master</a>
-                            </li><!--end nav-item-->
-                        </ul><!--end nav-->
+                         <div class="collapse navbar-collapse" id="sidebarCollapse">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sidebarAnalytics" data-bs-toggle="collapse" role="button"
+                                        aria-expanded="false" aria-controls="sidebarAnalytics">
+                                        Shift & Location Master
+                                    </a>
+                                    <div class="collapse " id="sidebarAnalytics">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                               <a class="nav-link" asp-action="#" asp-controller="Master">Office Location</a>
+                                            </li><!--end nav-item-->
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-action="#" asp-controller="Master">Shift Master</a>
+                                            </li><!--end nav-item-->
+                                        </ul><!--end nav-->
+                                    </div><!--end sidebarAnalytics-->
+                                </li><!--end nav-item-->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sidebarCrypto" data-bs-toggle="collapse" role="button"
+                                        aria-expanded="false" aria-controls="sidebarCrypto">
+                                        Assign Department
+                                    </a>
+                                    <div class="collapse " id="sidebarCrypto">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link"  asp-action="AssignManager" asp-controller="Assign">Assign Manager</a>
+                                            </li><!--end nav-item-->
+                                            <li class="nav-item">
+                                                <a class="nav-link"  asp-action="AssignTeamLeader" asp-controller="Assign">Assign TeamLeader</a>
+                                            </li><!--end nav-item-->
+                                            <li class="nav-item">
+                                                <a class="nav-link"  asp-action="AssignEmployee" asp-controller="Assign">Assign Employee</a>
+                                            </li><!--end nav-item-->                                          
+                                        </ul><!--end nav-->
+                                    </div><!--end sidebarCrypto-->
+                                </li><!--end nav-item-->
+                            </ul><!--end nav-->                       
+                        </div><!--end sidebarCollapse-->
                     </div><!-- end Master -->
                 }
-                <div id="DrctsAttendance" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                <div id="DrctsAttendance" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="uikit-tab">
                      <div class="title-box">
                          <h6 class="menu-title">Attendance</h6>
                      </div>
@@ -158,7 +188,7 @@
                          </li><!--end nav-item-->
                      </ul><!--end nav-->
                  </div><!-- end Attendance -->
-                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
                      <div class="title-box">
                          <h6 class="menu-title">Payroll</h6>
                      </div>
@@ -172,7 +202,7 @@
                          </li><!--end nav-item-->
                      </ul><!--end nav-->
                  </div><!-- end Payroll -->
-                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="dasboard-tab">
+                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="authentication-tab">
                      <div class="title-box">
                          <h6 class="menu-title">Report</h6>
                      </div>

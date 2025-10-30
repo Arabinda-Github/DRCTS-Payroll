@@ -1,23 +1,16 @@
-﻿using Azure.Core;
-using HR_Payroll.API.Config;
+﻿using HR_Payroll.API.Config;
 using HR_Payroll.API.JWTExtension;
-using HR_Payroll.CommonCases.Email;
 using HR_Payroll.CommonCases.Utility;
-using HR_Payroll.Core.Enum;
 using HR_Payroll.Core.Model.Auth;
 using HR_Payroll.Core.Model.Email;
 using HR_Payroll.Core.Response;
-using HR_Payroll.Infrastructure.Concrete;
 using HR_Payroll.Infrastructure.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Net;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace HR_Payroll.API.Controllers
 {

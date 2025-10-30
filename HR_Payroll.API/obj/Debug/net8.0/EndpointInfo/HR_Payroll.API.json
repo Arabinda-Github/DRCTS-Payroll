@@ -505,6 +505,62 @@
           }
         }
       }
+    },
+    "/api/Department/GetAllDepartments": {
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SubDepartment/GetAllSubDepartments": {
+      "get": {
+        "tags": [
+          "SubDepartment"
+        ],
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SubDepartment/GetEmployeeBySubDepartment": {
+      "get": {
+        "tags": [
+          "SubDepartment"
+        ],
+        "parameters": [
+          {
+            "name": "subDepartmentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

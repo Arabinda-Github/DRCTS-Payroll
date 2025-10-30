@@ -280,5 +280,47 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.DepartmentController",
+    "Method": "GetAllDepartments",
+    "RelativePath": "api/Department/GetAllDepartments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.SubDepartmentController",
+    "Method": "GetAllSubDepartments",
+    "RelativePath": "api/SubDepartment/GetAllSubDepartments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "departmentId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.SubDepartmentController",
+    "Method": "GetEmployeeBySubDepartment",
+    "RelativePath": "api/SubDepartment/GetEmployeeBySubDepartment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "subDepartmentId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

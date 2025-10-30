@@ -1,4 +1,5 @@
 ﻿using HR_Payroll.Core.Services;
+using HR_Payroll.Web.CommonClients;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
@@ -29,7 +30,7 @@ namespace HR_Payroll.Web
                 UseProxy = false, // Disable if not needed
                 MaxConnectionsPerServer = 10
             }).SetHandlerLifetime(TimeSpan.FromMinutes(5)); // Connection pooling
-
+            builder.Services.AddScoped<CommonAPI_Client>();
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

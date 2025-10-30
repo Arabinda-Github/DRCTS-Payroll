@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using HR_Payroll.Core.DTO.Dept;
 using HR_Payroll.Core.Model.Master;
 using HR_Payroll.Core.Services;
 using HR_Payroll.Infrastructure.Data;
@@ -25,44 +26,7 @@ namespace HR_Payroll.Infrastructure.Concrete
             _logger = logger;
             _context = context;
         }
-
-        public async Task<Result<IEnumerable<BranchWiseUserModel>>> GetBranchWiseUsersAsync(int branchId)
-        {
-            var connection = _context.Database.GetDbConnection();
-
-            try
-            {
-                if (connection.State != ConnectionState.Open)
-                    await connection.OpenAsync();
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@BranchId", branchId, DbType.Int32);
-
-                var result = await connection.QueryAsync<BranchWiseUserModel>(
-                    "sp_GetBranchWiseUsers",
-                    parameters,
-                    commandType: CommandType.StoredProcedure
-                );
-
-                if (result == null || !result.Any())
-                {
-                    return Result<IEnumerable<BranchWiseUserModel>>.Failure("No data found for the specified branch.");
-                }
-
-                return Result<IEnumerable<BranchWiseUserModel>>.Success(result.ToList(), "Data retrieved successfully.");
-            }
-            catch (Exception ex)
-            {
-                // Wrap exception in a failure result
-                return Result<IEnumerable<BranchWiseUserModel>>.Failure($"Error retrieving data: {ex.Message}");
-            }
-            finally
-            {
-                // Ensure connection is closed
-                if (connection.State == ConnectionState.Open)
-                    await connection.CloseAsync();
-            }
-        }
-
+     
+       
     }
 }

@@ -1,13 +1,8 @@
 ﻿using HR_Payroll.Core.Model;
 using HR_Payroll.Core.Response;
-using HR_Payroll.Core.Services;
-using HR_Payroll.Infrastructure.Concrete;
 using HR_Payroll.Infrastructure.Interface;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HR_Payroll.API.Controllers
 {

@@ -16,6 +16,8 @@ namespace HR_Payroll.API
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
             services.AddScoped<IMasterServices, MasterServices>();
+            services.AddScoped<IDepartmentServices, DepartmentServices>();
+            services.AddScoped<ISubDepartmentServices, SubDepartmentServices>();
 
         }
     }

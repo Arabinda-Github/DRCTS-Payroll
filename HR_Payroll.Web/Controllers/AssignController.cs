@@ -134,6 +134,60 @@ namespace HR_Payroll.Web.Controllers
         }
 
         public IActionResult AssignEmployee() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> AssignHierarchy(DepartmentAssignDTO dto)
+        {
+            try
+            {
+                // Capture IP address
+                var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+                dto.CreatedBy ??= ipAddress ?? "Unknown";
+
+                // Get tokens from claims
+                var accessToken = User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
+                var refreshToken = User.Claims.FirstOrDefault(c => c.Type == "refresh_token")?.Value;
+
+                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+                {
+                    return Unauthorized(new { status = false, message = "Missing tokens." });
+                }
+
+                // Set tokens for HttpClient
+                _apiClient.SetTokens(accessToken, refreshToken);
+
+                // Call the backend API using Dapper/PostAsync
+                var result = await _apiClient.PostAsync<DepartmentAssignResult>(
+                    "Department/DeptAssignHierarchy", // ✅ correct endpoint
+                    dto
+                );
+
+                if (!result.status)
+                {
+                    return StatusCode(500, new
+                    {
+                        status = false,
+                        message = result.message
+                    });
+                }
+
+                return Json(new
+                {
+                    status = true,
+                    message = "Department hierarchy assigned successfully.",
+                    data = result.data
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+
         public IActionResult AssignManager() => View();
         public IActionResult AssignTeamLeader() => View();
 

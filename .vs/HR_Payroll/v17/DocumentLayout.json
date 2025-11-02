@@ -11,24 +11,36 @@
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\assign\\assignemployee.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\wwwroot\\js\\assign\\assignemployee.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\wwwroot\\js\\assign\\assignemployee.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6FFC2D2F-933A-462C-B686-D560913DA162}|HR_Payroll.Core\\HR_Payroll.Core.csproj|c:\\project\\drcts-payroll\\hr_payroll.core\\dto\\dept\\departmentassigndto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6FFC2D2F-933A-462C-B686-D560913DA162}|HR_Payroll.Core\\HR_Payroll.Core.csproj|solutionrelative:hr_payroll.core\\dto\\dept\\departmentassigndto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\concrete\\departmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\concrete\\departmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\commonclients\\commonapi_client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\commonclients\\commonapi_client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\controllers\\subdepartmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\controllers\\subdepartmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\controllers\\attendancecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\controllers\\attendancecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\interface\\idepartmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\interface\\idepartmentservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,15 +58,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
+              "Title": "DepartmentController.cs",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\DepartmentController.cs",
+              "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\DepartmentController.cs",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\DepartmentController.cs",
+              "RelativeToolTip": "HR_Payroll.API\\Controllers\\DepartmentController.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAuwAwAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-02T15:43:47.195Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "CommonAPI_Client.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
               "RelativeToolTip": "HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAvwB0AAAB2AAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAuwFsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:56:34.704Z",
+              "WhenOpened": "2025-11-02T15:28:42.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DepartmentServices.cs",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Concrete\\DepartmentServices.cs",
+              "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Concrete\\DepartmentServices.cs",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Concrete\\DepartmentServices.cs",
+              "RelativeToolTip": "HR_Payroll.Infrastructure\\Concrete\\DepartmentServices.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAuwFcAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-02T14:20:45.889Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IDepartmentServices.cs",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Interface\\IDepartmentServices.cs",
+              "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Interface\\IDepartmentServices.cs",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Interface\\IDepartmentServices.cs",
+              "RelativeToolTip": "HR_Payroll.Infrastructure\\Interface\\IDepartmentServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-02T14:20:21.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DepartmentAssignDTO.cs",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\DTO\\Dept\\DepartmentAssignDTO.cs",
+              "RelativeDocumentMoniker": "HR_Payroll.Core\\DTO\\Dept\\DepartmentAssignDTO.cs",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\DTO\\Dept\\DepartmentAssignDTO.cs",
+              "RelativeToolTip": "HR_Payroll.Core\\DTO\\Dept\\DepartmentAssignDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-02T14:19:04.622Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "assignemployee.js",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
+              "RelativeDocumentMoniker": "HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
+              "RelativeToolTip": "HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAAALcAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-30T17:10:06.88Z",
               "EditorCaption": ""
             },
             {
@@ -65,7 +142,7 @@
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Assign\\AssignEmployee.cshtml",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Assign\\AssignEmployee.cshtml",
               "RelativeToolTip": "HR_Payroll.Web\\Views\\Assign\\AssignEmployee.cshtml",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAAAHEAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAAAHIAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-30T14:46:31.811Z",
               "EditorCaption": ""
@@ -78,40 +155,14 @@
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Controllers\\AssignController.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\AssignController.cs",
               "RelativeToolTip": "HR_Payroll.Web\\Controllers\\AssignController.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAuwIYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAuwJ8AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T14:44:51.22Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AttendanceController.cs",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\AttendanceController.cs",
-              "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\AttendanceController.cs",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\AttendanceController.cs",
-              "RelativeToolTip": "HR_Payroll.API\\Controllers\\AttendanceController.cs",
-              "ViewState": "AgIAAIMAAAAAAAAAAAAAALEAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:02:19.646Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SubDepartmentController.cs",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\SubDepartmentController.cs",
-              "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\SubDepartmentController.cs",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\SubDepartmentController.cs",
-              "RelativeToolTip": "HR_Payroll.API\\Controllers\\SubDepartmentController.cs",
-              "ViewState": "AgIAABkAAAAAMjMzMzMTwD8AAABiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T13:50:51.927Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
@@ -119,12 +170,11 @@
               "RelativeToolTip": "HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAJkAAAAAAAAAAAAAAKQAAABhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T15:48:22.577Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-12T15:48:22.577Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\appsettings.json",
               "RelativeDocumentMoniker": "HR_Payroll.API\\appsettings.json",
@@ -132,7 +182,8 @@
               "RelativeToolTip": "HR_Payroll.API\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-16T15:14:35.926Z"
+              "WhenOpened": "2025-10-16T15:14:35.926Z",
+              "EditorCaption": ""
             }
           ]
         }

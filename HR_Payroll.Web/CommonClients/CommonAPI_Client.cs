@@ -58,6 +58,38 @@ namespace HR_Payroll.Web.CommonClients
             return JsonConvert.DeserializeObject<DataResponse<T>>(json);
         }
 
+        public async Task<DataResponse<T>> PostAsync<T>(string endpoint, object body)
+        {
+            var jsonBody = JsonConvert.SerializeObject(body);
+            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            var fullUrl = endpoint.TrimStart('/');
+
+            var response = await _httpClient.PostAsync(fullUrl, content);
+
+            // Handle unauthorized & auto-refresh token
+            if (response.StatusCode == HttpStatusCode.Unauthorized && await TryRefreshTokenAsync())
+            {
+                _httpClient = _httpClientFactory.CreateClient("AuthClient");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                response = await _httpClient.PostAsync(fullUrl, content);
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new DataResponse<T>
+                {
+                    status = false,
+                    message = $"API call failed with status code {response.StatusCode}",
+                    data = default
+                };
+            }
+
+            return JsonConvert.DeserializeObject<DataResponse<T>>(json);
+        }
+
         private async Task<bool> TryRefreshTokenAsync()
         {
             var refreshModel = new { RefreshToken = _refreshToken };

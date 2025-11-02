@@ -107,12 +107,12 @@ function loadBranchWiseUsers(subDepartmentId) {
 
                     if (user.role === 'Manager') {
                         $('#managerSelect').append(option);
-                    } else if (user.role === 'TeamLead') {
+                    } else if (user.role === 'Team Lead') {
                         $('#teamleadSelect').append(option);
                     } else if (user.role === 'Employee') {
                         const checkbox = `
                                 <label class="dropdown-item">
-                                    <input type="checkbox" value="${user.employeeID}"> ${user.employeeName}
+                                    <input type="checkbox" class="emp-checkbox" value="${user.employeeID}"> ${user.employeeName}
                                 </label>`;
                         $('#empList').append(checkbox);
                     }
@@ -134,3 +134,96 @@ function clearUserFields() {
     $('#teamleadSelect').empty().append('<option value="">-- Select Team Lead --</option>');
     $('#empList').empty();
 }
+
+$('#btnAssign').on('click', function () {
+    // Reset validation visuals
+    $('#dept, #subDept, #managerSelect, #teamleadSelect, #empDropdownBtn').css('border-color', '');
+
+    const departmentId = $('#dept').val();
+    const subDepartmentId = $('#subDept').val();
+    const managerId = $('#managerSelect').val();
+    const teamLeadId = $('#teamleadSelect').val();
+    const employeeIds = getSelectedEmployeeIds();
+    const remarks = $('#remarks').val();
+
+    let errors = [];
+
+    if (!departmentId) {
+        errors.push("Please select a Department.");
+        $('#dept').css('border-color', '#ef4d56');
+    }
+    if (!subDepartmentId) {
+        errors.push("Please select a Sub Department.");
+        $('#subDept').css('border-color', '#ef4d56');
+    }
+    if (!managerId) {
+        errors.push("Please select a Manager.");
+        $('#managerSelect').css('border-color', '#ef4d56');
+    }
+    if (!teamLeadId) {
+        errors.push("Please select a Team Lead.");
+        $('#teamleadSelect').css('border-color', '#ef4d56');
+    }
+    if (!employeeIds.length) {
+        errors.push("Please select at least one Employee.");
+        $('#empDropdownBtn').css('border-color', '#ef4d56');
+    }
+
+    if (errors.length > 0) {
+        showToast(errors.join('\n'), "error");
+        return;
+    }
+
+    // ✅ Prepare form data correctly
+    const formData = new FormData();
+    formData.append('DepartmentId', departmentId);
+    formData.append('SubDepartmentId', subDepartmentId);
+    formData.append('ManagerId', managerId);
+    formData.append('TeamLeadId', teamLeadId || '');
+    formData.append('EmployeeId', employeeIds.join(','));
+    formData.append('Remarks', remarks);
+
+    $.ajax({
+        url: '/Assign/AssignHierarchy',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            $('#btnAssign').prop('disabled', true).text('Assigning...');
+        },
+        success: function (response) {
+            if (response.status) {
+                showToast(response.message || 'Assigned successfully', "success");
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                showToast(response.message || 'Assignment failed', "error");
+            }
+        },
+        error: function (xhr) {
+            showToast(`Error: ${xhr.responseText}`, "error");
+        },
+        complete: function () {
+            $('#btnAssign').prop('disabled', false).text('Assign');
+        }
+    });
+});
+
+function getSelectedEmployeeIds() {
+    return $('.emp-checkbox:checked').map(function () {
+        return $(this).val();
+    }).get(); // ✅ returns an array of all selected IDs
+}
+
+function getClientIp() {
+    // Optional fallback; real IP is set on the server side
+    return '0.0.0.0';
+}
+
+$(document).on('change', '.emp-checkbox', function () {
+    const selectedCount = $('.emp-checkbox:checked').length;
+    if (selectedCount > 0) {
+        $('#empDropdownBtn').css('border-color', ''); // remove red border
+    }
+});
+

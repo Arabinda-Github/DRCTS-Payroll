@@ -283,6 +283,22 @@
   },
   {
     "ContainingType": "HR_Payroll.API.Controllers.DepartmentController",
+    "Method": "DeptAssignHierarchy",
+    "RelativePath": "api/Department/DeptAssignHierarchy",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HR_Payroll.Core.DTO.Dept.DepartmentAssignDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.DepartmentController",
     "Method": "GetAllDepartments",
     "RelativePath": "api/Department/GetAllDepartments",
     "HttpMethod": "GET",

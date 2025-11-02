@@ -11,6 +11,8 @@ namespace HR_Payroll.Core.Enum
         None = 0,
         Admin = 1,
         HR = 2,
-        Employee = 3
+        Employee = 3,
+        Manager = 4,
+        TeamLead = 5
     }
 }

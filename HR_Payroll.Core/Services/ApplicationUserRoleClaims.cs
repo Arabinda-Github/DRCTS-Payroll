@@ -16,7 +16,9 @@ namespace HR_Payroll.Core.Services
                 { ApplicationUserRole.None, "None" },
                 { ApplicationUserRole.Admin, "Admin" },
                 { ApplicationUserRole.HR, "HR" },
-                { ApplicationUserRole.Employee, "Employee" }
+                { ApplicationUserRole.Employee, "Employee" },
+                { ApplicationUserRole.Manager, "Manager" },
+                { ApplicationUserRole.TeamLead, "Team Lead" }
             };
 
         public static IEnumerable<ApplicationUserRoleDto> GetApplicationUserRoles()

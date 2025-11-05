@@ -130,19 +130,29 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Assign Employee List</h5>
+                <h5 class="card-title mb-0">Assign Employee List</h5> 
+               
                 <div>
+                    <a  asp-action="OrgFlowChart" asp-controller="Assign">
+                        <svg width="28" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M7.5 2.5h6v5h-6z" /><path d="M12.5 13.5h6v5h-6z" /><path d="M2.5 13.5h6v5h-6z" /><path d="M5.498 13.5v-3h10v3" />
+                                <path d="M10.5 10.5v-3" />
+                            </g>
+                        </svg>
+                        </a>
                     <button type="button" id="exportCsv" class="btn btn-sm btn-outline-success csv">Export CSV</button>
                     <button type="button" id="exportPdf" class="btn btn-sm btn-outline-danger pdf">Export PDF</button>
                 </div>
-            </div><!--end card-header-->
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="attn_datatable">
+                    <table class="table table-bordered align-middle table-hover" id="assignEmpTable">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Sl. No.</th>
-                                <th>Branch</th>
+                                <th>Department</th>
+                                <th>Sub Department</th>
                                 <th>Employee Name</th>
                                 <th>Team Lead</th>
                                 <th>Manager</th>
@@ -153,8 +163,8 @@
                 </div>
             </div>
         </div>
-    </div> <!-- end col -->
-</div> <!-- end row -->
+    </div>
+</div>
 <!-- Javascript  -->
 <script src="~/js/jquery-3.6.4.min.js"></script>
 <script src="~/js/assign/assignemployee.js"></script>

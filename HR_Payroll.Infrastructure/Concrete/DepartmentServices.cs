@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HR_Payroll.Core.DTO.Dept;
+using HR_Payroll.Core.Model.DataTable;
 using HR_Payroll.Core.Model.Master;
 using HR_Payroll.Core.Services;
 using HR_Payroll.Infrastructure.Data;
@@ -7,11 +8,14 @@ using HR_Payroll.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HR_Payroll.Infrastructure.Concrete
 {
@@ -52,7 +56,7 @@ namespace HR_Payroll.Infrastructure.Concrete
             }
         }
 
-        private async Task<Result<IEnumerable<T>>> QueryWithDapperAsync<T>(string sql, DynamicParameters parameters = null)
+        private async Task<Result<IEnumerable<T>>> QueryWithDapperAsync<T>(string sql,DynamicParameters? parameters = null,CommandType commandType = CommandType.Text)
         {
             using var connection = _context.Database.GetDbConnection();
             try
@@ -60,7 +64,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 if (connection.State != ConnectionState.Open)
                     await connection.OpenAsync();
 
-                var result = await connection.QueryAsync<T>(sql, parameters);
+                var result = await connection.QueryAsync<T>(sql, parameters, commandType: commandType);
 
                 if (result == null || !result.Any())
                     return Result<IEnumerable<T>>.Failure($"No {typeof(T).Name}s found.");
@@ -99,6 +103,21 @@ namespace HR_Payroll.Infrastructure.Concrete
             return await QuerySingleWithDapperAsync<DepartmentAssignResult>(sql, parameters);
         }
 
+        public async Task<Result<IEnumerable<AssignEmployeeListModel>>> GetAssignListAsync(PaginationDataRequestModel model)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Start", model.Start);
+            parameters.Add("@Length", model.Length);
+            parameters.Add("@Search", model.Search);
+            parameters.Add("@SortColumn", model.SortColumn);
+            parameters.Add("@SortDirection", model.SortDirection);
+
+            return await QueryWithDapperAsync<AssignEmployeeListModel>(
+                "sp_GetAssignedEmployees",
+                parameters,
+                CommandType.StoredProcedure
+            );
+        }
 
     }
 }

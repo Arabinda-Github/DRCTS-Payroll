@@ -43,6 +43,20 @@ $(function () {
             clearUserFields();
         }
     });
+
+    let table;
+
+    initAssignEmployeeTable();
+
+    // Export buttons
+    $('#exportCsv').on('click', function () {
+        table.button('.buttons-csv').trigger();
+    });
+
+    $('#exportPdf').on('click', function () {
+        table.button('.buttons-pdf').trigger();
+    });
+
 });
 
 function loadDepartment() {
@@ -182,7 +196,7 @@ $('#btnAssign').on('click', function () {
     formData.append('TeamLeadId', teamLeadId || '');
     formData.append('EmployeeId', employeeIds.join(','));
     formData.append('Remarks', remarks);
-
+    $('.loader').removeClass('hide');
     $.ajax({
         url: '/Assign/AssignHierarchy',
         type: 'POST',
@@ -193,6 +207,7 @@ $('#btnAssign').on('click', function () {
             $('#btnAssign').prop('disabled', true).text('Assigning...');
         },
         success: function (response) {
+            $('.loader').addClass('hide');
             if (response.status) {
                 showToast(response.message || 'Assigned successfully', "success");
                 setTimeout(() => window.location.reload(), 1000);
@@ -215,15 +230,148 @@ function getSelectedEmployeeIds() {
     }).get(); // ✅ returns an array of all selected IDs
 }
 
-function getClientIp() {
-    // Optional fallback; real IP is set on the server side
-    return '0.0.0.0';
-}
-
 $(document).on('change', '.emp-checkbox', function () {
     const selectedCount = $('.emp-checkbox:checked').length;
     if (selectedCount > 0) {
         $('#empDropdownBtn').css('border-color', ''); // remove red border
     }
 });
+
+function initAssignEmployeeTable() {
+    $('.loader').removeClass('hide');
+    var table = $('#assignEmpTable').DataTable({      
+        serverSide: true,
+        responsive: true,
+        ajax: {
+            url: '/Assign/GetAssignHierarchyList',
+            type: 'GET',
+            data: function (d) {
+                const sortColumnIndex = d.order && d.order.length ? d.order[0].column : 3;
+                const sortColumn = d.columns[sortColumnIndex] ? d.columns[sortColumnIndex].data : 'EmployeeName';
+                const sortDir = d.order && d.order.length ? d.order[0].dir : 'asc';
+
+                return JSON.stringify({
+                    Start: d.start,
+                    Length: d.length,
+                    Search: d.search.value,
+                    SortColumn: sortColumn,
+                    SortDirection: sortDir
+                });
+            },
+            dataSrc: function (json) {
+                $('.loader').addClass('hide');
+                // adapt this depending on your API shape
+                return (json && json.data) ? json.data : json;
+
+            }
+        },
+        columns: [
+            { data: 'slNo', title: 'Sl. No.' },
+            { data: 'department', title: 'Department' },
+            { data: 'subDepartment', title: 'SubDepartment' },
+            { data: 'employeeName', title: 'Employee Name' },
+            { data: 'teamLead', title: 'Team Lead' },
+            { data: 'manager', title: 'Manager' }
+        ]
+    });
+
+    // run merging after each draw
+    $('#assignEmpTable').on('draw.dt', function () {
+        // columns to group: Department (1), SubDepartment (2), TeamLead (4), Manager (5)
+        mergeHierarchicalColumns('#assignEmpTable', {
+            dept: 1,
+            subdept: 2,
+            lead: 4,
+            manager: 5
+        });
+    });
+}
+
+function mergeHierarchicalColumns(tableSelector, cols) {
+    var table = $(tableSelector).DataTable();
+    var rows = table.rows({ page: 'current' }).nodes();
+
+    // trackers per named column
+    var trackers = {};
+    for (var key in cols) {
+        trackers[key] = {
+            lastValue: null,
+            lastCell: null,
+            rowspan: 1
+        };
+    }
+
+    // Helper to reset child trackers when a parent changes
+    function resetChildren(startingKey) {
+        var started = false;
+        for (var k in cols) {
+            if (k === startingKey) {
+                started = true;
+                continue;
+            }
+            if (started) {
+                trackers[k].lastValue = null;
+                trackers[k].lastCell = null;
+                trackers[k].rowspan = 1;
+            }
+        }
+    }
+
+    // Iterate each row once, and process each column in hierarchical order
+    $(rows).each(function () {
+        // First, read all current cell values for this row for our columns
+        var currentValues = {};
+        for (var k in cols) {
+            var ci = cols[k];
+            var $cell = $('td', this).eq(ci);
+            currentValues[k] = {
+                val: $cell.text().trim(),
+                $cell: $cell
+            };
+        }
+
+        // Now process in the same order as keys of cols (which should be parent->child)
+        // Note: JS object key order is stable for insertion order; define cols accordingly.
+        var started = false;
+        for (var k in cols) {
+            var item = currentValues[k];
+            var val = item.val;
+            var $cell = item.$cell;
+
+            // If a parent earlier changed, reset children before comparing (hierarchical reset)
+            // We detect parent change by comparing value of the immediate parent key (we handled by resetting in code below)
+            // Compare with tracked lastValue for this key
+            if (trackers[k].lastValue === val && val !== '') {
+                // same as previous => increment rowspan and remove current cell
+                trackers[k].rowspan++;
+                $cell.remove();
+                if (trackers[k].lastCell) {
+                    trackers[k].lastCell.attr('rowspan', trackers[k].rowspan);
+                    trackers[k].lastCell.css({
+                        'vertical-align': 'middle',
+                        'border': '1px solid #dee2e6',
+                        'background-color': '#fff'
+                    });
+                }
+            } else {
+                // value changed for this key -> we must reset all descendants of this key
+                resetChildren(k);
+
+                // set trackers for this key
+                trackers[k].lastValue = val;
+                trackers[k].lastCell = $cell;
+                trackers[k].rowspan = 1;
+
+                // style the cell (keeps borders visible)
+                $cell.css({
+                    'vertical-align': 'middle',
+                    'border': '1px solid #dee2e6'
+                });
+            }
+        }
+    });
+}
+
+
+
 

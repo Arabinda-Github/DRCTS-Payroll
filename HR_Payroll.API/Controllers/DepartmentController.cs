@@ -1,5 +1,6 @@
 ﻿using HR_Payroll.Core.DTO.Dept;
 using HR_Payroll.Core.Model;
+using HR_Payroll.Core.Model.DataTable;
 using HR_Payroll.Core.Response;
 using HR_Payroll.Infrastructure.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -110,5 +111,44 @@ namespace HR_Payroll.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetHierarchyList")]
+        [Authorize(Roles = "Admin,HR,Manager,Team Lead")]
+        public async Task<IActionResult> GetHierarchyList([FromQuery] PaginationDataRequestModel pagination)
+        {
+            try
+            {
+                var result = await _deptRepository.GetAssignListAsync(pagination);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(new DataResponse<object>
+                    {
+                        status = true,
+                        message = result.Message ?? "Department hierarchy retrieved successfully.",
+                        data = result.Entity
+                    });
+                }
+
+                return Ok(new DataResponse<object>
+                {
+                    status = false,
+                    message = result.Message ?? "Failed to retrieve department hierarchy.",
+                    data = null
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving department hierarchy");
+
+                return StatusCode(500, new DataResponse<object>
+                {
+                    status = false,
+                    message = "Invalid request data.",
+                    data = null
+                });
+
+            }
+        }
     }
 }

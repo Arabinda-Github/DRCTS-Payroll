@@ -29,9 +29,13 @@ namespace HR_Payroll.Web.CommonClients
 
         public async Task<DataResponse<T>> GetAsync<T>(string endpoint, Dictionary<string, string> queryParams = null)
         {
-            var query = queryParams != null
-                ? "?" + string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))
+            var query = queryParams is { Count: > 0 }
+                ? "?" + string.Join("&",
+                    queryParams
+                        .Where(kvp => !string.IsNullOrWhiteSpace(kvp.Value))
+                        .Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))
                 : string.Empty;
+
 
             var fullUrl = $"{endpoint.TrimStart('/')}{query}";
             var response = await _httpClient.GetAsync(fullUrl);

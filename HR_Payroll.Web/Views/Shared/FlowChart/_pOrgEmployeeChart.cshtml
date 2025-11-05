@@ -1,0 +1,375 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Company Org Chart</title>
+    <style>
+        :root {
+            --line-color: #cbd5e1;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            padding: 30px 10px;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 40px;
+        }
+
+        .tree {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 20px;
+        }
+
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-bottom: 30px;
+        }
+
+        .node {
+            text-align: center;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            min-width: 160px;
+            margin-bottom: 25px;
+            transition: 0.2s ease;
+            z-index: 2;
+        }
+
+            .node .role {
+                font-weight: 400;
+                font-size: 12px;
+                opacity: 0.9;
+            }
+
+            .node:hover {
+                transform: scale(1.05);
+            }
+
+        /* Vertical line under each branch node */
+        .branch::after {
+            content: "";
+            position: absolute;
+            top: calc(100% - 5px);
+            left: 50%;
+            height: 25px;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .branch:not(:has(.children))::after {
+            display: none;
+        }
+
+        /* Horizontal connector lines */
+        .children {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            position: relative;
+            margin-top: 25px;
+        }
+
+            .children::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                border-top: 2px solid var(--line-color);
+                width: 100%;
+            }
+
+        .child {
+            position: relative;
+            padding-top: 25px;
+            margin: 0 25px;
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+            .child::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 50%;
+                height: 25px;
+                border-left: 2px solid var(--line-color);
+                transform: translateX(-50%);
+            }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #06b6d4;
+            margin: 0px auto 5px;
+            overflow: hidden;
+        }
+
+            .company-logo img {
+                width: 65%;
+                height: 65%;
+                object-fit: cover;
+                margin-top: 8px;
+            }
+
+        /* ✅ Responsive */
+        @@media (max-width: 992px) {
+            .tree
+
+        {
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .children {
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+            .children::before,
+            .child::before,
+            .branch::after {
+                display: none;
+            }
+
+        .node {
+            margin: 15px auto;
+            width: 90%;
+            max-width: 280px;
+        }
+
+        }
+
+        @@media (max-width: 600px) {
+            h2
+
+        {
+            font-size: 1.2rem;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap;">
+        <h2 style="margin: 0; font-weight: 700; color: #1e293b; text-align: center; flex: 1;">
+            Company Organization Chart
+        </h2>
+        <button type="button" onclick="window.history.back();"
+                style="background: transparent; color: rgb(239, 68, 68);
+                    border: 1px solid rgb(239, 68, 68); border-radius: 5px; padding: 5px 12px; font-size: 13px;
+                    font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px;"
+                onmouseover="this.style.backgroundColor='#ef4444'; this.style.color='#fff';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ef4444';">
+            <span style="font-size: 14px;">&#8592;</span> Back
+        </button>
+    </div>
+
+    <div class="tree" id="companyTree"></div>
+
+    <script>
+        const companyData = {
+          name: "DRCTS Pvt. Ltd.",
+          logo: "../assets/images/logos/drcts_logo.png",
+          role: "Company",
+          ceo: {
+            name: "Anil Sharma",
+            role: "Chief Executive Officer (CEO)",
+            departments: [
+              {
+                name: "IT Department",
+                role: "Department",
+                subDepartments: [
+                  {
+                    name: ".NET",
+                    role: "SubDepartment",
+                    manager: {
+                      name: "Ravi Verma",
+                      role: "Manager",
+                      teamLeads: [
+                        {
+                          name: "Sneha Patnaik",
+                          role: "Team Lead",
+                          employees: [
+                            { name: "John Doe", role: "Employee" },
+                            { name: "Ram Swami", role: "Employee" }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    name: "PHP",
+                    role: "SubDepartment",
+                    manager: {
+                      name: "Amit Shah",
+                      role: "Manager",
+                      teamLeads: [
+                        {
+                          name: "Priya Das",
+                          role: "Team Lead",
+                          employees: [
+                            { name: "Arjun Sen", role: "Employee" },
+                            { name: "Kiran Nair", role: "Employee" }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                name: "HR Department",
+                role: "Department",
+                subDepartments: [
+                  {
+                    name: "Recruitment",
+                    role: "SubDepartment",
+                    manager: {
+                      name: "Neha Joshi",
+                      role: "Manager",
+                      teamLeads: [
+                        {
+                          name: "Raj Mehta",
+                          role: "Team Lead",
+                          employees: [
+                            { name: "Ankit Sinha", role: "Employee" },
+                            { name: "Meera Rai", role: "Employee" }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        };
+
+        // DOM builders
+        function createNode(name, role, logo = null) {
+          const div = document.createElement("div");
+          div.classList.add("node");
+          if (logo) {
+            const logoDiv = document.createElement("div");
+            logoDiv.classList.add("company-logo");
+            const img = document.createElement("img");
+            img.src = logo;
+            logoDiv.appendChild(img);
+            div.appendChild(logoDiv);
+          }
+          div.innerHTML += `<div>${name}</div><div class="role">${role}</div>`;
+          return div;
+        }
+
+        function createChildren(items, fn) {
+          const div = document.createElement("div");
+          div.classList.add("children");
+          items.forEach(item => {
+            const child = document.createElement("div");
+            child.classList.add("child");
+            child.appendChild(fn(item));
+            div.appendChild(child);
+          });
+          return div;
+        }
+
+        function createEmployeeBranch(employees) {
+          return createChildren(employees, e => createNode(e.name, e.role));
+        }
+
+        function createTeamLeadBranch(teamLeads) {
+          return createChildren(teamLeads, tl => {
+            const div = document.createElement("div");
+            div.classList.add("branch");
+            div.appendChild(createNode(tl.name, tl.role));
+            if (tl.employees?.length) div.appendChild(createEmployeeBranch(tl.employees));
+            return div;
+          });
+        }
+
+        function createManagerBranch(manager) {
+          const div = document.createElement("div");
+          div.classList.add("branch");
+          div.appendChild(createNode(manager.name, manager.role));
+          if (manager.teamLeads?.length) div.appendChild(createTeamLeadBranch(manager.teamLeads));
+          return div;
+        }
+
+        function createSubDeptBranch(subDepts) {
+          return createChildren(subDepts, sd => {
+            const div = document.createElement("div");
+            div.classList.add("branch");
+            div.appendChild(createNode(sd.name, sd.role));
+            div.appendChild(createManagerBranch(sd.manager));
+            return div;
+          });
+        }
+
+        function createDepartmentBranch(depts) {
+          return createChildren(depts, dept => {
+            const div = document.createElement("div");
+            div.classList.add("branch");
+            div.appendChild(createNode(dept.name, dept.role));
+            div.appendChild(createSubDeptBranch(dept.subDepartments));
+            return div;
+          });
+        }
+
+        const tree = document.getElementById("companyTree");
+        const companyBranch = document.createElement("div");
+        companyBranch.classList.add("branch");
+        companyBranch.appendChild(createNode(companyData.name, companyData.role, companyData.logo));
+
+        const ceoBranch = document.createElement("div");
+        ceoBranch.classList.add("branch");
+        ceoBranch.appendChild(createNode(companyData.ceo.name, companyData.ceo.role));
+        ceoBranch.appendChild(createDepartmentBranch(companyData.ceo.departments));
+
+        const ceoChildren = document.createElement("div");
+        ceoChildren.classList.add("children");
+        const ceoChild = document.createElement("div");
+        ceoChild.classList.add("child");
+        ceoChild.appendChild(ceoBranch);
+        ceoChildren.appendChild(ceoChild);
+
+        companyBranch.appendChild(ceoChildren);
+        tree.appendChild(companyBranch);
+    </script>
+</body>
+</html>
+
+
+
+
+

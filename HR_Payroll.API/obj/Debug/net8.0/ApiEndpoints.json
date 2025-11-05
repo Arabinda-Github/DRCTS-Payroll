@@ -308,6 +308,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HR_Payroll.API.Controllers.DepartmentController",
+    "Method": "GetHierarchyList",
+    "RelativePath": "api/Department/GetHierarchyList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Start",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Length",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortColumn",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortDirection",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HR_Payroll.API.Controllers.SubDepartmentController",
     "Method": "GetAllSubDepartments",
     "RelativePath": "api/SubDepartment/GetAllSubDepartments",

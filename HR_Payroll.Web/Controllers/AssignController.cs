@@ -1,4 +1,5 @@
 ﻿using HR_Payroll.Core.DTO.Dept;
+using HR_Payroll.Core.Model.DataTable;
 using HR_Payroll.Core.Model.Master;
 using HR_Payroll.Core.Services;
 using HR_Payroll.Web.CommonClients;
@@ -188,6 +189,50 @@ namespace HR_Payroll.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAssignHierarchyList(PaginationDataRequestModel model)
+        {
+            // 🔐 Extract tokens from claims
+            var accessToken = User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
+            var refreshToken = User.Claims.FirstOrDefault(c => c.Type == "refresh_token")?.Value;
+
+            if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+            {
+                return Unauthorized(new { status = false, message = "Missing authentication tokens." });
+            }
+
+            // ✅ Set tokens to API client
+            _apiClient.SetTokens(accessToken, refreshToken);
+
+            // ✅ Prepare query parameters
+            var queryParams = new Dictionary<string, string>
+            {               
+                { "Start", model.Start.ToString() },
+                { "Length", model.Length.ToString() },
+                { "Search", model.Search ?? null },
+                { "SortColumn", model.SortColumn ?? "EmployeeName" },
+                { "SortDirection", model.SortDirection ?? "ASC" }
+            };
+
+            // ✅ Call the API
+            var result = await _apiClient.GetAsync<List<AssignEmployeeListModel>>("Department/GetHierarchyList", queryParams);
+
+            if (!result.status)
+            {
+                return StatusCode(500, new { status = false, message = result.message });
+            }
+
+            // ✅ Return paginated response (ideal for DataTables)
+            return Json(new
+            {
+                status = true,
+                message = "Hierarchy loaded successfully.",
+                data = result.data,
+                recordsTotal = result.data[0].TotalRecords,
+                recordsFiltered = result.data?.Count ?? 0
+            });
+        }
+        public IActionResult OrgFlowChart() => PartialView("FlowChart/_pOrgEmployeeChart");
         public IActionResult AssignManager() => View();
         public IActionResult AssignTeamLeader() => View();
 

@@ -72,6 +72,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXEFzc2lnbkRlcGFydG1lbnRNZW1iZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Project/DRCTS-Payroll/HR_Payroll.Web/Views/Payroll/ApplyLeave.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5cm9sbFxBcHBseUxlYXZlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Project/DRCTS-Payroll/HR_Payroll.Web/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

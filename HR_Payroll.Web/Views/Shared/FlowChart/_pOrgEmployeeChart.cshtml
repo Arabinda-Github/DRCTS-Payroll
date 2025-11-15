@@ -197,86 +197,92 @@
 
     <div class="tree" id="companyTree"></div>
 
+    <!-- Javascript  -->
+    <script src="~/js/jquery-3.6.4.min.js"></script>
     <script>
-        const companyData = {
-          name: "DRCTS Pvt. Ltd.",
-          logo: "../assets/images/logos/drcts_logo.png",
-          role: "Company",
-          ceo: {
-            name: "Anil Sharma",
-            role: "Chief Executive Officer (CEO)",
-            departments: [
-              {
-                name: "IT Department",
-                role: "Department",
-                subDepartments: [
-                  {
-                    name: ".NET",
-                    role: "SubDepartment",
-                    manager: {
-                      name: "Ravi Verma",
-                      role: "Manager",
-                      teamLeads: [
-                        {
-                          name: "Sneha Patnaik",
-                          role: "Team Lead",
-                          employees: [
-                            { name: "John Doe", role: "Employee" },
-                            { name: "Ram Swami", role: "Employee" }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    name: "PHP",
-                    role: "SubDepartment",
-                    manager: {
-                      name: "Amit Shah",
-                      role: "Manager",
-                      teamLeads: [
-                        {
-                          name: "Priya Das",
-                          role: "Team Lead",
-                          employees: [
-                            { name: "Arjun Sen", role: "Employee" },
-                            { name: "Kiran Nair", role: "Employee" }
-                          ]
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                name: "HR Department",
-                role: "Department",
-                subDepartments: [
-                  {
-                    name: "Recruitment",
-                    role: "SubDepartment",
-                    manager: {
-                      name: "Neha Joshi",
-                      role: "Manager",
-                      teamLeads: [
-                        {
-                          name: "Raj Mehta",
-                          role: "Team Lead",
-                          employees: [
-                            { name: "Ankit Sinha", role: "Employee" },
-                            { name: "Meera Rai", role: "Employee" }
-                          ]
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        };
+        async function loadCompanyData() {
+          try {
+            // Fetch employee assignment data (this API calls your stored procedure)
+            const response = await fetch('/Assign/GetAssignHierarchyList', {
+              method: 'GET'
+            });
 
-        // DOM builders
+            const json = await response.json();
+
+            // Ensure data exists in expected format
+            const employees = (json && json.data) ? json.data : [];
+
+            // Convert flat employee list to hierarchical org data
+            const companyData = buildCompanyHierarchy(employees);
+
+            // Render chart
+            renderCompanyTree(companyData);
+
+          } catch (error) {
+            console.error("Error loading company data:", error);
+          }
+        }
+
+        // 🔹 Build Hierarchy from DB data
+        function buildCompanyHierarchy(data) {
+          const company = {
+            name: "DRCTS Pvt. Ltd.",
+            logo: "../assets/images/logos/drcts_logo.png",
+            role: "Company",
+            ceo: {
+              name: "Anil Sharma",
+              role: "Chief Executive Officer (CEO)",
+              departments: []
+            }
+          };
+
+          const deptMap = {};
+
+          data.forEach(emp => {
+            const deptName = emp.department || "Unknown Department";
+            const subDeptName = emp.subDepartment || "Unknown SubDepartment";
+            const managerName = emp.manager || "No Manager";
+            const teamLeadName = emp.teamLead || "No Team Lead";
+            const employeeName = emp.employeeName;
+
+            // Ensure department exists
+            if (!deptMap[deptName]) {
+              deptMap[deptName] = {
+                name: deptName,
+                role: "Department",
+                subDepartments: []
+              };
+              company.ceo.departments.push(deptMap[deptName]);
+            }
+
+            const dept = deptMap[deptName];
+
+            // Ensure sub-department exists
+            let subDept = dept.subDepartments.find(s => s.name === subDeptName);
+            if (!subDept) {
+              subDept = {
+                name: subDeptName,
+                role: "SubDepartment",
+                manager: { name: managerName, role: "Manager", teamLeads: [] }
+              };
+              dept.subDepartments.push(subDept);
+            }
+
+            // Ensure team lead exists
+            let teamLead = subDept.manager.teamLeads.find(tl => tl.name === teamLeadName);
+            if (!teamLead) {
+              teamLead = { name: teamLeadName, role: "Team Lead", employees: [] };
+              subDept.manager.teamLeads.push(teamLead);
+            }
+
+            // Add employee
+            teamLead.employees.push({ name: employeeName, role: "Employee" });
+          });
+
+          return company;
+        }
+
+        // 🔹 DOM Builders (same as before)
         function createNode(name, role, logo = null) {
           const div = document.createElement("div");
           div.classList.add("node");
@@ -346,26 +352,35 @@
           });
         }
 
-        const tree = document.getElementById("companyTree");
-        const companyBranch = document.createElement("div");
-        companyBranch.classList.add("branch");
-        companyBranch.appendChild(createNode(companyData.name, companyData.role, companyData.logo));
+        // 🔹 Render full tree
+        function renderCompanyTree(companyData) {
+          const tree = document.getElementById("companyTree");
+          tree.innerHTML = ''; // Clear previous content
 
-        const ceoBranch = document.createElement("div");
-        ceoBranch.classList.add("branch");
-        ceoBranch.appendChild(createNode(companyData.ceo.name, companyData.ceo.role));
-        ceoBranch.appendChild(createDepartmentBranch(companyData.ceo.departments));
+          const companyBranch = document.createElement("div");
+          companyBranch.classList.add("branch");
+          companyBranch.appendChild(createNode(companyData.name, companyData.role, companyData.logo));
 
-        const ceoChildren = document.createElement("div");
-        ceoChildren.classList.add("children");
-        const ceoChild = document.createElement("div");
-        ceoChild.classList.add("child");
-        ceoChild.appendChild(ceoBranch);
-        ceoChildren.appendChild(ceoChild);
+          const ceoBranch = document.createElement("div");
+          ceoBranch.classList.add("branch");
+          ceoBranch.appendChild(createNode(companyData.ceo.name, companyData.ceo.role));
+          ceoBranch.appendChild(createDepartmentBranch(companyData.ceo.departments));
 
-        companyBranch.appendChild(ceoChildren);
-        tree.appendChild(companyBranch);
+          const ceoChildren = document.createElement("div");
+          ceoChildren.classList.add("children");
+          const ceoChild = document.createElement("div");
+          ceoChild.classList.add("child");
+          ceoChild.appendChild(ceoBranch);
+          ceoChildren.appendChild(ceoChild);
+
+          companyBranch.appendChild(ceoChildren);
+          tree.appendChild(companyBranch);
+        }
+
+        // Load data on page ready
+        document.addEventListener("DOMContentLoaded", loadCompanyData);
     </script>
+
 </body>
 </html>
 

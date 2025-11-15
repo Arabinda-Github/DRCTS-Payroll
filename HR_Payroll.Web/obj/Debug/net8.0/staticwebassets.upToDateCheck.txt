@@ -251,6 +251,7 @@ wwwroot\js\Auth\login.js
 wwwroot\js\Auth\resetpassword.js
 wwwroot\js\Common\default_toaster.js
 wwwroot\js\jquery-3.6.4.min.js
+wwwroot\js\Leave\leave.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

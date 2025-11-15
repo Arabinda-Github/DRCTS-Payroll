@@ -188,21 +188,24 @@
                          </li><!--end nav-item-->
                      </ul><!--end nav-->
                  </div><!-- end Attendance -->
-                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
-                     <div class="title-box">
-                         <h6 class="menu-title">Payroll</h6>
-                     </div>
+                @if (userTypeId == 3)
+                {
+                    <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="pages-tab">
+                        <div class="title-box">
+                            <h6 class="menu-title">Payroll</h6>
+                        </div>
 
-                     <ul class="nav flex-column">
-                         <li class="nav-item">
-                             <a class="nav-link" asp-action="#" asp-controller="Payroll">Leave</a>
-                         </li><!--end nav-item-->
-                         <li class="nav-item">
-                             <a class="nav-link" asp-action="#" asp-controller="Payroll">Pay Slip</a>
-                         </li><!--end nav-item-->
-                     </ul><!--end nav-->
-                 </div><!-- end Payroll -->
-                 <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="authentication-tab">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="ApplyLeave" asp-controller="Payroll">Leave</a>
+                            </li><!--end nav-item-->
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="#" asp-controller="Payroll">Pay Slip</a>
+                            </li><!--end nav-item-->
+                        </ul><!--end nav-->
+                    </div><!-- end Payroll -->
+                }
+                <div id="DrctsPayroll" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="authentication-tab">
                      <div class="title-box">
                          <h6 class="menu-title">Report</h6>
                      </div>

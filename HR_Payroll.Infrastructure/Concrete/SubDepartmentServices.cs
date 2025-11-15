@@ -59,7 +59,7 @@ namespace HR_Payroll.Infrastructure.Concrete
             parameters.Add("@DepartmentId", departmentId, DbType.Int32);
 
             return QueryWithDapperAsync<SubDepartmentDTO>(
-                "SELECT SubDepartmentId, DepartmentId, SubDepartmentName FROM [drconnect123].[SubDepartments] " +
+                "SELECT SubDepartmentId, DepartmentId, SubDepartmentName FROM [dbo].[SubDepartments] " +
                 "WHERE Del_Flg='N' AND (DepartmentId=@DepartmentId OR @DepartmentId=0)",
                 parameters
             );

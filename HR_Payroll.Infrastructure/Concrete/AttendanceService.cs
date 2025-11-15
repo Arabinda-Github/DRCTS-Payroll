@@ -56,7 +56,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 parameters.Add("@AttendanceID", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 parameters.Add("@Distance", dbType: DbType.Decimal, precision: 10, scale: 2, direction: ParameterDirection.Output);
 
-                await connection.ExecuteAsync("[drconnect123].[sp_ProcessCheckIn]", parameters, commandType: CommandType.StoredProcedure);
+                await connection.ExecuteAsync("[dbo].[sp_ProcessCheckIn]", parameters, commandType: CommandType.StoredProcedure);
 
                 return new Result<AttendanceResponseModel>
                 {
@@ -118,7 +118,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 parameters.Add("@WorkingHours", dbType: DbType.Decimal, precision: 10, scale: 2, direction: ParameterDirection.Output);
                 parameters.Add("@IsWithinGeofence", dbType: DbType.Boolean, direction: ParameterDirection.Output);
                 parameters.Add("@Distance", dbType: DbType.Decimal, direction: ParameterDirection.Output);
-                await connection.ExecuteAsync("[drconnect123].[sp_ProcessCheckOut]", parameters, commandType: CommandType.StoredProcedure);
+                await connection.ExecuteAsync("[dbo].[sp_ProcessCheckOut]", parameters, commandType: CommandType.StoredProcedure);
 
                 return new Result<AttendanceResponseModel>
                 {
@@ -165,7 +165,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                     await connection.OpenAsync();
 
                 var result = await connection.QueryFirstOrDefaultAsync<AttendanceStatusResponseModel>(
-                    "[drconnect123].[sp_GetCurrentAttendanceStatus]",
+                    "[dbo].[sp_GetCurrentAttendanceStatus]",
                     new { EmployeeID = employeeId },
                     commandType: CommandType.StoredProcedure,
                     commandTimeout: 30
@@ -227,7 +227,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                     await connection.OpenAsync();
 
                 using (var multi = await connection.QueryMultipleAsync(
-                    "[drconnect123].[sp_GetEmployeeAttendanceReport]",
+                    "[dbo].[sp_GetEmployeeAttendanceReport]",
                     parameters,
                     commandType: CommandType.StoredProcedure))
                 {
@@ -286,7 +286,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 if (connection.State != ConnectionState.Open)
                     await connection.OpenAsync();
                 var result = await connection.QueryAsync<CalenderResponseModel>(
-                    "[drconnect123].[sp_GetEmployeeAttendanceCalendar]",
+                    "[dbo].[sp_GetEmployeeAttendanceCalendar]",
                     new { EmployeeID = model.EmployeeId, FromDate = model.FromDate, ToDate = model.ToDate },
                     commandType: CommandType.StoredProcedure,
                     commandTimeout: 30

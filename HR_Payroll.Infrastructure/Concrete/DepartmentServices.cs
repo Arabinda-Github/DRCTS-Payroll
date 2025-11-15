@@ -84,7 +84,7 @@ namespace HR_Payroll.Infrastructure.Concrete
 
         public Task<Result<IEnumerable<DepartmentDTO>>> GetDepartmentsAsync() =>
          QueryWithDapperAsync<DepartmentDTO>(
-             "SELECT DepartmentId, DepartmentName FROM [drconnect123].[Departments] WHERE Del_Flg='N'"
+             "SELECT DepartmentId, DepartmentName FROM [dbo].[Departments] WHERE Del_Flg='N'"
          );
 
         public async Task<Result<DepartmentAssignResult>> AssignDepartmentHierarchyAsync(DepartmentAssignDTO dto)
@@ -98,7 +98,7 @@ namespace HR_Payroll.Infrastructure.Concrete
             parameters.Add("@CreatedBy", dto.CreatedBy);
             parameters.Add("@Remarks", dto.Remarks);
 
-            string sql = "drconnect123.AssignDepartmentHierarchy";
+            string sql = "dbo.AssignDepartmentHierarchy";
 
             return await QuerySingleWithDapperAsync<DepartmentAssignResult>(sql, parameters);
         }

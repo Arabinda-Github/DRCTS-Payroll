@@ -141,14 +141,14 @@ async function loadAttendanceStatus() {
 
 function handleAttendanceStatusResponse(response) {
     $('.loader').addClass('hide');
-    if (!response || !response.status || !response.data.entity) {
+    if (!response || !response.status || !response.data) {
         //showToast('No valid attendance data received','error');
         resetAttendanceUI();
         showDropdown();
         return;
     }
 
-    const data = response.data.entity;
+    const data = response.data;
     const status = data.currentStatus || 'NOT_CHECKED_IN';
 
     console.log('Received status:', status, data);

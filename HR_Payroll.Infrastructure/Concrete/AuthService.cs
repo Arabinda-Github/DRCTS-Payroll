@@ -84,7 +84,8 @@ namespace HR_Payroll.Infrastructure.Concrete
             {
                 var connection = _context.Database.GetDbConnection();
 
-                if (connection.State != ConnectionState.Open)
+                // Only open if closed - prevents issues with already open connections
+                if (connection.State == ConnectionState.Closed)
                     await connection.OpenAsync();
 
                 // Check if token already exists for this user/provider
@@ -122,7 +123,7 @@ namespace HR_Payroll.Infrastructure.Concrete
                 // Insert new token
                 var insertSql = @"
                     INSERT INTO UserAuthProviders
-                    (UserID, ProviderName, ProviderUserID, RefreshToken, TokenExpiry, LinkedDate, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, Del_Flg)
+                    (UserID, ProviderName, ProviderUserID,AccessToken, RefreshToken, TokenExpiry, LinkedDate, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, Del_Flg)
                     VALUES
                     (@UserID, @ProviderName, @ProviderUserID,@AccessToken, @RefreshToken, @TokenExpiry, @LinkedDate, @CreatedDate, @CreatedBy, @ModifiedDate, @ModifiedBy, @Del_Flg)";
 

@@ -162,7 +162,7 @@ namespace HR_Payroll.API.Controllers
                 {
                     status = true,
                     message = result.Message ?? "Status retrieved successfully",
-                    data = result
+                    data = result.Entity
                 });
             }
             catch (Exception ex)

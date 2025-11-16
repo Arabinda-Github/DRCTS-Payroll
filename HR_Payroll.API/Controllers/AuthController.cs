@@ -83,15 +83,22 @@ namespace HR_Payroll.API.Controllers
                 var refreshToken = _jwtService.GenerateRefreshToken();
                 var expiresAt = DateTime.UtcNow.AddMinutes(60);
 
-                // Store refresh token asynchronously (fire and forget for speed, or await if critical)
-                _ = _authService.SaveRefreshToken(
+                // Store refresh token - AWAIT to ensure proper connection handling
+                var saveResult = await _authService.SaveRefreshToken(
                     user.UserID,
                     jwtToken,
-                    refreshToken,  // Store refresh token, not JWT
+                    refreshToken,
                     expiresAt,
                     "System",
                     null
                 );
+
+                // Log warning if token save failed, but don't block login success
+                if (!saveResult.IsSuccess)
+                {
+                    _logger.LogWarning("Failed to save refresh token for user {UserId}: {Message}",
+                        user.UserID, saveResult.Message);
+                }
 
                 return Ok(new LoginResponse<TokenData>
                 {
@@ -123,7 +130,7 @@ namespace HR_Payroll.API.Controllers
             var existingTokenResult = await _authService.GetByRefreshTokenAsync(request.RefreshToken);
 
             if (!existingTokenResult.IsSuccess || existingTokenResult.Entity == null)
-                return Unauthorized(new { status = false, message = "Invalid or expired refresh token" });
+                return NotFound(new { status = false, message = "Invalid or expired refresh token" });
 
             var existingToken = existingTokenResult.Entity;
 
@@ -131,7 +138,7 @@ namespace HR_Payroll.API.Controllers
             var userResult = await _authService.GetUserByIdAsync(existingToken.UserID);
 
             if (!userResult.IsSuccess || userResult.Entity == null)
-                return Unauthorized(new { status = false, message = "User not found" });
+                return NotFound(new { status = false, message = "User not found" });
 
             var user = userResult.Entity;
 

@@ -344,6 +344,119 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "ApplyLeave",
+    "RelativePath": "api/Leave/ApplyLeave",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EmployeeID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "LeaveTypeId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "FromDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "ToDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalDays",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Reason",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Attachment",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "LeaveFile",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "GetAllLeaveRequests",
+    "RelativePath": "api/Leave/GetAllLeaveRequests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "GetAllLeaveTypes",
+    "RelativePath": "api/Leave/GetAllLeaveTypes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "GetEmployeeLeaveBalance",
+    "RelativePath": "api/Leave/GetEmployeeLeaveBalance",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "GetLeaveRequestById",
+    "RelativePath": "api/Leave/GetLeaveRequestById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "leaveId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "ProcessLeave",
+    "RelativePath": "api/Leave/LeaveProcess",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HR_Payroll.Core.Model.Leave.ProcessLeaveRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HR_Payroll.API.Controllers.SubDepartmentController",
     "Method": "GetAllSubDepartments",
     "RelativePath": "api/SubDepartment/GetAllSubDepartments",

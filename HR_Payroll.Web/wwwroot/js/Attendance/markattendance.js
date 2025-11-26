@@ -16,6 +16,34 @@ let cachedIP = null;
 let ipCacheTime = null;
 let lastFocusTime = Date.now();
 
+$(function () {
+    updateDateTimeBadge();
+    setInterval(updateDateTimeBadge, 60000);
+});
+
+function updateDateTimeBadge() {
+    const now = new Date();
+
+    // Format: DD-MM-YYYY
+    const dateFormatted =
+        String(now.getDate()).padStart(2, '0') + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        now.getFullYear();
+
+    // Format time: HH:MM AM/PM
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 → 12
+
+    const timeFormatted = `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+
+    $("#currentDate").text(dateFormatted);
+    $("#currentTime").text(timeFormatted);
+}
+
 // ========================================
 // LOCAL STORAGE FUNCTIONS
 // ========================================
@@ -94,11 +122,21 @@ function showDropdown() {
     if (dropdownInstance) {
         dropdownInstance.show();
     }
+    // Show the alert badge
+    const badge = document.getElementById("alert-clock-badge");
+    if (badge) {
+        badge.style.display = "inline-block";
+    }
 }
 
 function hideDropdown() {
     if (dropdownInstance) {
         dropdownInstance.hide();
+    }
+    // Hide the alert badge
+    const badge = document.getElementById("alert-clock-badge");
+    if (badge) {
+        badge.style.display = "none";
     }
 }
 
@@ -140,11 +178,17 @@ async function loadAttendanceStatus() {
 }
 
 function handleAttendanceStatusResponse(response) {
+    const today = new Date();
+    const isWeekend = today.getDay() === 0 || today.getDay() === 6;
     $('.loader').addClass('hide');
     if (!response || !response.status || !response.data) {
         //showToast('No valid attendance data received','error');
         resetAttendanceUI();
-        showDropdown();
+        if (!isWeekend) {
+            showDropdown();
+        } else {
+            hideDropdown(); 
+        }
         return;
     }
 

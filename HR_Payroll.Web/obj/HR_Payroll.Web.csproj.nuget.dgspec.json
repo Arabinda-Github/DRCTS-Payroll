@@ -4,6 +4,93 @@
     "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\HR_Payroll.Web.csproj": {}
   },
   "projects": {
+    "C:\\Project\\DRCTS-Payroll\\HR_Payroll.CommonCases\\HR_Payroll.CommonCases.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.CommonCases\\HR_Payroll.CommonCases.csproj",
+        "projectName": "HR_Payroll.CommonCases",
+        "projectPath": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.CommonCases\\HR_Payroll.CommonCases.csproj",
+        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.CommonCases\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj": {
+                "projectPath": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.FileProviders.Physical": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -115,6 +202,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "C:\\Project\\DRCTS-Payroll\\HR_Payroll.CommonCases\\HR_Payroll.CommonCases.csproj": {
+                "projectPath": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.CommonCases\\HR_Payroll.CommonCases.csproj"
+              },
               "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj": {
                 "projectPath": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\HR_Payroll.Core.csproj"
               }

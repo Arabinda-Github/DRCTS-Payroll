@@ -605,6 +605,179 @@
         }
       }
     },
+    "/api/Leave/GetAllLeaveTypes": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Leave/GetEmployeeLeaveBalance": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Leave/GetAllLeaveRequests": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Leave/GetLeaveRequestById": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "parameters": [
+          {
+            "name": "leaveId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Leave/ApplyLeave": {
+      "post": {
+        "tags": [
+          "Leave"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "EmployeeID": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "LeaveTypeId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "FromDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "ToDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "TotalDays": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Reason": {
+                    "type": "string"
+                  },
+                  "Attachment": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "LeaveFile": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "EmployeeID": {
+                  "style": "form"
+                },
+                "LeaveTypeId": {
+                  "style": "form"
+                },
+                "FromDate": {
+                  "style": "form"
+                },
+                "ToDate": {
+                  "style": "form"
+                },
+                "TotalDays": {
+                  "style": "form"
+                },
+                "Reason": {
+                  "style": "form"
+                },
+                "Attachment": {
+                  "style": "form"
+                },
+                "LeaveFile": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Leave/LeaveProcess": {
+      "post": {
+        "tags": [
+          "Leave"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessLeaveRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessLeaveRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessLeaveRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessLeaveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/SubDepartment/GetAllSubDepartments": {
       "get": {
         "tags": [
@@ -912,6 +1085,28 @@
             "nullable": true
           },
           "loginType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProcessLeaveRequest": {
+        "type": "object",
+        "properties": {
+          "leaveId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approvedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "action": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
             "type": "string",
             "nullable": true
           }

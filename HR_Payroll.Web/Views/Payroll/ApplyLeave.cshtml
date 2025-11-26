@@ -11,7 +11,7 @@
     }
 
     .leave-item {
-        background: #fff;
+        background: #e1e3e4;
         border-radius: 10px;
         padding: 18px 10px;
         text-align: center;
@@ -20,7 +20,7 @@
 
         .leave-item .label {
             font-size: 0.85rem;
-            color: #6c757d;
+            color: #5f5f5f;
             font-weight: 600;
         }
 
@@ -43,7 +43,7 @@
         }
 
         #leavesTable th {
-            background: #f8f9fa;
+            background: #e1e3e4;
             font-weight: 600;
             color: #495057;
         }
@@ -73,42 +73,42 @@
 <div class="leave-balance-card p-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0 fw-semibold text-dark">
-            <i class="bi bi-clipboard2-check me-2 text-primary"></i>Leave Balances
+            <i class="bi bi-clipboard2-check me-2 text-primary"></i>Available Leave Balances
         </h5>
         <div class="float-end">
-        <button id="btnOpenApplyModal"
-                class="btn btn-primary btn-sm"
-                data-bs-toggle="modal"
-                data-bs-target="#applyLeaveModal">
-            <i class="fas fa-plus-circle me-1"></i> Apply Leave
-        </button>
-    </div>
+            <button id="btnOpenApplyModal"
+                    class="btn btn-primary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#applyLeaveModal">
+                <i class="fas fa-plus-circle me-1"></i> Apply Leave
+            </button>
+        </div>
     </div>
 
     <div class="row g-3">
         <div class="col-md-3 col-sm-6">
             <div class="leave-item border-primary-subtle">
                 <div class="label">Total Leave</div>
-                <div id="totalBalance" class="value text-primary">13 Days</div>
+                <div id="totalBalance" class="value text-primary"></div>
             </div>
         </div>
 
         <div class="col-md-3 col-sm-6">
             <div class="leave-item border-success-subtle">
                 <div class="label">Casual Leave</div>
-                <div id="casualBalance" class="value text-success">7 Days</div>
+                <div id="casualBalance" class="value text-success"></div>
             </div>
         </div>
         <div class="col-md-3 col-sm-6">
             <div class="leave-item border-danger-subtle">
                 <div class="label">Sick Leave</div>
-                <div id="sickBalance" class="value text-danger">4 Days</div>
+                <div id="sickBalance" class="value text-danger"></div>
             </div>
         </div>
         <div class="col-md-3 col-sm-6">
             <div class="leave-item border-secondary-subtle">
                 <div class="label">Other Leave</div>
-                <div id="otherBalance" class="value text-secondary">2 Days</div>
+                <div id="otherBalance" class="value text-secondary"></div>
             </div>
         </div>
     </div>
@@ -117,8 +117,8 @@
 <!-- Leave Requests List -->
 <div class="card shadow-sm border-0 mt-4">
     <div class="card-body">
-        <h4 class="fw-bold text-dark mb-1">Your Leave Requests</h4>
-        <p class="text-muted small mb-3">List of leaves you have applied for.</p>
+        <h4 class="fw-bold text-dark mb-1">Leave Requests</h4>
+        <p class="text-muted small mb-3">List of leaves you have applied.</p>
 
         <div class="table-responsive">
             <table id="leavesTable" class="table align-middle">
@@ -129,13 +129,14 @@
                         <th>From — To</th>
                         <th>Total Days</th>
                         <th>Reason</th>
+                        <th>Attachment</th>
                         <th>Applied On</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="7" class="text-muted text-center">Loading...</td>
+                        <td colspan="7" class="text-muted text-center">No data available</td>
                     </tr>
                 </tbody>
             </table>
@@ -168,9 +169,6 @@
                             <label for="leaveType" class="form-label">Leave Type</label>
                             <select id="leaveType" class="form-select">
                                 <option value="">Select Leave Type</option>
-                                <option value="Casual">Casual Leave</option>
-                                <option value="Sick">Sick Leave</option>
-                                <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -189,7 +187,11 @@
                                    readonly
                                    placeholder="Auto-calculated" />
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-4">
+                            <label for="toDate" class="form-label">Attachment</label>
+                            <input type="file" id="attfile" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
                             <label for="reason" class="form-label">Reason (optional)</label>
                             <textarea id="reason"
                                       class="form-control"

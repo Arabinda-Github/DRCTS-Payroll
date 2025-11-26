@@ -40,7 +40,9 @@ $(function () {
 
 function updateUIdata(userData) {
     userData = userData || {};
-    let shortName = (userData.name || "U")
+    let cleanName = (userData.name || "").trim();
+    let shortText = cleanName !== "" ? cleanName : (userData.role || "").trim();
+    let shortName = shortText
         .split(' ')
         .map(n => n[0])
         .join('')
@@ -57,5 +59,5 @@ function updateUIdata(userData) {
     }
 
     $("#urole").text(userData.role || "");
-    $("#uname").html(`${userData.name || ''} <i class="mdi mdi-chevron-down"></i>`);
+    $("#uname").html(`${shortText} <i class="mdi mdi-chevron-down"></i>`);
 }

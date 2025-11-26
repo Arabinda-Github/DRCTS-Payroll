@@ -1,4 +1,5 @@
-﻿using HR_Payroll.Core.Response;
+﻿using HR_Payroll.CommonCases.Utility;
+using HR_Payroll.Core.Response;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
@@ -64,9 +65,27 @@ namespace HR_Payroll.Web.CommonClients
 
         public async Task<DataResponse<T>> PostAsync<T>(string endpoint, object body)
         {
-            var jsonBody = JsonConvert.SerializeObject(body);
-            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            HttpContent content;
 
+            // Check if the object contains file(s)
+            bool containsFile = body.GetType()
+                .GetProperties()
+                .Any(p => p.PropertyType == typeof(IFormFile) ||
+                         p.PropertyType == typeof(byte[]) ||
+                         (p.GetValue(body) != null && p.GetValue(body).GetType().Name.Contains("File")));
+
+            if (containsFile)
+            {
+                var multipart = new MultipartFormDataContent();
+                await MultipartFormDataContentExtensions.AddPropertiesAsync(multipart, body);
+                content = multipart;
+            }
+            else
+            {               
+                var jsonBody = JsonConvert.SerializeObject(body);
+                content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            }
+            
             var fullUrl = endpoint.TrimStart('/');
 
             var response = await _httpClient.PostAsync(fullUrl, content);

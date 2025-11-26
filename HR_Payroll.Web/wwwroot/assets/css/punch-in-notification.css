@@ -162,3 +162,23 @@
     background: rgba(255,255,255,0.2);
     color: #fff;
 }
+.topbar-nav .nav-link {
+    display: flex;
+    align-items: center !important;
+    gap: 6px;
+}
+
+.clock-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px;
+    white-space: nowrap; /* prevents wrapping */
+}
+
+    .clock-wrapper #currentTime {
+        font-size: 12px;
+        opacity: 0.8;
+    }
+
+

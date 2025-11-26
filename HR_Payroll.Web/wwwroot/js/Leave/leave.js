@@ -1,10 +1,26 @@
 ﻿$(function () {
+    const today = new Date().toISOString().split("T")[0];
+    $("#fromDate").attr("min", today);
+    $("#toDate").attr("min", today);
+
     // Auto-calculate total leave days
     const from = document.getElementById("fromDate");
     const to = document.getElementById("toDate");
     const totalDays = document.getElementById("totalDays");
 
-    from.addEventListener("change", calcDays);
+    from.addEventListener("change", function () {
+        const fromValue = from.value;
+
+        if (fromValue) {
+            // Reset To Date
+            to.value = "";
+
+            // Make sure To Date cannot be earlier than From Date
+            to.setAttribute("min", fromValue);
+        }
+
+        calcDays();
+    });
     to.addEventListener("change", calcDays);
 
     function calcDays() {
@@ -30,18 +46,19 @@
         $(this).css('border-color', '');
     });
 
+    loadLeaveRequests();
 });
 
 // Load leave types
 function loadLeaveTypes() {
     $.ajax({
-        url: "/Leave/GetLeaveTypes",
+        url: "/Payroll/GetLeaveTypes",
         type: "GET",
         success: function (res) {
             $("#leaveType").empty()
                 .append(`<option value="">Select Leave Type</option>`);
 
-            $.each(res, function (i, x) {
+            $.each(res.data, function (i, x) {
                 $("#leaveType").append(`<option value="${x.leaveTypeId}">${x.leaveTypeName}</option>`);
             });
         }
@@ -51,13 +68,31 @@ function loadLeaveTypes() {
 // Load balances
 function loadLeaveBalances() {
     $.ajax({
-        url: "/Leave/GetBalances",
+        url: "/Payroll/GetLeaveBalances",
         type: "GET",
-        success: function (data) {
-            $("#totalBalance").text(data.leave);
-            $("#casualBalance").text(data.casual);
-            $("#sickBalance").text(data.sick);
-            $("#otherBalance").text(data.other);
+        success: function (res) {
+
+            if (res.status && res.data) {
+
+                const details = res.data.leaveDetails || [];
+
+                // Helper function to get closing balance based on LeaveTypeId
+                function getBalance(id) {
+                    const item = details.find(x => x.leaveTypeId === id);
+                    return item ? item.closingBalance + " Days" : "0 Days";
+                }
+
+                $("#totalBalance").text(res.data.totalClosingBalance + " Days");
+                $("#casualBalance").text(getBalance(1));   // Casual Leave
+                $("#sickBalance").text(getBalance(2));     // Sick Leave
+                $("#otherBalance").text(getBalance(3));    // Emergency/Other
+            }
+            else {
+                $("#totalBalance").text("0 Days");
+                $("#casualBalance").text("0 Days");
+                $("#sickBalance").text("0 Days");
+                $("#otherBalance").text("0 Days");
+            }
         }
     });
 }
@@ -66,9 +101,11 @@ function loadLeaveBalances() {
 document.getElementById("btnApplyLeave").addEventListener("click", function () {
     const fromDate = document.getElementById("fromDate").value;
     const toDate = document.getElementById("toDate").value;
+    const totalDays = document.getElementById("totalDays").value;
     const leaveType = document.getElementById("leaveType").value;
+    const attachment = document.getElementById("attfile").files[0];
     const reason = document.getElementById("reason").value;
-    
+
     let errors = [];
     // Reset previous borders
     $('#leaveType, #fromDate, #toDate, #reason').css('border-color', '');
@@ -85,30 +122,38 @@ document.getElementById("btnApplyLeave").addEventListener("click", function () {
         errors.push("Please select a to date.");
         $('#toDate').css('border-color', '#ef4d56');
     }
-    if (!reason) {
-        errors.push("Please enter reason.");
-        $('#reason').css('border-color', '#ef4d56');
-    }
-   
+
+    //if (!reason) {
+    //    errors.push("Please enter reason.");
+    //    $('#reason').css('border-color', '#ef4d56');
+    //}
+
     if (errors.length > 0) {
         showToast(errors.join('\n'), "error");
         return;
     }
-    const leaveData = {
-        fromDate: fromDate,
-        toDate: toDate,
-        leaveTypeId: leaveType,
-        reason: reason
-    };
+
+    const formData = new FormData();
+
+    formData.append("LeaveTypeId", leaveType);
+    formData.append("FromDate", fromDate);
+    formData.append("ToDate", toDate);
+    formData.append("TotalDays", totalDays);
+    formData.append("Reason", reason);
+    if (attachment) {
+        formData.append("Attachment", attachment);
+    }
+
     $('.loader').removeClass('hide');
     $.ajax({
-        url: "/Leave/ApplyLeave",
+        url: "/Payroll/ApplyLeave",
         type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(leaveData),
+        data: formData,
+        contentType: false,
+        processData: false,
         success: function (res) {
             $('.loader').addClass('hide');
-            if (res.success) {
+            if (res.status) {
                 showToast("Leave applied successfully.", "success");
                 loadLeaveBalances();
 
@@ -119,11 +164,92 @@ document.getElementById("btnApplyLeave").addEventListener("click", function () {
                     );
                     modal.hide();
                     document.getElementById("applyLeaveForm").reset();
+                    loadLeaveRequests();
                     showMsg("");
                 }, 1200);
             } else {
-                alert("Error applying leave: " + res.message);
+                showToast("Error applying leave: " + res.message, "error");
             }
         }
     });
 });
+
+function loadLeaveRequests() {
+    $.ajax({
+        url: "/Payroll/GetLeaveRequests",
+        type: "GET",
+        success: function (res) {
+
+            const tbody = $("#leavesTable tbody");
+            tbody.empty(); // Clear old rows
+
+            if (!res.status || !res.data || res.data.length === 0) {
+                tbody.append(`
+                    <tr>
+                        <td colspan="7" class="text-muted text-center">No data available</td>
+                    </tr>
+                `);
+                return;
+            }
+
+            let rows = "";
+
+            res.data.forEach((item, index) => {
+
+                const fromDate = formatDate(item.fromDate);
+                const toDate = formatDate(item.toDate);
+                const appliedOn = formatDate(item.createdOn);
+
+                const statusBadge = getStatusBadge(item.status);
+
+                rows += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.leaveType || "NA"}</td>
+                        <td>
+                            ${(fromDate || "NA")} — ${(toDate || "NA")}
+                        </td>
+                        <td>${item.totalDays || "NA"}</td>
+                        <td>${item.reason || "NA"}</td>
+                        <td>
+                            ${item.attachment
+                                        ? `<a href="${item.attachment}" target="_blank" class="text-primary">View</a>`
+                                        : "NA"
+                                    }
+                        </td>
+                        <td>${appliedOn || "NA"}</td>
+                        <td>${statusBadge || "NA"}</td>
+                    </tr>
+                `;
+
+            });
+
+            tbody.append(rows);
+        }
+    });
+}
+function getStatusBadge(status) {
+    if (!status) return "-";
+
+    status = status.toLowerCase();
+
+    if (status === "approved")
+        return `<span class="badge bg-success">Approved</span>`;
+
+    if (status === "pending")
+        return `<span class="badge bg-warning text-dark">Pending</span>`;
+
+    if (status === "rejected")
+        return `<span class="badge bg-danger">Rejected</span>`;
+
+    return `<span class="badge bg-secondary">${status}</span>`;
+}
+
+function formatDate(dateString) {
+    if (!dateString) return "-";
+    const d = new Date(dateString);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+}

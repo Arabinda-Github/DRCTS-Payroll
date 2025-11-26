@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HR_Payroll.CommonCases\HR_Payroll.CommonCases.csproj" />
     <ProjectReference Include="..\HR_Payroll.Core\HR_Payroll.Core.csproj" />
   </ItemGroup>
 

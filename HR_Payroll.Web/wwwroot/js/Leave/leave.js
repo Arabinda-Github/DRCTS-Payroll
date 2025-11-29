@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿
+$(function () {
     const today = new Date().toISOString().split("T")[0];
     $("#fromDate").attr("min", today);
     $("#toDate").attr("min", today);
@@ -35,7 +36,6 @@
     }
 
     loadLeaveTypes();
-    loadLeaveBalances();
 
     // Remove error border on change / input
     $('#leaveType, #fromDate, #toDate').on("change", function () {
@@ -47,6 +47,21 @@
     });
 
     loadLeaveRequests();
+
+    // Primary: wait for cookie data loaded event
+    $(document).on("cookieDataLoaded", function () {
+        const user = window.globalUserData || {};
+        const userRole = user.role;
+
+        if (userRole === "Manager" || userRole === "Team Lead") {
+            $("#approvalTabContainer").show();
+            loadPendingApprovals();
+        } else {
+            $("#approvalTabContainer").hide();
+        }
+
+    });
+
 });
 
 // Load leave types
@@ -65,114 +80,164 @@ function loadLeaveTypes() {
     });
 }
 
-// Load balances
-function loadLeaveBalances() {
-    $.ajax({
-        url: "/Payroll/GetLeaveBalances",
-        type: "GET",
-        success: function (res) {
+(async function () {
+
+    // -----------------------
+    // API FUNCTIONS (Promise)
+    // -----------------------
+    function GetLeaveBalances() {
+        return $.ajax({
+            url: "/Payroll/GetLeaveBalances",
+            type: "GET"
+        });
+    }
+
+    function CheckPendingLeave() {
+        return $.ajax({
+            url: "/Payroll/CheckPendingLeave",
+            type: "GET"
+        });
+    }
+
+
+    // -----------------------
+    // LOAD BALANCES (async)
+    // -----------------------
+    async function loadLeaveBalances() {
+        try {
+            const res = await GetLeaveBalances();   // ✔ works now
 
             if (res.status && res.data) {
 
                 const details = res.data.leaveDetails || [];
 
-                // Helper function to get closing balance based on LeaveTypeId
-                function getBalance(id) {
+                const getBalance = id => {
                     const item = details.find(x => x.leaveTypeId === id);
-                    return item ? item.closingBalance + " Days" : "0 Days";
-                }
+                    return item ? `${item.closingBalance} Days` : "0 Days";
+                };
 
-                $("#totalBalance").text(res.data.totalClosingBalance + " Days");
-                $("#casualBalance").text(getBalance(1));   // Casual Leave
-                $("#sickBalance").text(getBalance(2));     // Sick Leave
-                $("#otherBalance").text(getBalance(3));    // Emergency/Other
+                $("#totalBalance").text(`${res.data.totalClosingBalance} Days`);
+                $("#casualBalance").text(getBalance(1));
+                $("#sickBalance").text(getBalance(2));
+                $("#otherBalance").text(getBalance(3));
             }
             else {
-                $("#totalBalance").text("0 Days");
-                $("#casualBalance").text("0 Days");
-                $("#sickBalance").text("0 Days");
-                $("#otherBalance").text("0 Days");
+                $("#totalBalance, #casualBalance, #sickBalance, #otherBalance")
+                    .text("0 Days");
             }
         }
-    });
-}
-
-// Apply leave click
-document.getElementById("btnApplyLeave").addEventListener("click", function () {
-    const fromDate = document.getElementById("fromDate").value;
-    const toDate = document.getElementById("toDate").value;
-    const totalDays = document.getElementById("totalDays").value;
-    const leaveType = document.getElementById("leaveType").value;
-    const attachment = document.getElementById("attfile").files[0];
-    const reason = document.getElementById("reason").value;
-
-    let errors = [];
-    // Reset previous borders
-    $('#leaveType, #fromDate, #toDate, #reason').css('border-color', '');
-
-    if (!leaveType) {
-        errors.push("Please select a leave type.");
-        $('#leaveType').css('border-color', '#ef4d56');
-    }
-    if (!fromDate) {
-        errors.push("Please select a from date");
-        $('#fromDate').css('border-color', '#ef4d56');
-    }
-    if (!toDate) {
-        errors.push("Please select a to date.");
-        $('#toDate').css('border-color', '#ef4d56');
-    }
-
-    //if (!reason) {
-    //    errors.push("Please enter reason.");
-    //    $('#reason').css('border-color', '#ef4d56');
-    //}
-
-    if (errors.length > 0) {
-        showToast(errors.join('\n'), "error");
-        return;
-    }
-
-    const formData = new FormData();
-
-    formData.append("LeaveTypeId", leaveType);
-    formData.append("FromDate", fromDate);
-    formData.append("ToDate", toDate);
-    formData.append("TotalDays", totalDays);
-    formData.append("Reason", reason);
-    if (attachment) {
-        formData.append("Attachment", attachment);
-    }
-
-    $('.loader').removeClass('hide');
-    $.ajax({
-        url: "/Payroll/ApplyLeave",
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            $('.loader').addClass('hide');
-            if (res.status) {
-                showToast("Leave applied successfully.", "success");
-                loadLeaveBalances();
-
-                // Close modal after short delay
-                setTimeout(() => {
-                    const modal = bootstrap.Modal.getInstance(
-                        document.getElementById("applyLeaveModal")
-                    );
-                    modal.hide();
-                    document.getElementById("applyLeaveForm").reset();
-                    loadLeaveRequests();
-                    showMsg("");
-                }, 1200);
-            } else {
-                showToast("Error applying leave: " + res.message, "error");
-            }
+        catch (e) {
+            console.error("Error loading leave balances:", e);
+            $("#totalBalance, #casualBalance, #sickBalance, #otherBalance")
+                .text("0 Days");
         }
+    }
+
+    // Apply leave click - NOW ASYNC
+    document.getElementById("btnApplyLeave").addEventListener("click", async function () {
+        const fromDate = document.getElementById("fromDate").value;
+        const toDate = document.getElementById("toDate").value;
+        const totalDays = document.getElementById("totalDays").value;
+        const leaveType = document.getElementById("leaveType").value;
+        const attachment = document.getElementById("attfile").files[0];
+        const reason = document.getElementById("reason").value;
+
+        let errors = [];
+        // Reset previous borders
+        $('#leaveType, #fromDate, #toDate, #reason').css('border-color', '');
+
+        if (!leaveType) {
+            errors.push("Please select a leave type.");
+            $('#leaveType').css('border-color', '#ef4d56');
+        }
+        if (!fromDate) {
+            errors.push("Please select a from date");
+            $('#fromDate').css('border-color', '#ef4d56');
+        }
+        if (!toDate) {
+            errors.push("Please select a to date.");
+            $('#toDate').css('border-color', '#ef4d56');
+        }
+        if (!reason) {
+            errors.push("Please enter reason.");
+            $('#reason').css('border-color', '#ef4d56');
+        }
+
+        if (errors.length > 0) {
+            showToast(errors.join('\n'), "error");
+            return;
+        }
+
+        // Load both at the same time (FAST)
+        const [balance, pending] = await Promise.all([
+            GetLeaveBalances(),
+            CheckPendingLeave()
+        ]);
+
+        // Pending leave validation
+        if (pending.data) {
+            showToast("You already have a pending leave.", "error");
+            return;
+        }
+
+        // Balance validation
+        const details = balance.data?.leaveDetails || [];
+        const item = details.find(x => x.leaveTypeId == leaveType);
+
+        if (!item || item.closingBalance <= 0) {
+            showToast("No leave balance available.", "error");
+            return;
+        }
+
+        if (parseFloat(totalDays) > item.closingBalance) {
+            showToast("Not enough leave balance. Available: " + item.closingBalance + " days.", "error");
+            return;
+        }
+
+        // ========= APPLY LEAVE =========
+        const formData = new FormData();
+        formData.append("LeaveTypeId", leaveType);
+        formData.append("FromDate", fromDate);
+        formData.append("ToDate", toDate);
+        formData.append("TotalDays", totalDays);
+        formData.append("Reason", reason);
+        if (attachment) {
+            formData.append("Attachment", attachment);
+        }
+
+        $('.loader').removeClass('hide');
+        $.ajax({
+            url: "/Payroll/ApplyLeave",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('.loader').addClass('hide');
+                if (res.status) {
+                    showToast("Leave applied successfully.", "success");
+                    loadLeaveBalances();
+
+                    // Close modal after short delay
+                    setTimeout(() => {
+                        const modal = bootstrap.Modal.getInstance(
+                            document.getElementById("applyLeaveModal")
+                        );
+                        modal.hide();
+                        document.getElementById("applyLeaveForm").reset();
+                        loadLeaveRequests();
+                        showMsg("");
+                    }, 1200);
+                } else {
+                    showToast("Error applying leave: " + res.message, "error");
+                }
+            }
+        });
     });
-});
+
+    loadLeaveBalances();
+
+})(); // END ASYNC WRAPPER
 
 function loadLeaveRequests() {
     $.ajax({
@@ -213,12 +278,19 @@ function loadLeaveRequests() {
                         <td>${item.reason || "NA"}</td>
                         <td>
                             ${item.attachment
-                                        ? `<a href="${item.attachment}" target="_blank" class="text-primary">View</a>`
-                                        : "NA"
-                                    }
+                        ? `<a href="${item.attachment}" target="_blank" class="text-primary">View</a>`
+                        : "NA"
+                    }
                         </td>
                         <td>${appliedOn || "NA"}</td>
-                        <td>${statusBadge || "NA"}</td>
+                        <td>
+                            ${statusBadge}
+
+                            ${item.status === "Rejected" && item.remarks
+                                                ? `<br/><small class="text-danger"><b>Reason:</b> ${item.remarks}</small>`
+                                                : ""
+                            }
+                        </td>
                     </tr>
                 `;
 
@@ -228,6 +300,7 @@ function loadLeaveRequests() {
         }
     });
 }
+
 function getStatusBadge(status) {
     if (!status) return "-";
 
@@ -253,3 +326,111 @@ function formatDate(dateString) {
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
 }
+
+// -----------------------
+// Leave Approvals
+// -----------------------
+
+function loadPendingApprovals() {
+    $.ajax({
+        url: "/Payroll/GetPendingApprovals",
+        type: "GET",
+        success: function (res) {
+
+            const tbody = $("#approvalBody");
+            tbody.empty();
+
+            if (!res.status || res.data.length === 0) {
+                tbody.append(`<tr><td colspan="9" class="text-muted text-center">No pending leaves</td></tr>`);
+                return;
+            }
+
+            res.data.forEach((item, index) => {
+                const fromDate = formatDate(item.fromDate);
+                const toDate = formatDate(item.toDate);
+                const appliedOn = formatDate(item.createdOn);
+
+                tbody.append(`
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.employeeName}</td>
+                        <td>${item.leaveType}</td>
+                        <td>${fromDate} — ${toDate}</td>
+                        <td>${item.totalDays}</td>
+                        <td>${item.reason || "NA"}</td>
+                        <td>${item.attachment ? `<a href="${item.attachment}" target="_blank">View</a>` : "NA"}</td>
+                        <td>${appliedOn}</td>
+                       <td>
+                            <button class="btn btn-success btn-sm approveBtn" data-id="${item.leaveId}">
+                                Approve
+                            </button>
+
+                            <button class="btn btn-danger btn-sm rejectBtn" data-id="${item.leaveId}">
+                                Reject
+                            </button>
+                       </td>
+                    </tr>
+                `);
+            });
+        }
+    });
+}
+
+//Approve / Reject Button Functions
+
+$(document).on("click", ".approveBtn", function () {
+    const leaveId = $(this).data("id");
+
+    processLeave(leaveId, "Approve", "");
+});
+
+$("#btnSubmitReject").on("click", function () {
+    const leaveId = $("#rejectLeaveId").val();
+    const remark = $("#rejectRemark").val().trim();
+
+    if (!remark) {
+        showToast("Please enter a remark for rejection.", "error");
+        return;
+    }
+
+    processLeave(leaveId, "Reject", remark);
+    bootstrap.Modal.getInstance(document.getElementById("rejectModal")).hide();
+});
+
+// Open Reject Modal
+$(document).on("click", ".rejectBtn", function () {
+    const leaveId = $(this).data("id");
+
+    $("#rejectLeaveId").val(leaveId);
+    $("#rejectRemark").val("");
+
+    new bootstrap.Modal(document.getElementById("rejectModal")).show();
+});
+
+function processLeave(leaveId, action, remark) {
+    
+    const formData = new FormData();
+    formData.append("LeaveId", leaveId);
+    formData.append("Action", action);
+    formData.append("Remark", remark);
+
+    $('.loader').removeClass('hide');
+    $.ajax({
+        url: "/Payroll/LeaveApproveProcess",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            $('.loader').addClass('hide');
+            if (res.status) {
+                showToast("Leave " + action + "d successfully!", "success");
+                loadPendingApprovals();    // reload manager/TL table
+                loadLeaveRequests();        // reload employee leave list
+            } else {
+                showToast("Error: " + res.message, "error");
+            }
+        }
+    });
+}
+

@@ -13,5 +13,7 @@ namespace HR_Payroll.Infrastructure.Interface
         Task<Result<EmployeeLeaveRequest>> GetLeaveRequestById(int leaveId);
         Task<Result<bool>> ApplyLeaveAsync(ApplyLeaveRequestDto request);
         Task<Result<bool>> ProcessEmployeeLeave(ProcessLeaveRequest model);
+        Task<Result<bool>> HasPendingLeave(int empId);
+        Task<Result<List<PendingLeaveDto>>> GetPendingLeaveRequests(int supervisorId);
     }
 }

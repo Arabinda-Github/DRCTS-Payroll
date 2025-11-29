@@ -778,6 +778,30 @@
         }
       }
     },
+    "/api/Leave/CheckPendingLeave": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Leave/PendingLeaveRequests": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/SubDepartment/GetAllSubDepartments": {
       "get": {
         "tags": [

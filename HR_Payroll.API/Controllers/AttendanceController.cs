@@ -32,7 +32,7 @@ namespace HR_Payroll.API.Controllers
 
         [HttpPost]
         [Route("CheckIn")]
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee,HR,Manager,Team Lead")]
         public async Task<IActionResult> CheckIn([FromBody] CheckInRequestModel model)
         {
             model.EmployeeID = GetEmployeeIdFromClaims();
@@ -81,7 +81,7 @@ namespace HR_Payroll.API.Controllers
 
         [HttpPost]
         [Route("CheckOut")]
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee,HR,Manager,Team Lead")]
         public async Task<IActionResult> CheckOut([FromBody] CheckOutRequestModel model)
         {
             model.EmployeeID = GetEmployeeIdFromClaims();
@@ -130,7 +130,7 @@ namespace HR_Payroll.API.Controllers
 
         [HttpGet]
         [Route("GetAttendanceStatus")]
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee,HR,Manager,Team Lead")]
         public async Task<ActionResult> GetAttendanceStatus()
         {
             try
@@ -180,7 +180,7 @@ namespace HR_Payroll.API.Controllers
 
         [HttpGet]
         [Route("GetAttendanceReport")]
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee,HR,Manager,Team Lead")]
         public async Task<IActionResult> GetAttendanceReport([FromQuery] AttendanceRequestModel model)
         {
             model.EmployeeId = GetEmployeeIdFromClaims();
@@ -235,7 +235,7 @@ namespace HR_Payroll.API.Controllers
 
         [HttpGet]
         [Route("GetAttendanceCalendar")]
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee,HR,Manager,Team Lead")]
         public async Task<IActionResult> GetAttendanceCalendar([FromQuery] CalenderRequestModel model)
         {
             try

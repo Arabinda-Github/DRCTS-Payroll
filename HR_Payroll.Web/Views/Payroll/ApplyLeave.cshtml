@@ -3,55 +3,110 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
+    /* -----------------------------
+       BALANCE CARDS
+    ----------------------------- */
     .leave-balance-card {
-        background: linear-gradient(145deg, #ffffff, #f8f9fa);
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-        transition: transform 0.2s ease;
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
     }
 
     .leave-item {
-        background: #e1e3e4;
-        border-radius: 10px;
-        padding: 18px 10px;
+        background: #e9eaeb;
+        border-radius: 12px;
+        padding: 18px 12px;
         text-align: center;
-        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #eceff5;
+        transition: 0.2s ease;
     }
+
+        .leave-item:hover {
+            background: #eef3ff;
+            transform: translateY(-2px);
+        }
 
         .leave-item .label {
             font-size: 0.85rem;
-            color: #5f5f5f;
+            color: #6c757d;
             font-weight: 600;
         }
 
         .leave-item .value {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
-    #leavesTable {
-        width: 100%;
-        border-collapse: collapse;
+    /* -----------------------------
+       TABS
+    ----------------------------- */
+    .nav-tabs .nav-link {
+        border-radius: 8px 8px 0 0 !important;
+        padding: 10px 18px;
+        font-weight: 600;
+        color: #495057;
     }
 
-        #leavesTable th,
-        #leavesTable td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid #e9ecef;
+        .nav-tabs .nav-link.active {
+            background: #ffffff !important;
+            border-bottom: 2px solid #0d6efd !important;
+            color: #0d6efd !important;
         }
 
-        #leavesTable th {
-            background: #e1e3e4;
-            font-weight: 600;
-            color: #495057;
+    /* -----------------------------
+       TABLES
+    ----------------------------- */
+    .table thead th {
+        background: #f2f4f7;
+        border-bottom: 2px solid #e1e4e8;
+        padding: 12px;
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .table tbody tr {
+        transition: 0.2s;
+    }
+
+        .table tbody tr:hover {
+            background-color: #f4f8ff;
         }
 
-        #leavesTable tr:hover {
-            background: #f2f6ff;
-        }
+    .text-muted-center {
+        text-align: center;
+        padding: 16px;
+        font-size: 0.95rem;
+    }
+
+    /* -----------------------------
+       MODAL
+    ----------------------------- */
+    .modal-content {
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+    }
+
+    .modal-header {
+        padding: 15px 20px;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .modal-footer {
+        padding: 12px 20px;
+    }
+
+    /* Buttons hover */
+    .btn-primary:hover {
+        background-color: #0b5ed7 !important;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #e2e6ea !important;
+    }
 </style>
+
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
@@ -117,32 +172,108 @@
 <!-- Leave Requests List -->
 <div class="card shadow-sm border-0 mt-4">
     <div class="card-body">
-        <h4 class="fw-bold text-dark mb-1">Leave Requests</h4>
-        <p class="text-muted small mb-3">List of leaves you have applied.</p>
 
-        <div class="table-responsive">
-            <table id="leavesTable" class="table align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Leave Type</th>
-                        <th>From — To</th>
-                        <th>Total Days</th>
-                        <th>Reason</th>
-                        <th>Attachment</th>
-                        <th>Applied On</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="7" class="text-muted text-center">No data available</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- ==================== TABS ==================== -->
+        <ul class="nav nav-tabs mb-3" id="leaveTabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="my-leaves-tab" data-bs-toggle="tab" href="#my-leaves">
+                    Leave Requests
+                </a>
+            </li>
+
+            <!-- Show this tab ONLY if role is Manager or Team Lead -->
+            <li class="nav-item" id="approvalTabContainer" style="display:none;">
+                <a class="nav-link" id="approve-leaves-tab" data-bs-toggle="tab" href="#approve-leaves">
+                    Pending Approvals
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- ==================== MY LEAVE REQUESTS TAB ==================== -->
+            <div class="tab-pane fade show active" id="my-leaves">
+                <h4 class="fw-bold text-dark mb-1">Leave Requests</h4>
+                <p class="text-muted small mb-3">List of leaves you have applied.</p>
+
+                <div class="table-responsive">
+                    <table id="leavesTable" class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Leave Type</th>
+                                <th>From — To</th>
+                                <th>Total Days</th>
+                                <th>Reason</th>
+                                <th>Attachment</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myLeavesBody">
+                            <tr><td colspan="8" class="text-muted text-center">No data available</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <!-- ==================== APPROVAL TAB (MANAGER / TEAM LEAD) ==================== -->
+            <div class="tab-pane fade" id="approve-leaves">
+                <h4 class="fw-bold text-dark mb-1">Pending Leave Approvals</h4>
+                <p class="text-muted small mb-3">Approve or reject leave requests.</p>
+
+                <div class="table-responsive">
+                    <table id="approvalTable" class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Employee</th>
+                                <th>Leave Type</th>
+                                <th>From — To</th>
+                                <th>Total Days</th>
+                                <th>Reason</th>
+                                <th>Attachment</th>
+                                <th>Applied On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalBody">
+                            <tr><td colspan="9" class="text-muted text-center">No pending leaves</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Reject Remark Modal -->
+            <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title">Reject Leave Request</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="hidden" id="rejectLeaveId" />
+
+                            <label class="form-label">Remark <span class="text-danger">*</span></label>
+                            <textarea id="rejectRemark" class="form-control" rows="3" placeholder="Enter reason for rejection..."></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button id="btnSubmitReject" class="btn btn-danger">Reject Leave</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
 
 
 <!-- Bootstrap Modal -->
@@ -188,11 +319,11 @@
                                    placeholder="Auto-calculated" />
                         </div>
                         <div class="col-md-4">
-                            <label for="toDate" class="form-label">Attachment</label>
+                            <label for="toDate" class="form-label">Attachment (optional)</label>
                             <input type="file" id="attfile" class="form-control" />
                         </div>
                         <div class="col-md-4">
-                            <label for="reason" class="form-label">Reason (optional)</label>
+                            <label for="reason" class="form-label">Reason</label>
                             <textarea id="reason"
                                       class="form-control"
                                       rows="2"

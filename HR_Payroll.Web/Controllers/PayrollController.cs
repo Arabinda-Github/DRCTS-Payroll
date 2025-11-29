@@ -127,7 +127,7 @@ namespace HR_Payroll.Web.Controllers
         public async Task<IActionResult> ApplyLeave(ApplyLeaveRequestDto req)
         {
             try
-            {              
+            {
                 // Get tokens from claims
                 var accessToken = User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
                 var refreshToken = User.Claims.FirstOrDefault(c => c.Type == "refresh_token")?.Value;
@@ -189,7 +189,7 @@ namespace HR_Payroll.Web.Controllers
                 _apiClient.SetTokens(accessToken, refreshToken);
 
                 // Call the backend API using Dapper/PostAsync
-                var result = await _apiClient.PostAsync<bool>(
+                var result = await _apiClient.PostAsync<object>(
                     "Leave/LeaveProcess", // ✅ correct endpoint
                     req
                 );
@@ -267,5 +267,97 @@ namespace HR_Payroll.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> CheckPendingLeave()
+        {
+            try
+            {
+                var accessToken = User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
+                var refreshToken = User.Claims.FirstOrDefault(c => c.Type == "refresh_token")?.Value;
+                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+                {
+                    return Unauthorized(new
+                    {
+                        status = false,
+                        message = "Missing access or refresh token."
+                    });
+                }
+                _apiClient.SetTokens(accessToken, refreshToken);
+                var result = await _apiClient.GetAsync<bool>("Leave/CheckPendingLeave");
+                if (!result.status)
+                {
+                    _logger.LogWarning("Failed to check pending leave: {Message}", result.message);
+                    return StatusCode(500, new
+                    {
+                        status = false,
+                        message = result.message
+                    });
+                }
+                return Json(new
+                {
+                    status = true,
+                    message = "Check pending leave successfully.",
+                    data = result.data
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in CheckPendingLeave");
+                return StatusCode(500, new
+                {
+                    status = false,
+                    message = "An error occurred while checking pending leave."
+                });
+            }
+        }
+
+        public async Task<IActionResult> GetPendingApprovals()
+        {
+            try
+            {
+                var accessToken = User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
+                var refreshToken = User.Claims.FirstOrDefault(c => c.Type == "refresh_token")?.Value;
+
+                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+                {
+                    return Unauthorized(new
+                    {
+                        status = false,
+                        message = "Missing access or refresh token."
+                    });
+                }
+
+                _apiClient.SetTokens(accessToken, refreshToken);
+
+                var result = await _apiClient.GetAsync<List<PendingLeaveDto>>("Leave/PendingLeaveRequests");
+
+                if (!result.status)
+                {
+                    _logger.LogWarning("Failed to retrieve leave requests: {Message}", result.message);
+                    return StatusCode(500, new
+                    {
+                        status = false,
+                        message = result.message
+                    });
+                }
+
+                return Json(new
+                {
+                    status = true,
+                    message = "Leave requests retrieved successfully.",
+                    data = result.data
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in GetLeaveRequestes");
+                return StatusCode(500, new
+                {
+                    status = false,
+                    message = "An error occurred while retrieving leave requests."
+                });
+            }
+        }
+
     }
+
 }

@@ -396,6 +396,16 @@
   },
   {
     "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "CheckPendingLeave",
+    "RelativePath": "api/Leave/CheckPendingLeave",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
     "Method": "GetAllLeaveRequests",
     "RelativePath": "api/Leave/GetAllLeaveRequests",
     "HttpMethod": "GET",
@@ -454,6 +464,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HR_Payroll.API.Controllers.LeaveController",
+    "Method": "PendingLeaveRequests",
+    "RelativePath": "api/Leave/PendingLeaveRequests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

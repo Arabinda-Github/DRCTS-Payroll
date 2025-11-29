@@ -3,52 +3,44 @@
   "WorkspaceRootPath": "C:\\Project\\DRCTS-Payroll\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\concrete\\leaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\concrete\\leaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\wwwroot\\js\\leave\\leave.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\wwwroot\\js\\leave\\leave.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6FFC2D2F-933A-462C-B686-D560913DA162}|HR_Payroll.Core\\HR_Payroll.Core.csproj|c:\\project\\drcts-payroll\\hr_payroll.core\\model\\leave\\employeeleaverequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6FFC2D2F-933A-462C-B686-D560913DA162}|HR_Payroll.Core\\HR_Payroll.Core.csproj|solutionrelative:hr_payroll.core\\model\\leave\\employeeleaverequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\interface\\ileaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\interface\\ileaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\commonclients\\commonapi_client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\commonclients\\commonapi_client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\controllers\\leavecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\controllers\\leavecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\controllers\\assigncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\controllers\\assigncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\assign\\assignemployee.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\assign\\assignemployee.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\wwwroot\\js\\assign\\assignemployee.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\wwwroot\\js\\assign\\assignemployee.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\payroll\\applyleave.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\payroll\\applyleave.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\controllers\\payrollcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|c:\\project\\drcts-payroll\\hr_payroll.api\\controllers\\leavecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{844BEACF-A8C6-4274-9813-DE68DBCDCDBA}|HR_Payroll.API\\HR_Payroll.API.csproj|solutionrelative:hr_payroll.api\\controllers\\leavecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\interface\\ileaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\interface\\ileaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|c:\\project\\drcts-payroll\\hr_payroll.infrastructure\\concrete\\leaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB13121E-E1B5-450D-8885-98E969F4C766}|HR_Payroll.Infrastructure\\HR_Payroll.Infrastructure.csproj|solutionrelative:hr_payroll.infrastructure\\concrete\\leaveservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\commonclients\\commonapi_client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\commonclients\\commonapi_client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\views\\assign\\assignemployee.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\views\\assign\\assignemployee.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|c:\\project\\drcts-payroll\\hr_payroll.web\\controllers\\assigncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE589193-41F2-4C52-BD8D-D5C2A4D4FF45}|HR_Payroll.Web\\HR_Payroll.Web.csproj|solutionrelative:hr_payroll.web\\controllers\\assigncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,33 +58,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "EmployeeLeaveRequest.cs",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\Model\\Leave\\EmployeeLeaveRequest.cs",
-              "RelativeDocumentMoniker": "HR_Payroll.Core\\Model\\Leave\\EmployeeLeaveRequest.cs",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Core\\Model\\Leave\\EmployeeLeaveRequest.cs",
-              "RelativeToolTip": "HR_Payroll.Core\\Model\\Leave\\EmployeeLeaveRequest.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T18:11:11.379Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "leave.js",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Leave\\leave.js",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\wwwroot\\js\\Leave\\leave.js",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Leave\\leave.js",
               "RelativeToolTip": "HR_Payroll.Web\\wwwroot\\js\\Leave\\leave.js",
-              "ViewState": "AgIAAMAAAAAAAAAAAAAAAM4AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAHABAAAAAAAAAADwv3sBAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-15T14:52:09.955Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
+              "Title": "ApplyLeave.cshtml",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
+              "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
+              "RelativeToolTip": "HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
+              "ViewState": "AgIAAPYAAAAAAAAAAADwv/0AAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T16:06:38.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "AssignController.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\AssignController.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Controllers\\AssignController.cs",
@@ -100,8 +92,7 @@
               "RelativeToolTip": "HR_Payroll.Web\\Controllers\\AssignController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-23T15:42:45.004Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-23T15:42:45.004Z"
             },
             {
               "$type": "Document",
@@ -111,86 +102,62 @@
               "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Interface\\ILeaveService.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Interface\\ILeaveService.cs",
               "RelativeToolTip": "HR_Payroll.Infrastructure\\Interface\\ILeaveService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-22T11:51:05.469Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "LeaveController.cs",
+              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\LeaveController.cs",
+              "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\LeaveController.cs",
+              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\LeaveController.cs",
+              "RelativeToolTip": "HR_Payroll.API\\Controllers\\LeaveController.cs",
+              "ViewState": "AgIAAL8AAAAAAAAAAADwv2IBAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-29T16:02:43.267Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "LeaveService.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Concrete\\LeaveService.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Infrastructure\\Concrete\\LeaveService.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Infrastructure\\Concrete\\LeaveService.cs",
               "RelativeToolTip": "HR_Payroll.Infrastructure\\Concrete\\LeaveService.cs",
-              "ViewState": "AgIAAH0AAAAAAAAAAADgv4cAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAADwv1IBAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-22T11:50:49.968Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "LeaveController.cs",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\LeaveController.cs",
-              "RelativeDocumentMoniker": "HR_Payroll.API\\Controllers\\LeaveController.cs",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.API\\Controllers\\LeaveController.cs",
-              "RelativeToolTip": "HR_Payroll.API\\Controllers\\LeaveController.cs",
-              "ViewState": "AgIAAIwAAAAAAAAAAADgv5cAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-22T11:49:56.915Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ApplyLeave.cshtml",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
-              "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
-              "RelativeToolTip": "HR_Payroll.Web\\Views\\Payroll\\ApplyLeave.cshtml",
-              "ViewState": "AgIAAG8AAAAAAAAAAADwv3AAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-10T16:06:38.215Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "PayrollController.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\PayrollController.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Controllers\\PayrollController.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Controllers\\PayrollController.cs",
               "RelativeToolTip": "HR_Payroll.Web\\Controllers\\PayrollController.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAADgv+8AAABRAAAAAAAAAA==",
+              "ViewState": "AgIAAEoAAAAAAAAAAADwv64AAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T16:05:15.638Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "CommonAPI_Client.cs",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
               "RelativeToolTip": "HR_Payroll.Web\\CommonClients\\CommonAPI_Client.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAADgvzQAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-02T15:28:42.543Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "assignemployee.js",
-              "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
-              "RelativeDocumentMoniker": "HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
-              "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
-              "RelativeToolTip": "HR_Payroll.Web\\wwwroot\\js\\Assign\\assignemployee.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHUBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-30T17:10:06.88Z"
             },
             {
               "$type": "Document",
@@ -200,21 +167,23 @@
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Assign\\AssignEmployee.cshtml",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Assign\\AssignEmployee.cshtml",
               "RelativeToolTip": "HR_Payroll.Web\\Views\\Assign\\AssignEmployee.cshtml",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAAAD4AAAAGAAAAAAAAAA==",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAAAG4AAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-30T14:46:31.811Z"
+              "WhenOpened": "2025-10-30T14:46:31.811Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 7,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Project\\DRCTS-Payroll\\HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "HR_Payroll.Web\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAMMBAAAAAAAAAAAEwPMAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAL0AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-12T15:48:22.577Z"
+              "WhenOpened": "2025-10-12T15:48:22.577Z",
+              "EditorCaption": ""
             }
           ]
         }

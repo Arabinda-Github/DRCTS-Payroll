@@ -297,5 +297,76 @@ namespace HR_Payroll.Infrastructure.Concrete
             }
         }
 
+        public async Task<Result<bool>> HasPendingLeave(int empId)
+        {
+            try
+            {
+                using var conn = _context.Database.GetDbConnection();
+
+                var sql = @"
+                    SELECT COUNT(*)
+                    FROM EmployeeLeaveRequests
+                    WHERE EmployeeID = @empId 
+                      AND Status = 'Pending' 
+                      AND Del_Flg = 'N'
+                ";
+
+                // Execute query
+                var pendingCount = await conn.ExecuteScalarAsync<int>(sql, new { empId });
+
+                return new Result<bool>
+                {
+                    IsSuccess = true,
+                    Message = pendingCount > 0
+                        ? "Pending leave found."
+                        : "No pending leave.",
+                    Entity = pendingCount > 0
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error executing HasPendingLeave");
+
+                return new Result<bool>
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                    Entity = false
+                };
+            }
+        }
+
+        public async Task<Result<List<PendingLeaveDto>>> GetPendingLeaveRequests(int supervisorId)
+        {
+            try
+            {
+                using var conn = _context.Database.GetDbConnection();
+
+                var result = (await conn.QueryAsync<PendingLeaveDto>(
+                    "dbo.sp_GetPendingLeaveRequests",
+                    new { SupervisorId = supervisorId },
+                    commandType: CommandType.StoredProcedure
+                )).ToList();
+
+                return new Result<List<PendingLeaveDto>>
+                {
+                    IsSuccess = true,
+                    Message = "Pending leave requests fetched successfully.",
+                    Entity = result
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching pending leave requests via stored procedure");
+                return new Result<List<PendingLeaveDto>>
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                    Entity = null
+                };
+            }
+        }
+
+
     }
 }

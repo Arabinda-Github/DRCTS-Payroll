@@ -311,5 +311,84 @@ namespace HR_Payroll.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("CheckPendingLeave")]
+        [Authorize(Roles = "Employee,HR,Manager,Team Lead")]
+        public async Task<IActionResult> CheckPendingLeave()
+        {
+            try
+            {
+                var employeeId = GetEmployeeIdFromClaims();
+                var result = await _leaveservice.HasPendingLeave(employeeId);
+
+                if (!result.IsSuccess)
+                {
+                    return Ok(new DataResponse<object>
+                    {
+                        status = false,
+                        message = result.Message ?? "Failed to check pending leave",
+                        data = new List<object>()
+                    });
+                }
+
+                return Ok(new DataResponse<object>
+                {
+                    status = true,
+                    message = result.Message ?? "Check pending leave successfully",
+                    data = result.Entity
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking pending leave");
+                return StatusCode(500, new DataResponse<object>
+                {
+                    status = false,
+                    message = "An error occurred while processing your request.",
+                    data = new List<object>()
+                });
+            }
+
+        }
+
+        [HttpGet]
+        [Route("PendingLeaveRequests")]
+        [Authorize(Roles = "Employee,Manager,Team Lead")]
+        public async Task<IActionResult> PendingLeaveRequests()
+        {
+            try
+            {
+                var employeeId = GetEmployeeIdFromClaims();
+                var result = await _leaveservice.GetPendingLeaveRequests(employeeId);
+
+                if (!result.IsSuccess)
+                {
+                    return Ok(new DataResponse<object>
+                    {
+                        status = false,
+                        message = result.Message ?? "Failed to retrieve leave requests",
+                        data = new List<object>()
+                    });
+                }
+
+                return Ok(new DataResponse<object>
+                {
+                    status = true,
+                    message = result.Message ?? "Leave requests retrieved successfully",
+                    data = result.Entity
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving leave requests");
+                return StatusCode(500, new DataResponse<object>
+                {
+                    status = false,
+                    message = "An error occurred while processing your request.",
+                    data = new List<object>()
+                });
+            }
+        }
+
     }
 }
